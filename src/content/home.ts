@@ -157,7 +157,7 @@ export const featureCards = [
     imageAlt: 'Students, Parents & Teachers using Pandai',
     title: 'What other Students, Parents, & Teachers say after using Pandai?',
     buttonLabel: 'Find Out More',
-    buttonHref: 'https://www.google.com', // ← replace with real URL when page is ready
+    buttonHref: 'https://my.pandai.org/about/testimonial',
   },
   {
     theme: 'dark' as const,
@@ -165,7 +165,7 @@ export const featureCards = [
     imageAlt: 'Ask PBot — AI study buddy',
     title: 'Experience the future of learning with Ask PBot, your AI study buddy',
     buttonLabel: 'Meet Ask PBot',
-    buttonHref: 'https://www.google.com', // ← replace with real URL when page is ready
+    buttonHref: 'https://blog.pandai.org/meet-ask-pbot-your-ultimate-study-buddy-in-pandai/',
   },
 ]
 

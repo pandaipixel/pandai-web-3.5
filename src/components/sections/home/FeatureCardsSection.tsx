@@ -17,7 +17,7 @@ export default function FeatureCardsSection() {
           className="grid grid-cols-1 sm:grid-cols-2 gap-5"
         >
           {featureCards.map((card) => (
-            <motion.div key={card.title} variants={fadeInUp}>
+            <motion.div key={card.title} variants={fadeInUp} className="h-full">
               <FeatureCard {...card} />
             </motion.div>
           ))}

@@ -4,7 +4,7 @@
 > **Repo:** https://github.com/pandaipixel/pandai-web-3.5  
 > **Deployment:** Cloudflare Pages (auto-deploy on push to `main`)  
 > **Design source:** Figma DS 1.5 — file key `TLVKe3bgJTdVvuPAzgDq2f`  
-> **Last updated:** 2026-05-07
+> **Last updated:** 2026-05-08
 
 ---
 
@@ -120,21 +120,28 @@ All tokens are in `src/styles/tokens.css`. Never hardcode hex values in componen
 - Content: `src/content/home.ts` → `tagline.text`
 
 ### ✅ TestimonialsSection (`src/components/sections/home/TestimonialsSection.tsx`)
-- Outer frame: rounded-3xl, `2px solid #99ebce` border, background image from Cloudflare Images
+- Outer frame: `rounded-3xl`, `2px solid #99ebce` border
+- **Background**: two-layer approach — CSS gradient + absolute `<img>`:
+  - CSS: `linear-gradient(to bottom, #ffffff 78%, #00cc85 78%)` — white top, brand green bottom
+  - Absolute `<img>` (`zIndex: 1`, `object-fit: contain`) layered on top of gradient
+  - All content at `z-10` to sit above both layers
   - BG image URL: `https://imagedelivery.net/zy4C5mYDeC8QYHozzOk2nQ/7f059ac0-95c3-4213-59e9-c5cbf1160e00/1024px`
-- **Floating mascot**: absolutely positioned outside the `overflow-hidden` frame, left edge, `top: 28%`
+- **Floating mascot**: absolutely positioned **outside** the `overflow-hidden` frame (sibling div), left edge, `top: 28%`
   - Image URL: `https://imagedelivery.net/zy4C5mYDeC8QYHozzOk2nQ/ad44940d-1c50-4b50-0a5b-33ea6f0f3600/1024px`
   - `animate={{ y: [0, -10, 0] }}`, 2.5s loop, hidden on mobile (`hidden sm:block`)
   - Width: 92px, `left: -16px` to overlap the frame's left border
 - **Dynamic heading**: fetches live `users` + `questions` from `https://pandai.org/count/` via `usePandaiCount` hook; falls back to `878,501` / `722,682,777` on CORS error
-- **2×2 testimonial cards**:
-  - Top half: `#e8faf0` mint bg, 72px avatar (green border + mint fill), green name, dark role
-  - Divider: `1.5px solid #99ebce`
-  - Bottom half: white, quote text, 5-star gold rating
+- **2×2 testimonial cards** — constrained to `max-w-2xl mx-auto` (not full-width):
+  - Smaller size: 52px avatar, `text-base` name, `text-sm` role, `px-4 py-3` padding, `text-xs` quote, 13px stars
+  - Top half: `#e8faf0` mint bg, green border avatar, green name, dark role
+  - Divider: `1px solid #99ebce`
+  - Bottom half: white, quote text, stars
+  - Cards grid uses `animate="visible"` (not `whileInView`) because `overflow: hidden` on the parent breaks Intersection Observer — do NOT use `whileInView` inside `overflow: hidden` containers
 - **3 store rating pills** (two-tone, each is a clickable `<motion.a>` opening in new tab):
   - Left half: mint `#e8faf0`, inner border `#99ebce`, platform icon via Cloudflare Images URL
   - Right half: white, large score, half-star-aware stars, label, filled green chevron button
   - Pill shape: `border-radius: 9999px`, `border: 1.5px solid #99ebce`
+  - Uses `animate="visible"` instead of `whileInView` for same reason as cards above
 - Content: `src/content/home.ts` → `testimonialsSection`
 
 **Store rating assets & links** (all stored in `home.ts` → `testimonialsSection.storeRatings[]`):
@@ -143,6 +150,49 @@ All tokens are in `src/styles/tokens.css`. Never hardcode hex values in componen
 | Play Store | `…/0857e4da…/64px` | `https://play.google.com/store/apps/details?id=com.pandai.app&showAllReviews=true&pli=1` |
 | App Store | `…/2ab607db…/64px` | `https://apps.apple.com/my/app/pandai-practice-for-exam/id1495066585` |
 | TrustPilot | `…/543b4257…/64px` | `https://www.trustpilot.com/review/pandai.org` |
+
+---
+
+### ✅ FeatureCardsSection (`src/components/sections/home/FeatureCardsSection.tsx`)
+- 2-column grid (`grid-cols-1 sm:grid-cols-2 gap-5`), `max-w-5xl` container
+- Each card is the reusable `FeatureCard` UI component (`src/components/ui/FeatureCard.tsx`)
+- Both `motion.div` wrappers use `h-full` to pass grid height down to cards
+
+### ✅ FeatureCard (`src/components/ui/FeatureCard.tsx`) — reusable across pages
+Pixel-accurate to Framer source (all values confirmed via Chrome DevTools inspection).
+
+**Both themes share:** same green border (`1px solid #00cc85`), same 3 circles, same button, same image handling.
+
+**Light theme:**
+- Card bg: `#ffffff`, border-radius: `25px`
+- Content bg: `rgba(204, 255, 204, 0.75)` + `borderTop: 1px solid #00cc85`
+- Title color: `#0b5851` (dark teal)
+
+**Dark theme:**
+- Card bg: `#2253e6` (bright blue — NOT dark navy)
+- Content bg: `rgba(17, 41, 144, 0.8)` + `borderTop: 1px solid #00cc85`
+- Title color: `#ffffff`
+
+**3 background circles (confirmed from DevTools — same positions for both themes):**
+| Class | Color | Size | Position |
+|---|---|---|---|
+| `framer-zcg75a` | `#8ceb8b` | 140×140px | `bottom: 102px, left: -70px` |
+| `framer-10nunue` | `#00cc85` | 210×210px | `top: 70px, right: -105px` |
+| `framer-kczqee` | `#ccffcc` | 84×84px | `top: 28px, left: 34px` |
+
+All circles: `zIndex: 0` (behind image and content).
+
+**Image:** `object-fit: contain`, `object-position: bottom` (anchors image to bottom of wrapper, no gap above content section). Image wrapper: `flex: 1` so both cards in a row reach equal height.
+
+**Button (identical for both themes):**
+- Bg: `#00cc85`, border: `1px solid #0b5851`, radius: `30px`
+- Label: white bold
+- Arrow circle: `#ccffcc` (light green — NOT white)
+- Chevron icon: `#0b5851` dark teal (NOT green)
+
+**Button hrefs** (in `home.ts → featureCards[]`):
+- Card 1: `https://my.pandai.org/about/testimonial`
+- Card 2: `https://blog.pandai.org/meet-ask-pbot-your-ultimate-study-buddy-in-pandai/`
 
 ---
 
@@ -247,11 +297,41 @@ npm run lint     # ESLint
 
 ---
 
+## Rules & Lessons Learned (Do Not Repeat)
+
+### Git workflow
+- **NEVER commit or push without explicit user approval.** Always show what changed and ask "shall I commit and push?" first.
+- Always push to both `staging` AND `main` when user says "push" — merge staging → main, then push both.
+
+### FeatureCard — what went wrong and what's right
+- ❌ Card 1 background is NOT mint `#e9fbf5` — it is **white `#ffffff`**
+- ❌ The "green" the user referred to is the content area bg (`rgba(204,255,204,0.75)`), NOT the card bg
+- ❌ Do NOT use `backgroundSize: cover` on the testimonial section background — Framer uses `object-fit: contain` on an `<img>` element
+- ✅ All circle sizes/positions must be confirmed from Chrome DevTools, not estimated
+- ✅ Circles must have explicit `zIndex: 0`; image wrapper `zIndex: 1`; content `zIndex: 2` — without this, large circles cover the text
+- ✅ Arrow circle in CardButton is `#ccffcc` (light green), chevron is `#0b5851` (dark teal) — confirmed from Framer tokens
+- ✅ Image uses `object-fit: contain` + `object-position: bottom` to eliminate gap between image and content section
+- ✅ Image wrapper uses `flex: 1` + `height: 100%` on the `<img>` to equalize card heights — do NOT use absolute positioning (causes collapse)
+
+### TestimonialsSection — what went wrong and what's right
+- ❌ Do NOT use `whileInView` inside an `overflow: hidden` parent — Intersection Observer breaks, elements stay invisible. Use `animate="visible"` instead for elements inside overflow containers
+- ❌ Do NOT use an absolute `<img>` for the background without explicit `zIndex` on all content — the image covers everything
+- ✅ Correct background approach: CSS `linear-gradient` for the two-tone color + separate absolute `<img>` for the pattern, with content at `z-10`
+- ❌ When editing JSX, always check the opening tag still has its closing `>` — a missing `>` causes cascading syntax errors that break the entire component
+- ✅ Floating mascot MUST be a sibling of the `overflow-hidden` frame (not inside it) — otherwise it gets clipped
+
+### General
+- ❌ Never use `object-fit: cover` for transparent PNG cutout images — use `object-contain` so the cutout blends with the card background
+- ✅ When combining CSS background layers (gradient + image), use comma-separated values in `backgroundImage`, `backgroundSize`, `backgroundPosition`, `backgroundRepeat` — but the gradient will cover the image if `backgroundSize: 100% 100%` is used. Safer to separate them (gradient as `background`, image as absolute `<img>`)
+- ✅ Always confirm Framer design values via Chrome DevTools inspection — never guess circle sizes/positions or color tokens
+
+---
+
 ## Known Decisions & Context
 
 - `max-w-5xl` is the standard content width for all sections (set to match testimonials frame)
 - TaglineSection background uses a hard two-color split (not gradient): `linear-gradient(to right, #CCFFCC 3.5%, #F2FFF2 3.5%)`
-- TestimonialsSection background image (`cover`, `center`) is a school-scene illustration from Cloudflare Images
+- TestimonialsSection background uses two-layer system: CSS hard-stop gradient (white → `#00cc85` at 78%) + absolute `<img>` pattern at `zIndex: 1`, content at `z-10`
 - Stars in testimonial cards = 5 full gold stars; stars in rating pills = half-star-aware (fractional support via SVG `linearGradient`)
 - `type` field was removed from `storeRatings` — icon URL is the single source of truth
 - `usePandaiCount` uses `users` for student count and `questions` for questions count in the testimonials heading

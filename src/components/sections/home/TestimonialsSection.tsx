@@ -61,16 +61,23 @@ export default function TestimonialsSection() {
           viewport={{ once: true, margin: "-60px" }}
           className="relative rounded-3xl overflow-hidden"
           style={{
-            backgroundImage:
-              "url(https://imagedelivery.net/zy4C5mYDeC8QYHozzOk2nQ/7f059ac0-95c3-4213-59e9-c5cbf1160e00/1024px)",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
+            background: "linear-gradient(to bottom, #ffffff 78%, #00cc85 78%)",
             border: "2px solid #99ebce",
             padding: "36px 32px 28px",
           }}
         >
+          {/* ── Background pattern image — sits above gradient, below content ── */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="https://imagedelivery.net/zy4C5mYDeC8QYHozzOk2nQ/7f059ac0-95c3-4213-59e9-c5cbf1160e00/1024px"
+            alt=""
+            aria-hidden="true"
+            className="absolute inset-0 w-full h-full pointer-events-none"
+            style={{ objectFit: "contain", zIndex: 1 }}
+          />
+
           {/* ── Heading ── */}
-          <div className="text-center mb-8">
+          <div className="relative z-10 text-center mb-8">
             <h2
               className="text-2xl sm:text-3xl lg:text-[2rem] font-bold leading-snug"
               style={{ color: "#1a1a1a" }}
@@ -95,7 +102,7 @@ export default function TestimonialsSection() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-60px" }}
-            className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4"
+            className="relative z-10 grid grid-cols-2 gap-4 mb-4 max-w-2xl mx-auto w-full"
           >
             {cards.map((card) => (
               <motion.div
@@ -106,17 +113,17 @@ export default function TestimonialsSection() {
               >
                 {/* ── Top section: mint bg, avatar + name/role ── */}
                 <div
-                  className="flex items-center gap-4 px-5 py-4"
+                  className="flex items-center gap-3 px-4 py-3"
                   style={{ backgroundColor: "#e8faf0" }}
                 >
-                  {/* Large avatar with green ring + mint fill */}
+                  {/* Avatar */}
                   <div
                     className="relative shrink-0 rounded-full overflow-hidden"
                     style={{
-                      width: 72,
-                      height: 72,
+                      width: 52,
+                      height: 52,
                       backgroundColor: "#ccf5e7",
-                      border: "3px solid #00cc85",
+                      border: "2px solid #00cc85",
                     }}
                   >
                     <Image
@@ -124,19 +131,19 @@ export default function TestimonialsSection() {
                       alt={card.name}
                       fill
                       className="object-cover"
-                      sizes="72px"
+                      sizes="52px"
                     />
                   </div>
                   {/* Name + role */}
                   <div>
                     <p
-                      className="font-extrabold text-xl leading-tight"
+                      className="font-extrabold text-base leading-tight"
                       style={{ color: "#00cc85" }}
                     >
                       {card.name}
                     </p>
                     <p
-                      className="font-bold text-base mt-0.5"
+                      className="font-bold text-sm mt-0.5"
                       style={{ color: "#374151" }}
                     >
                       {card.role}
@@ -145,17 +152,17 @@ export default function TestimonialsSection() {
                 </div>
 
                 {/* ── Divider ── */}
-                <div style={{ height: "1.5px", backgroundColor: "#99ebce" }} />
+                <div style={{ height: "1px", backgroundColor: "#99ebce" }} />
 
                 {/* ── Bottom section: white bg, quote + stars ── */}
-                <div className="flex flex-col flex-1 gap-4 px-5 py-4 bg-white">
+                <div className="flex flex-col flex-1 gap-3 px-4 py-3 bg-white">
                   <p
-                    className="text-sm leading-relaxed"
+                    className="text-xs leading-relaxed"
                     style={{ color: "#374151" }}
                   >
                     {card.quote}
                   </p>
-                  <Stars rating={card.rating} />
+                  <Stars rating={card.rating} size={13} />
                 </div>
               </motion.div>
             ))}
@@ -165,9 +172,8 @@ export default function TestimonialsSection() {
           <motion.div
             variants={staggerContainer}
             initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-60px" }}
-            className="grid grid-cols-1 sm:grid-cols-3 gap-3"
+            animate="visible"
+            className="relative z-10 grid grid-cols-1 sm:grid-cols-3 gap-3 mt-3"
           >
             {storeRatings.map((item) => (
               <motion.a

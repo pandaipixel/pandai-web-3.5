@@ -1,0 +1,71 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+@import '../styles/tokens.css';
+@import "tailwindcss";
+
+@theme inline {
+  /* Brand colors */
+  --color-brand-green: var(--color-brand-green);
+  --color-brand-green-dark: var(--color-brand-green-dark);
+  --color-brand-green-light: var(--color-brand-green-light);
+  --color-brand-blue: var(--color-brand-blue);
+  --color-brand-purple: var(--color-brand-purple);
+  --color-brand-yellow: var(--color-brand-yellow);
+  --color-brand-orange: var(--color-brand-orange);
+  --color-brand-red: var(--color-brand-red);
+
+  /* Surface colors */
+  --color-surface-primary: var(--color-surface-primary);
+  --color-surface-secondary: var(--color-surface-secondary);
+  --color-surface-tertiary: var(--color-surface-tertiary);
+  --color-surface-inverse: var(--color-surface-inverse);
+
+  /* Text colors */
+  --color-text-primary: var(--color-text-primary);
+  --color-text-secondary: var(--color-text-secondary);
+  --color-text-tertiary: var(--color-text-tertiary);
+  --color-text-inverse: var(--color-text-inverse);
+  --color-text-brand: var(--color-text-brand);
+
+  /* Border colors */
+  --color-border-default: var(--color-border-default);
+  --color-border-strong: var(--color-border-strong);
+  --color-border-brand: var(--color-border-brand);
+
+  /* Font */
+  --font-sans: 'Poppins', sans-serif;
+
+  /* Border radius */
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+  --radius-2xl: var(--radius-2xl);
+  --radius-full: var(--radius-full);
+
+  /* Shadows */
+  --shadow-sm: var(--shadow-sm);
+  --shadow-md: var(--shadow-md);
+  --shadow-lg: var(--shadow-lg);
+  --shadow-xl: var(--shadow-xl);
+  --shadow-brand: var(--shadow-brand);
+
+  /* Extra spacing */
+  --spacing-18: 4.5rem;
+  --spacing-22: 5.5rem;
+  --spacing-26: 6.5rem;
+  --spacing-30: 7.5rem;
+}
+
+@layer base {
+  html {
+    font-family: var(--font-family-base);
+    color: var(--color-text-primary);
+    background-color: var(--color-surface-primary);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+}

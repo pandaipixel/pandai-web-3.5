@@ -14,10 +14,11 @@ function ChevronDown() {
   )
 }
 
-function NavLink({ label, href, hoverBg, hoverText }: { label: string; href: string; hoverBg: string; hoverText: string }) {
+type NavLinkProps = { label: string; href: string; hoverBg: string; hoverText: string }
+
+function NavLink({ label, href, hoverBg, hoverText }: NavLinkProps) {
   const [hovered, setHovered] = useState(false)
-  const darkText = '#1a1a1a'
-  const textColor = hovered ? (hoverText === 'dark' ? darkText : '#ffffff') : undefined
+  const textColor = hovered ? (hoverText === 'dark' ? '#1a1a1a' : '#ffffff') : '#475569'
 
   return (
     <Link
@@ -25,10 +26,27 @@ function NavLink({ label, href, hoverBg, hoverText }: { label: string; href: str
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       className="flex items-center gap-1 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200"
-      style={{
-        backgroundColor: hovered ? hoverBg : 'transparent',
-        color: textColor ?? '#475569',
-      }}
+      style={{ backgroundColor: hovered ? hoverBg : 'transparent', color: textColor }}
+    >
+      {label}
+      <ChevronDown />
+    </Link>
+  )
+}
+
+function MobileNavLink({ label, href, hoverBg, hoverText }: NavLinkProps & { onClick?: () => void }) {
+  const [active, setActive] = useState(false)
+  const textColor = active ? (hoverText === 'dark' ? '#1a1a1a' : '#ffffff') : '#475569'
+
+  return (
+    <Link
+      href={href}
+      onMouseEnter={() => setActive(true)}
+      onMouseLeave={() => setActive(false)}
+      onTouchStart={() => setActive(true)}
+      onTouchEnd={() => setActive(false)}
+      className="flex items-center justify-between py-3 px-4 rounded-xl font-medium text-sm transition-all duration-200"
+      style={{ backgroundColor: active ? hoverBg : 'transparent', color: textColor }}
     >
       {label}
       <ChevronDown />
@@ -52,15 +70,16 @@ export default function Navbar() {
             <Image src="/images/logo-normal.svg" alt="Pandai" width={110} height={26} priority />
           </Link>
 
-          {/* Desktop Nav — centered via mx-auto */}
-          <nav className="hidden lg:flex items-center gap-0.5 mx-auto">
-            {navLinks.map((link) => (
-              <NavLink key={link.href} {...link} />
-            ))}
-          </nav>
+          {/* Desktop Nav + CTAs — grouped on the right */}
+          <div className="hidden lg:flex items-center gap-0.5 ml-auto">
+            <nav className="flex items-center gap-0.5">
+              {navLinks.map((link) => (
+                <NavLink key={link.href} {...link} />
+              ))}
+            </nav>
 
-          {/* CTA buttons — right-aligned */}
-          <div className="hidden lg:flex items-center gap-2 shrink-0">
+            {/* CTA buttons */}
+            <div className="flex items-center gap-2 ml-3">
             <Link
               href={navCTA.signIn.href}
               target="_blank"
@@ -79,6 +98,7 @@ export default function Navbar() {
             >
               {navCTA.signUp.label}
             </Link>
+            </div>
           </div>
 
           {/* Mobile toggle */}
@@ -106,15 +126,11 @@ export default function Navbar() {
           >
             <div className="mt-2 rounded-2xl bg-white border border-border-default shadow-lg px-4 py-4 flex flex-col gap-1">
               {navLinks.map((link) => (
-                <Link
+                <MobileNavLink
                   key={link.href}
-                  href={link.href}
+                  {...link}
                   onClick={() => setMenuOpen(false)}
-                  className="flex items-center justify-between py-3 px-4 rounded-xl text-text-secondary hover:text-text-primary hover:bg-surface-secondary font-medium text-sm transition-colors"
-                >
-                  {link.label}
-                  <ChevronDown />
-                </Link>
+                />
               ))}
               <div className="flex gap-2 mt-2 justify-end">
                 <Link

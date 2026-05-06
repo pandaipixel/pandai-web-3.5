@@ -4,14 +4,24 @@
 // ─────────────────────────────────────────────
 
 export const hero = {
-  badge: "Malaysia's #1 Learning App",
-  headline: 'Score better grades\nwith Pandai',
-  subtext:
-    'Game-like quizzes, live tuition, flashcards, and AI-powered study tools — everything your child needs to excel in school.',
-  cta: {
-    primary: { label: 'Start Learning Free', href: 'https://app.pandai.org/app/signup' },
-    secondary: { label: 'See How It Works', href: '#how-it-works' },
+  // Main headline — each string is one line
+  headlineLines: ["Malaysia's", '#1 Online', 'Learning App'],
+
+  // Trust badges row beneath the headline
+  trustBadges: [
+    { src: '/images/badge-moe.png',          alt: 'MOE Curriculum Supported'              },
+    { src: '/images/badge-personalized.png', alt: 'Personalized Learning Certified'        },
+    { src: '/images/badge-finland.png',      alt: 'Education Alliance Finland Certified'   },
+  ],
+
+  // Right-side visual layers (swap files here to update the hero image)
+  visual: {
+    bgCircle:   '/images/bg-right.png',    // green circle background composition
+    student:    '/images/hero-student.png', // student photo overlaid on circle
+    appMockup:  '/images/app-mockup.png',  // phone mockup (if shown separately)
   },
+
+  // ── legacy fields kept for future sections ──
   socialProof: {
     count: '1,000,000+',
     label: 'students already learning',

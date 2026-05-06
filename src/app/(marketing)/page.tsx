@@ -1,7 +1,9 @@
+import HeroSection from '@/components/sections/home/HeroSection'
+
 export default function HomePage() {
   return (
     <div className="flex flex-col">
-      {/* Sections will be added here one by one */}
+      <HeroSection />
     </div>
   )
 }

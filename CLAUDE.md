@@ -1,4 +1,5 @@
 # CLAUDE.md — Pandai Web 3.5 Redevelopment Guide
+
 > **Homepage-first redevelopment of `my.pandai.org` from Framer → Next.js**
 > Repository: https://github.com/pandaipixel/pandai-web-3.5
 
@@ -7,6 +8,7 @@
 ## How to Use This File
 
 Import this file into a Claude Code session. Claude will:
+
 - Execute all bash/terminal commands **automatically without asking for confirmation**
 - Only **pause and ask for confirmation before any `git commit` or `git push`**
 - Guide you step-by-step through each phase in order
@@ -43,12 +45,14 @@ Import this file into a Claude Code session. Claude will:
 ### Steps
 
 **0.1 — Clone the repo locally (if not already)**
+
 ```bash
 git clone https://github.com/pandaipixel/pandai-web-3.5.git
 cd pandai-web-3.5
 ```
 
 **0.2 — Remove committed `node_modules` and `dist` from git tracking**
+
 ```bash
 git rm -r --cached node_modules
 git rm -r --cached dist
@@ -57,6 +61,7 @@ git rm -r --cached dist
 **0.3 — Create a proper `.gitignore` immediately**
 
 Create `.gitignore` at repo root with this content:
+
 ```
 # Dependencies
 node_modules/
@@ -100,6 +105,7 @@ next-env.d.ts
 ```
 
 **0.4 — Remove all old Vite scaffold files**
+
 ```bash
 rm -f index.html
 rm -f vite.config.js
@@ -112,9 +118,11 @@ rm -rf .github/workflows/
 ```
 
 **0.5 — Confirm cleanup**
+
 ```bash
 ls -la
 ```
+
 Expected: only `.git/`, `.gitignore`, `README.md` remain.
 
 > ⏸️ **GIT CHECKPOINT — Claude will pause here.**
@@ -129,6 +137,7 @@ Expected: only `.git/`, `.gitignore`, `README.md` remain.
 ### Steps
 
 **1.1 — Initialize Next.js with TypeScript, Tailwind, ESLint, App Router**
+
 ```bash
 npx create-next-app@latest . \
   --typescript \
@@ -139,14 +148,17 @@ npx create-next-app@latest . \
   --import-alias "@/*" \
   --no-git
 ```
+
 > When prompted, accept all defaults. The `--no-git` flag prevents it from reinitializing git.
 
 **1.2 — Install Framer Motion**
+
 ```bash
 npm install framer-motion
 ```
 
 **1.3 — Install additional dependencies**
+
 ```bash
 npm install clsx tailwind-merge
 npm install @next/font
@@ -154,11 +166,13 @@ npm install -D prettier prettier-plugin-tailwindcss
 ```
 
 **1.4 — Verify the install**
+
 ```bash
 npm run dev &
 sleep 5 && curl -s -o /dev/null -w "%{http_code}" http://localhost:3000
 kill %1
 ```
+
 Expected: `200`
 
 > ⏸️ **GIT CHECKPOINT — Claude will pause here.**
@@ -175,6 +189,7 @@ Expected: `200`
 **2.1 — Create the CSS variables file**
 
 Create `src/styles/tokens.css`:
+
 ```css
 /* ============================================
    PANDAI DESIGN SYSTEM 1.5 — CSS TOKENS
@@ -209,18 +224,18 @@ Create `src/styles/tokens.css`:
   --color-border-brand: #22c55e;
 
   /* --- Typography (Poppins) --- */
-  --font-family-base: 'Poppins', sans-serif;
+  --font-family-base: "Poppins", sans-serif;
 
-  --font-size-xs: 0.75rem;    /* 12px */
-  --font-size-sm: 0.875rem;   /* 14px */
-  --font-size-base: 1rem;     /* 16px */
-  --font-size-md: 1.125rem;   /* 18px */
-  --font-size-lg: 1.25rem;    /* 20px */
-  --font-size-xl: 1.5rem;     /* 24px */
-  --font-size-2xl: 2rem;      /* 32px */
-  --font-size-3xl: 2.5rem;    /* 40px */
-  --font-size-4xl: 3rem;      /* 48px */
-  --font-size-5xl: 3.75rem;   /* 60px */
+  --font-size-xs: 0.75rem; /* 12px */
+  --font-size-sm: 0.875rem; /* 14px */
+  --font-size-base: 1rem; /* 16px */
+  --font-size-md: 1.125rem; /* 18px */
+  --font-size-lg: 1.25rem; /* 20px */
+  --font-size-xl: 1.5rem; /* 24px */
+  --font-size-2xl: 2rem; /* 32px */
+  --font-size-3xl: 2.5rem; /* 40px */
+  --font-size-4xl: 3rem; /* 48px */
+  --font-size-5xl: 3.75rem; /* 60px */
 
   --font-weight-regular: 400;
   --font-weight-medium: 500;
@@ -233,32 +248,35 @@ Create `src/styles/tokens.css`:
   --line-height-relaxed: 1.65;
 
   /* --- Spacing --- */
-  --space-1: 0.25rem;   /* 4px */
-  --space-2: 0.5rem;    /* 8px */
-  --space-3: 0.75rem;   /* 12px */
-  --space-4: 1rem;      /* 16px */
-  --space-5: 1.25rem;   /* 20px */
-  --space-6: 1.5rem;    /* 24px */
-  --space-8: 2rem;      /* 32px */
-  --space-10: 2.5rem;   /* 40px */
-  --space-12: 3rem;     /* 48px */
-  --space-16: 4rem;     /* 64px */
-  --space-20: 5rem;     /* 80px */
-  --space-24: 6rem;     /* 96px */
+  --space-1: 0.25rem; /* 4px */
+  --space-2: 0.5rem; /* 8px */
+  --space-3: 0.75rem; /* 12px */
+  --space-4: 1rem; /* 16px */
+  --space-5: 1.25rem; /* 20px */
+  --space-6: 1.5rem; /* 24px */
+  --space-8: 2rem; /* 32px */
+  --space-10: 2.5rem; /* 40px */
+  --space-12: 3rem; /* 48px */
+  --space-16: 4rem; /* 64px */
+  --space-20: 5rem; /* 80px */
+  --space-24: 6rem; /* 96px */
 
   /* --- Border Radius --- */
-  --radius-sm: 0.375rem;   /* 6px */
-  --radius-md: 0.5rem;     /* 8px */
-  --radius-lg: 0.75rem;    /* 12px */
-  --radius-xl: 1rem;       /* 16px */
-  --radius-2xl: 1.5rem;    /* 24px */
+  --radius-sm: 0.375rem; /* 6px */
+  --radius-md: 0.5rem; /* 8px */
+  --radius-lg: 0.75rem; /* 12px */
+  --radius-xl: 1rem; /* 16px */
+  --radius-2xl: 1.5rem; /* 24px */
   --radius-full: 9999px;
 
   /* --- Shadows (Elevation) --- */
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+  --shadow-md:
+    0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
+  --shadow-lg:
+    0 10px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
+  --shadow-xl:
+    0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
   --shadow-brand: 0 8px 24px rgba(34, 197, 94, 0.25);
 
   /* --- Transitions --- */
@@ -271,85 +289,87 @@ Create `src/styles/tokens.css`:
 **2.2 — Update `tailwind.config.ts` to use the tokens**
 
 Replace the default Tailwind config with:
+
 ```ts
-import type { Config } from 'tailwindcss'
+import type { Config } from "tailwindcss";
 
 const config: Config = {
   content: [
-    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     extend: {
       colors: {
         brand: {
-          green: 'var(--color-brand-green)',
-          'green-dark': 'var(--color-brand-green-dark)',
-          'green-light': 'var(--color-brand-green-light)',
-          blue: 'var(--color-brand-blue)',
-          purple: 'var(--color-brand-purple)',
-          yellow: 'var(--color-brand-yellow)',
-          orange: 'var(--color-brand-orange)',
-          red: 'var(--color-brand-red)',
+          green: "var(--color-brand-green)",
+          "green-dark": "var(--color-brand-green-dark)",
+          "green-light": "var(--color-brand-green-light)",
+          blue: "var(--color-brand-blue)",
+          purple: "var(--color-brand-purple)",
+          yellow: "var(--color-brand-yellow)",
+          orange: "var(--color-brand-orange)",
+          red: "var(--color-brand-red)",
         },
         surface: {
-          primary: 'var(--color-surface-primary)',
-          secondary: 'var(--color-surface-secondary)',
-          tertiary: 'var(--color-surface-tertiary)',
-          inverse: 'var(--color-surface-inverse)',
+          primary: "var(--color-surface-primary)",
+          secondary: "var(--color-surface-secondary)",
+          tertiary: "var(--color-surface-tertiary)",
+          inverse: "var(--color-surface-inverse)",
         },
         text: {
-          primary: 'var(--color-text-primary)',
-          secondary: 'var(--color-text-secondary)',
-          tertiary: 'var(--color-text-tertiary)',
-          inverse: 'var(--color-text-inverse)',
-          brand: 'var(--color-text-brand)',
+          primary: "var(--color-text-primary)",
+          secondary: "var(--color-text-secondary)",
+          tertiary: "var(--color-text-tertiary)",
+          inverse: "var(--color-text-inverse)",
+          brand: "var(--color-text-brand)",
         },
         border: {
-          default: 'var(--color-border-default)',
-          strong: 'var(--color-border-strong)',
-          brand: 'var(--color-border-brand)',
+          default: "var(--color-border-default)",
+          strong: "var(--color-border-strong)",
+          brand: "var(--color-border-brand)",
         },
       },
       fontFamily: {
-        sans: ['var(--font-poppins)', 'sans-serif'],
+        sans: ["var(--font-poppins)", "sans-serif"],
       },
       borderRadius: {
-        sm: 'var(--radius-sm)',
-        md: 'var(--radius-md)',
-        lg: 'var(--radius-lg)',
-        xl: 'var(--radius-xl)',
-        '2xl': 'var(--radius-2xl)',
-        full: 'var(--radius-full)',
+        sm: "var(--radius-sm)",
+        md: "var(--radius-md)",
+        lg: "var(--radius-lg)",
+        xl: "var(--radius-xl)",
+        "2xl": "var(--radius-2xl)",
+        full: "var(--radius-full)",
       },
       boxShadow: {
-        sm: 'var(--shadow-sm)',
-        md: 'var(--shadow-md)',
-        lg: 'var(--shadow-lg)',
-        xl: 'var(--shadow-xl)',
-        brand: 'var(--shadow-brand)',
+        sm: "var(--shadow-sm)",
+        md: "var(--shadow-md)",
+        lg: "var(--shadow-lg)",
+        xl: "var(--shadow-xl)",
+        brand: "var(--shadow-brand)",
       },
       spacing: {
-        '18': '4.5rem',
-        '22': '5.5rem',
-        '26': '6.5rem',
-        '30': '7.5rem',
+        "18": "4.5rem",
+        "22": "5.5rem",
+        "26": "6.5rem",
+        "30": "7.5rem",
       },
     },
   },
   plugins: [],
-}
+};
 
-export default config
+export default config;
 ```
 
 **2.3 — Set up Poppins font and import tokens in global CSS**
 
 Update `src/app/globals.css`:
+
 ```css
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
-@import '../styles/tokens.css';
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap");
+@import "../styles/tokens.css";
 
 @tailwind base;
 @tailwind components;
@@ -373,20 +393,22 @@ Update `src/app/globals.css`:
 **2.4 — Create a utility helper for class merging**
 
 Create `src/lib/utils.ts`:
+
 ```ts
-import { clsx, type ClassValue } from 'clsx'
-import { twMerge } from 'tailwind-merge'
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  return twMerge(clsx(inputs));
 }
 ```
 
 **2.5 — Create the shared animation variants file**
 
 Create `src/lib/animations.ts`:
+
 ```ts
-import type { Variants } from 'framer-motion'
+import type { Variants } from "framer-motion";
 
 export const fadeInUp: Variants = {
   hidden: { opacity: 0, y: 24 },
@@ -395,15 +417,15 @@ export const fadeInUp: Variants = {
     y: 0,
     transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
   },
-}
+};
 
 export const fadeIn: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { duration: 0.4, ease: 'easeOut' },
+    transition: { duration: 0.4, ease: "easeOut" },
   },
-}
+};
 
 export const staggerContainer: Variants = {
   hidden: {},
@@ -413,7 +435,7 @@ export const staggerContainer: Variants = {
       delayChildren: 0.1,
     },
   },
-}
+};
 
 export const slideInLeft: Variants = {
   hidden: { opacity: 0, x: -32 },
@@ -422,7 +444,7 @@ export const slideInLeft: Variants = {
     x: 0,
     transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
   },
-}
+};
 
 export const slideInRight: Variants = {
   hidden: { opacity: 0, x: 32 },
@@ -431,7 +453,7 @@ export const slideInRight: Variants = {
     x: 0,
     transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
   },
-}
+};
 
 export const scaleIn: Variants = {
   hidden: { opacity: 0, scale: 0.92 },
@@ -440,16 +462,16 @@ export const scaleIn: Variants = {
     scale: 1,
     transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] },
   },
-}
+};
 
 export const cardHover = {
-  rest: { scale: 1, boxShadow: 'var(--shadow-md)' },
+  rest: { scale: 1, boxShadow: "var(--shadow-md)" },
   hover: {
     scale: 1.02,
-    boxShadow: 'var(--shadow-xl)',
-    transition: { duration: 0.25, ease: 'easeOut' },
+    boxShadow: "var(--shadow-xl)",
+    transition: { duration: 0.25, ease: "easeOut" },
   },
-}
+};
 ```
 
 > ⏸️ **GIT CHECKPOINT — Claude will pause here.**
@@ -464,6 +486,7 @@ export const cardHover = {
 ### Steps
 
 **3.1 — Create the directory structure**
+
 ```bash
 mkdir -p src/app/(marketing)
 mkdir -p src/components/ui
@@ -478,6 +501,7 @@ mkdir -p public/images
 ```
 
 **3.2 — Create placeholder index files for components**
+
 ```bash
 touch src/components/ui/index.ts
 touch src/components/layout/index.ts
@@ -487,55 +511,58 @@ touch src/components/sections/home/index.ts
 **3.3 — Update `src/app/layout.tsx` root layout**
 
 Replace with:
+
 ```tsx
-import type { Metadata } from 'next'
-import './globals.css'
+import type { Metadata } from "next";
+import "./globals.css";
 
 export const metadata: Metadata = {
-  title: 'Pandai — Malaysia\'s #1 Online Learning App',
-  description: 'Score A and improve grades with Pandai. Game-like quizzes, tests, flashcards, notes, and live tuition for Malaysian school students.',
-  keywords: 'pandai, online learning, malaysia, school, quiz, SPM, UPSR, PT3',
+  title: "Pandai — Malaysia's #1 Online Learning App",
+  description:
+    "Score A and improve grades with Pandai. Game-like quizzes, tests, flashcards, notes, and live tuition for Malaysian school students.",
+  keywords: "pandai, online learning, malaysia, school, quiz, SPM, UPSR, PT3",
   openGraph: {
-    title: 'Pandai — Malaysia\'s #1 Online Learning App',
-    description: 'Score A and improve grades with Pandai.',
-    url: 'https://my.pandai.org',
-    siteName: 'Pandai',
-    images: [{ url: '/og-image.png', width: 1200, height: 630 }],
-    locale: 'en_MY',
-    type: 'website',
+    title: "Pandai — Malaysia's #1 Online Learning App",
+    description: "Score A and improve grades with Pandai.",
+    url: "https://my.pandai.org",
+    siteName: "Pandai",
+    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
+    locale: "en_MY",
+    type: "website",
   },
   twitter: {
-    card: 'summary_large_image',
-    title: 'Pandai — Malaysia\'s #1 Online Learning App',
-    description: 'Score A and improve grades with Pandai.',
+    card: "summary_large_image",
+    title: "Pandai — Malaysia's #1 Online Learning App",
+    description: "Score A and improve grades with Pandai.",
   },
   robots: { index: true, follow: true },
-}
+};
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html lang="en">
       <body className="antialiased">{children}</body>
     </html>
-  )
+  );
 }
 ```
 
 **3.4 — Create the marketing route group layout**
 
 Create `src/app/(marketing)/layout.tsx`:
+
 ```tsx
-import Navbar from '@/components/layout/Navbar'
-import Footer from '@/components/layout/Footer'
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
 
 export default function MarketingLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <>
@@ -543,13 +570,14 @@ export default function MarketingLayout({
       <main>{children}</main>
       <Footer />
     </>
-  )
+  );
 }
 ```
 
 **3.5 — Create the homepage route**
 
 Create `src/app/(marketing)/page.tsx`:
+
 ```tsx
 // Homepage sections — built phase by phase
 // Each section is imported here once built
@@ -562,14 +590,16 @@ export default function HomePage() {
         <p className="font-sans text-lg">Pandai Web 3.5 — In Development</p>
       </div>
     </div>
-  )
+  );
 }
 ```
 
 **3.6 — Run dev server to confirm clean boot**
+
 ```bash
 npm run dev
 ```
+
 > Verify no TypeScript or import errors. Then stop the server and continue.
 
 > ⏸️ **GIT CHECKPOINT — Claude will pause here.**
@@ -582,7 +612,9 @@ npm run dev
 **Goal:** Build `Navbar` and `Footer` using DS 1.5 tokens. These must be pixel-accurate to the live site.
 
 ### Reference
+
 Before building, Claude should:
+
 1. Visit `https://my.pandai.org` and take note of the navbar structure
 2. Reference the DS 1.5 Figma file for NavBar Dropdown Button 1.5 component (`TLVKe3bgJTdVvuPAzgDq2f`)
 
@@ -593,6 +625,7 @@ Before building, Claude should:
 Create `src/components/layout/Navbar.tsx`:
 
 The Navbar must include:
+
 - Pandai logo (SVG, links to `/`)
 - Navigation links: Students, Teachers, Parents, Blog
 - CTA button: "Download App" (uses Button 1.5 DS component, brand green)
@@ -601,37 +634,37 @@ The Navbar must include:
 - Transparent on top, white + shadow after 64px scroll
 
 ```tsx
-'use client'
+"use client";
 
-import { useState, useEffect } from 'react'
-import Link from 'next/link'
-import { motion, AnimatePresence } from 'framer-motion'
-import { cn } from '@/lib/utils'
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
+import { cn } from "@/lib/utils";
 
 const navLinks = [
-  { label: 'Students', href: '/students' },
-  { label: 'Teachers', href: '/teachers' },
-  { label: 'Parents', href: '/parents' },
-  { label: 'Blog', href: '/blog' },
-]
+  { label: "Students", href: "/students" },
+  { label: "Teachers", href: "/teachers" },
+  { label: "Parents", href: "/parents" },
+  { label: "Blog", href: "/blog" },
+];
 
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false)
-  const [menuOpen, setMenuOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 64)
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+    const handleScroll = () => setScrolled(window.scrollY > 64);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <header
       className={cn(
-        'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
+        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
         scrolled
-          ? 'bg-white/95 backdrop-blur-md shadow-sm border-b border-border-default'
-          : 'bg-transparent'
+          ? "bg-white/95 backdrop-blur-md shadow-sm border-b border-border-default"
+          : "bg-transparent",
       )}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -642,7 +675,9 @@ export default function Navbar() {
             <div className="w-8 h-8 rounded-lg bg-brand-green flex items-center justify-center">
               <span className="text-white font-bold text-sm">P</span>
             </div>
-            <span className="font-bold text-xl text-text-primary font-sans">pandai</span>
+            <span className="font-bold text-xl text-text-primary font-sans">
+              pandai
+            </span>
           </Link>
 
           {/* Desktop Nav */}
@@ -697,7 +732,7 @@ export default function Navbar() {
         {menuOpen && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
+            animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
             className="lg:hidden overflow-hidden bg-white border-t border-border-default"
@@ -726,15 +761,16 @@ export default function Navbar() {
         )}
       </AnimatePresence>
     </header>
-  )
+  );
 }
 ```
 
 **4.2 — Build a placeholder Footer**
 
 Create `src/components/layout/Footer.tsx`:
+
 ```tsx
-import Link from 'next/link'
+import Link from "next/link";
 
 export default function Footer() {
   return (
@@ -755,16 +791,16 @@ export default function Footer() {
 
           {[
             {
-              title: 'Product',
-              links: ['Students', 'Teachers', 'Parents', 'Pricing'],
+              title: "Product",
+              links: ["Students", "Teachers", "Parents", "Pricing"],
             },
             {
-              title: 'Company',
-              links: ['About', 'Blog', 'Careers', 'Press'],
+              title: "Company",
+              links: ["About", "Blog", "Careers", "Press"],
             },
             {
-              title: 'Support',
-              links: ['Help Center', 'Contact', 'Privacy Policy', 'Terms'],
+              title: "Support",
+              links: ["Help Center", "Contact", "Privacy Policy", "Terms"],
             },
           ].map((col) => (
             <div key={col.title}>
@@ -793,16 +829,17 @@ export default function Footer() {
         </div>
       </div>
     </footer>
-  )
+  );
 }
 ```
 
 **4.3 — Export from layout index**
 
 Update `src/components/layout/index.ts`:
+
 ```ts
-export { default as Navbar } from './Navbar'
-export { default as Footer } from './Footer'
+export { default as Navbar } from "./Navbar";
+export { default as Footer } from "./Footer";
 ```
 
 > ⏸️ **GIT CHECKPOINT — Claude will pause here.**
@@ -815,6 +852,7 @@ export { default as Footer } from './Footer'
 **Goal:** Build the homepage section by section. Each section is a self-contained component under `src/components/sections/home/`.
 
 ### Section Build Order
+
 1. `HeroSection` — headline, subtext, CTA buttons, hero image/graphic
 2. `StatsSection` — 1M+ students, subject coverage, etc.
 3. `FeaturesSection` — key product features with icons
@@ -828,17 +866,20 @@ export { default as Footer } from './Footer'
 For **each** section, Claude must:
 
 **Step A — Gather design reference**
+
 - Ask: "Do you have a screenshot of this section from the Framer site, or should I pull from the live site?"
 - If live site reference needed: review `https://my.pandai.org` for the section layout
 - Identify: layout grid, typography scale, colors (map to DS tokens), animation behavior
 
 **Step B — Build the component**
+
 - All animations use `framer-motion` with `whileInView={{ visible: true }}` + `viewport={{ once: true, margin: '-80px' }}`
 - Use `staggerContainer` and `fadeInUp` from `@/lib/animations`
 - No hardcoded colors — only Tailwind token classes
 - Mobile-first responsive: `flex-col` on mobile, grid on desktop
 
 **Step C — Import into page**
+
 - Add the section to `src/app/(marketing)/page.tsx`
 - Test on dev server
 
@@ -847,12 +888,13 @@ For **each** section, Claude must:
 ### 5.1 — HeroSection
 
 Create `src/components/sections/home/HeroSection.tsx`:
-```tsx
-'use client'
 
-import { motion } from 'framer-motion'
-import Link from 'next/link'
-import { fadeInUp, staggerContainer, scaleIn } from '@/lib/animations'
+```tsx
+"use client";
+
+import { motion } from "framer-motion";
+import Link from "next/link";
+import { fadeInUp, staggerContainer, scaleIn } from "@/lib/animations";
 
 export default function HeroSection() {
   return (
@@ -882,19 +924,22 @@ export default function HeroSection() {
               variants={fadeInUp}
               className="text-4xl sm:text-5xl lg:text-6xl font-bold text-text-primary leading-tight mb-6"
             >
-              Score{' '}
-              <span className="text-brand-green">better grades</span>{' '}
-              with Pandai
+              Score <span className="text-brand-green">better grades</span> with
+              Pandai
             </motion.h1>
 
             <motion.p
               variants={fadeInUp}
               className="text-lg text-text-secondary leading-relaxed mb-8 max-w-lg"
             >
-              Game-like quizzes, live tuition, flashcards, and AI-powered study tools — everything your child needs to excel in school.
+              Game-like quizzes, live tuition, flashcards, and AI-powered study
+              tools — everything your child needs to excel in school.
             </motion.p>
 
-            <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row gap-4">
+            <motion.div
+              variants={fadeInUp}
+              className="flex flex-col sm:flex-row gap-4"
+            >
               <Link
                 href="https://app.pandai.org/app/signup"
                 target="_blank"
@@ -911,7 +956,10 @@ export default function HeroSection() {
               </Link>
             </motion.div>
 
-            <motion.div variants={fadeInUp} className="mt-10 flex items-center gap-6">
+            <motion.div
+              variants={fadeInUp}
+              className="mt-10 flex items-center gap-6"
+            >
               <div className="flex -space-x-2">
                 {[1, 2, 3, 4].map((i) => (
                   <div
@@ -923,7 +971,7 @@ export default function HeroSection() {
                 ))}
               </div>
               <p className="text-sm text-text-secondary">
-                <span className="font-bold text-text-primary">1,000,000+</span>{' '}
+                <span className="font-bold text-text-primary">1,000,000+</span>{" "}
                 students already learning
               </p>
             </motion.div>
@@ -943,40 +991,59 @@ export default function HeroSection() {
             <div className="w-full max-w-md aspect-square rounded-3xl bg-gradient-to-br from-brand-green/20 to-brand-blue/20 flex items-center justify-center">
               <div className="text-center">
                 <div className="text-6xl mb-4">📚</div>
-                <p className="text-text-secondary font-medium">Hero Visual Placeholder</p>
-                <p className="text-xs text-text-tertiary mt-1">Replace with app mockup</p>
+                <p className="text-text-secondary font-medium">
+                  Hero Visual Placeholder
+                </p>
+                <p className="text-xs text-text-tertiary mt-1">
+                  Replace with app mockup
+                </p>
               </div>
             </div>
 
             {/* Floating badge cards */}
             <motion.div
               animate={{ y: [0, -8, 0] }}
-              transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
               className="absolute -top-4 -right-4 bg-white rounded-2xl shadow-xl p-3 flex items-center gap-2"
             >
-              <div className="w-8 h-8 rounded-full bg-brand-yellow/20 flex items-center justify-center text-lg">⭐</div>
+              <div className="w-8 h-8 rounded-full bg-brand-yellow/20 flex items-center justify-center text-lg">
+                ⭐
+              </div>
               <div>
-                <p className="text-xs font-bold text-text-primary">4.8 Rating</p>
+                <p className="text-xs font-bold text-text-primary">
+                  4.8 Rating
+                </p>
                 <p className="text-xs text-text-tertiary">App Store</p>
               </div>
             </motion.div>
 
             <motion.div
               animate={{ y: [0, 8, 0] }}
-              transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
+              transition={{
+                duration: 3.5,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: 0.5,
+              }}
               className="absolute -bottom-4 -left-4 bg-white rounded-2xl shadow-xl p-3 flex items-center gap-2"
             >
-              <div className="w-8 h-8 rounded-full bg-brand-green/20 flex items-center justify-center text-lg">🎯</div>
+              <div className="w-8 h-8 rounded-full bg-brand-green/20 flex items-center justify-center text-lg">
+                🎯
+              </div>
               <div>
-                <p className="text-xs font-bold text-text-primary">Score Improved</p>
-                <p className="text-xs text-text-tertiary">+40% avg. grade lift</p>
+                <p className="text-xs font-bold text-text-primary">
+                  Score Improved
+                </p>
+                <p className="text-xs text-text-tertiary">
+                  +40% avg. grade lift
+                </p>
               </div>
             </motion.div>
           </motion.div>
         </div>
       </div>
     </section>
-  )
+  );
 }
 ```
 
@@ -1006,18 +1073,19 @@ Follow the same pattern for `HowItWorksSection`, `TestimonialsSection`, `AppDown
 **6.1 — Add Cloudflare-specific Next.js config**
 
 Update `next.config.ts`:
+
 ```ts
-import type { NextConfig } from 'next'
+import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  output: 'export', // Static export for Cloudflare Pages
+  output: "export", // Static export for Cloudflare Pages
   trailingSlash: true,
   images: {
     unoptimized: true, // Required for static export
   },
-}
+};
 
-export default nextConfig
+export default nextConfig;
 ```
 
 > ⚠️ Note: `output: 'export'` disables server-side features. If SSR/ISR is needed later, switch to Cloudflare Workers with `@cloudflare/next-on-pages` adapter.
@@ -1025,6 +1093,7 @@ export default nextConfig
 **6.2 — Add build script for Cloudflare**
 
 Update `package.json` scripts:
+
 ```json
 "scripts": {
   "dev": "next dev",
@@ -1038,6 +1107,7 @@ Update `package.json` scripts:
 **6.3 — Create Cloudflare Pages config**
 
 Create `wrangler.toml`:
+
 ```toml
 name = "pandai-web"
 compatibility_date = "2024-01-01"
@@ -1049,6 +1119,7 @@ bucket = "./out"
 **6.4 — GitHub Actions CI workflow**
 
 Create `.github/workflows/deploy.yml`:
+
 ```yaml
 name: Deploy to Cloudflare Pages
 
@@ -1072,8 +1143,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
+          node-version: "20"
+          cache: "npm"
 
       - name: Install dependencies
         run: npm ci
@@ -1094,6 +1165,7 @@ jobs:
 **6.5 — Cloudflare Pages setup (manual step — Claude will instruct)**
 
 Claude will guide through:
+
 1. Log into Cloudflare Dashboard → Pages → Create Project
 2. Connect GitHub → select `pandaipixel/pandai-web-3.5`
 3. Build settings: Framework = Next.js (Static), Build command = `npm run build`, Output = `out`
@@ -1137,27 +1209,32 @@ Claude will guide through:
 ### QA Checklist
 
 **Responsive**
+
 - [ ] Mobile (375px) — all sections stack correctly
 - [ ] Tablet (768px) — grid transitions work
 - [ ] Desktop (1280px+) — max-width container correct
 
 **Performance**
+
 - [ ] Run `npm run build` — no TypeScript errors
 - [ ] Lighthouse score target: Performance ≥ 90, Accessibility ≥ 95
 - [ ] All images have `alt` attributes
 - [ ] Fonts loaded with `display=swap`
 
 **Animations**
+
 - [ ] All scroll animations trigger correctly with `once: true`
 - [ ] Reduced motion respected: add `@media (prefers-reduced-motion)` guard
 - [ ] No janky/laggy transitions on mobile
 
 **SEO**
+
 - [ ] `metadata` correct in `layout.tsx`
 - [ ] OG image renders correctly (test with og:image debugger)
 - [ ] No broken links
 
 **Accessibility**
+
 - [ ] All interactive elements have focus states
 - [ ] Color contrast passes WCAG AA
 - [ ] Keyboard navigation works for navbar
@@ -1177,9 +1254,9 @@ Claude will guide through:
 2. In your DNS provider (or Cloudflare DNS):
    - Remove existing Framer CNAME for `my.pandai.org`
    - Add Cloudflare Pages CNAME: `my.pandai.org` → `pandai-web.pages.dev`
-3. Cloudflare handles SSL automatically
-4. TTL: set to 1 minute before cutover, restore to 1 hour after
-5. Monitor for 30 minutes post-cutover
+     push3. Cloudflare handles SSL automatically
+3. TTL: set to 1 minute before cutover, restore to 1 hour after
+4. Monitor for 30 minutes post-cutover
 
 > ⚠️ Keep Framer subscription active for 1 billing cycle post-cutover as a rollback option.
 
@@ -1188,6 +1265,7 @@ Claude will guide through:
 ## Quick Reference
 
 ### Key Commands
+
 ```bash
 npm run dev          # Start local dev server (http://localhost:3000)
 npm run build        # Production build + type check
@@ -1195,6 +1273,7 @@ npm run lint         # ESLint check
 ```
 
 ### Key File Locations
+
 ```
 src/app/(marketing)/page.tsx        — Homepage
 src/components/sections/home/       — Homepage sections
@@ -1207,10 +1286,12 @@ public/                             — Static assets
 ```
 
 ### DS 1.5 Figma Reference
+
 - File Key: `TLVKe3bgJTdVvuPAzgDq2f`
 - Known working component pages: Button 1.5, Label Badges 1.5, Progress Bar 1.5, Avatar 1.5, Divider 1.5, NavBar Dropdown Button 1.5
 
 ### Git Commit Convention
+
 ```
 feat: new feature or component
 fix: bug fix or correction
@@ -1222,4 +1303,4 @@ docs: documentation changes
 
 ---
 
-*Last updated: May 2026 | pandai-web-3.5 | Rai @ Pandai*
+_Last updated: May 2026 | pandai-web-3.5 | Rai @ Pandai_

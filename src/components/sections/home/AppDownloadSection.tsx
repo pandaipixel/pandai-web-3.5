@@ -2,12 +2,49 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { fadeInUp, slideInLeft, slideInRight, staggerContainer } from '@/lib/animations'
+import Image from 'next/image'
+import { fadeInUp, slideInRight, staggerContainer } from '@/lib/animations'
+
+const platforms = [
+  {
+    href: 'https://play.google.com/store/apps/details?id=org.pandai.app',
+    icon: '▶',
+    pretext: 'Get Pandai On',
+    name: 'Google Play',
+    rating: '4.7★',
+  },
+  {
+    href: 'https://apps.apple.com/my/app/pandai-online-learning/id1493305978',
+    icon: '',
+    pretext: 'Download on the',
+    name: 'App Store',
+    rating: '4.7★',
+  },
+  {
+    href: 'https://appgallery.huawei.com/#/app/C102218259',
+    icon: '◈',
+    pretext: 'Explore Now',
+    name: 'App Gallery',
+    rating: '4.8★',
+  },
+  {
+    href: 'https://app.pandai.org',
+    icon: '🌐',
+    pretext: 'Sign In Now On',
+    name: 'Web pandai.org',
+    rating: null,
+  },
+]
 
 export default function AppDownloadSection() {
   return (
-    <section className="py-20 lg:py-28 bg-surface-inverse overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-20 lg:py-28 bg-brand-indigo overflow-hidden relative">
+      <div
+        className="absolute inset-0 opacity-20 pointer-events-none"
+        style={{ backgroundImage: 'url(/images/bg-pattern.svg)', backgroundRepeat: 'repeat', backgroundSize: '427px 427px' }}
+      />
+
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Left: Copy */}
           <motion.div
@@ -16,81 +53,48 @@ export default function AppDownloadSection() {
             whileInView="visible"
             viewport={{ once: true, margin: '-80px' }}
           >
-            <motion.span variants={fadeInUp} className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-green/20 text-brand-green-light text-sm font-semibold mb-6">
-              Free to download
-            </motion.span>
             <motion.h2 variants={fadeInUp} className="text-3xl sm:text-4xl lg:text-5xl font-bold text-text-inverse mb-4">
-              Start learning<br />on any device
+              Download App Now!<br />Available on All Platforms
             </motion.h2>
-            <motion.p variants={fadeInUp} className="text-lg text-text-tertiary leading-relaxed mb-8">
-              Download the Pandai app and get instant access to thousands of questions, live classes, and your personalised study plan.
+            <motion.p variants={fadeInUp} className="text-lg text-white/75 leading-relaxed mb-10">
+              Get instant access to thousands of questions, live classes, and your personalised study plan — free to start.
             </motion.p>
 
-            <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row gap-4">
-              {/* App Store */}
-              <Link
-                href="https://apps.apple.com/my/app/pandai-online-learning/id1493305978"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-3 px-6 py-4 rounded-2xl bg-white text-text-primary hover:bg-surface-secondary transition-colors duration-150"
-              >
-                <span className="text-3xl">🍎</span>
-                <div>
-                  <p className="text-xs text-text-secondary">Download on the</p>
-                  <p className="text-base font-bold">App Store</p>
-                </div>
-              </Link>
-
-              {/* Google Play */}
-              <Link
-                href="https://play.google.com/store/apps/details?id=org.pandai.app"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-3 px-6 py-4 rounded-2xl bg-white text-text-primary hover:bg-surface-secondary transition-colors duration-150"
-              >
-                <span className="text-3xl">▶️</span>
-                <div>
-                  <p className="text-xs text-text-secondary">Get it on</p>
-                  <p className="text-base font-bold">Google Play</p>
-                </div>
-              </Link>
-            </motion.div>
-
-            {/* Store ratings */}
-            <motion.div variants={fadeInUp} className="mt-8 flex items-center gap-6">
-              <div className="text-center">
-                <p className="text-2xl font-bold text-text-inverse">4.8</p>
-                <p className="text-xs text-text-tertiary">App Store</p>
-              </div>
-              <div className="w-px h-8 bg-white/20" />
-              <div className="text-center">
-                <p className="text-2xl font-bold text-text-inverse">4.7</p>
-                <p className="text-xs text-text-tertiary">Google Play</p>
-              </div>
-              <div className="w-px h-8 bg-white/20" />
-              <div className="text-center">
-                <p className="text-2xl font-bold text-text-inverse">1M+</p>
-                <p className="text-xs text-text-tertiary">Downloads</p>
-              </div>
+            <motion.div variants={fadeInUp} className="grid grid-cols-2 gap-3">
+              {platforms.map((p) => (
+                <Link
+                  key={p.name}
+                  href={p.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 px-4 py-3.5 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 transition-all duration-150"
+                >
+                  <span className="text-2xl shrink-0">{p.icon}</span>
+                  <div className="min-w-0">
+                    <p className="text-xs text-white/60 leading-none mb-0.5">{p.pretext}</p>
+                    <p className="text-sm font-semibold text-text-inverse truncate">{p.name}</p>
+                    {p.rating && <p className="text-xs text-brand-yellow">{p.rating}</p>}
+                  </div>
+                </Link>
+              ))}
             </motion.div>
           </motion.div>
 
-          {/* Right: App mockup placeholder */}
+          {/* Right: Mockup */}
           <motion.div
             variants={slideInRight}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: '-80px' }}
-            className="flex justify-center"
+            className="flex justify-center lg:justify-end"
           >
-            {/* PLACEHOLDER — Replace with actual app screenshot mockup */}
-            <div className="w-64 h-[480px] rounded-[2.5rem] bg-gradient-to-b from-brand-green/30 to-brand-blue/30 border-4 border-white/20 flex items-center justify-center">
-              <div className="text-center">
-                <div className="text-5xl mb-3">📱</div>
-                <p className="text-text-tertiary text-sm font-medium">App Mockup</p>
-                <p className="text-xs text-text-tertiary/70 mt-1">Replace with screenshot</p>
-              </div>
-            </div>
+            <Image
+              src="/images/app-mockup.png"
+              alt="Pandai app"
+              width={747}
+              height={1024}
+              className="w-full max-w-xs h-auto drop-shadow-2xl"
+            />
           </motion.div>
         </div>
       </div>

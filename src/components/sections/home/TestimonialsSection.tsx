@@ -5,45 +5,31 @@ import { fadeInUp, staggerContainer, scaleIn } from '@/lib/animations'
 
 const testimonials = [
   {
-    quote: 'My daughter went from Cs to straight As in one semester. Pandai made studying feel like a game — she actually looks forward to it now.',
-    name: 'Puan Rashidah',
-    role: 'Parent, Selangor',
-    avatar: 'PR',
+    quote: 'Saya menggunakan pandai untuk mengulangkaji dan membuat latihan, saya juga suka mencabar diri saya di Pandai untuk mendapatkan skor tertinggi',
+    name: 'Ezran',
+    role: 'Primary Student',
+    initials: 'EZ',
     rating: 5,
   },
   {
-    quote: 'I used Pandai to prepare for SPM and scored 9As. The past year papers and live tuition sessions were game changers.',
-    name: 'Hafiz Azri',
-    role: 'SPM Student, Johor',
-    avatar: 'HA',
+    quote: 'Saya menggunakan pandai untuk mengulangkaji pelajaran di rumah. Pandai memberi peluang kepada pelajar untuk belajar dari kesilapan. Terima kasih pandai!',
+    name: 'Hafizah',
+    role: 'Primary Student',
+    initials: 'HF',
     rating: 5,
   },
   {
-    quote: 'As a teacher, I recommend Pandai to all my students. The curriculum alignment is spot on and the explanations are clear.',
-    name: 'Cikgu Norzahra',
-    role: 'Science Teacher, KL',
-    avatar: 'CN',
+    quote: 'Saya suka menghadiri kelas Live Tuition Pandai! Para tutor yang mengajar dalam kelas semuanya menarik dan sangat membantu. Saya senang faham dan hadam apa yang mereka ajarkan.',
+    name: 'Irfan',
+    role: 'Secondary Student',
+    initials: 'IR',
     rating: 5,
   },
   {
-    quote: 'My son is in Form 3 and his BM and Math have improved so much. The flashcards really help him memorise vocab.',
-    name: 'Encik Farouk',
-    role: 'Parent, Penang',
-    avatar: 'EF',
-    rating: 5,
-  },
-  {
-    quote: 'I love the daily quizzes. They keep me consistent and I can see my improvement week by week on the dashboard.',
-    name: 'Aina Syahirah',
-    role: 'PT3 Student, Kedah',
-    avatar: 'AS',
-    rating: 5,
-  },
-  {
-    quote: 'The app is really user-friendly. My kid can use it independently without needing my help every five minutes.',
-    name: 'Puan Suraya',
-    role: 'Parent, Sabah',
-    avatar: 'PS',
+    quote: 'Saya menggunakan semua fungsi yg terdapat dalam PANDAI untuk membantu saya dalam persediaan SPM. Selepas menggunakan Pandai keputusan peperiksaan saya sangat cemerlang dan bertambah baik!',
+    name: 'Ain',
+    role: 'Secondary Student',
+    initials: 'AN',
     rating: 5,
   },
 ]
@@ -60,25 +46,23 @@ function StarRating({ count }: { count: number }) {
 
 export default function TestimonialsSection() {
   return (
-    <section className="py-20 lg:py-28 bg-surface-primary overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section
+      className="py-20 lg:py-28 bg-surface-inverse overflow-hidden relative"
+      style={{ backgroundImage: 'url(/images/testimonial-bg.jpeg)', backgroundSize: 'cover', backgroundPosition: 'center' }}
+    >
+      <div className="absolute inset-0 bg-surface-inverse/85" />
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div
           variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-80px' }}
-          className="text-center mb-16"
+          className="text-center mb-14"
         >
-          <motion.span variants={fadeInUp} className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-green/10 text-text-brand text-sm font-semibold mb-4">
-            Real results
-          </motion.span>
-          <motion.h2 variants={fadeInUp} className="text-3xl sm:text-4xl lg:text-5xl font-bold text-text-primary mb-4">
-            What families are saying
+          <motion.h2 variants={fadeInUp} className="text-3xl sm:text-4xl lg:text-5xl font-bold text-text-inverse mb-4">
+            What other Students, Parents, &amp; Teachers say after using Pandai?
           </motion.h2>
-          <motion.p variants={fadeInUp} className="text-lg text-text-secondary max-w-2xl mx-auto">
-            Over 1 million Malaysian students have used Pandai to improve their grades.
-          </motion.p>
         </motion.div>
 
         {/* Testimonial grid */}
@@ -87,25 +71,25 @@ export default function TestimonialsSection() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-80px' }}
-          className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"
+          className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5"
         >
           {testimonials.map((t) => (
             <motion.div
               key={t.name}
               variants={scaleIn}
-              className="p-6 rounded-2xl border border-border-default bg-surface-secondary hover:shadow-lg transition-shadow duration-200"
+              className="p-6 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/15 transition-all duration-200"
             >
               <StarRating count={t.rating} />
-              <p className="text-sm text-text-secondary leading-relaxed mb-5 italic">
+              <p className="text-sm text-white/90 leading-relaxed mb-5 italic">
                 &ldquo;{t.quote}&rdquo;
               </p>
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-brand-green/20 flex items-center justify-center text-xs font-bold text-text-brand shrink-0">
-                  {t.avatar}
+                <div className="w-10 h-10 rounded-full bg-brand-green flex items-center justify-center text-xs font-bold text-white shrink-0">
+                  {t.initials}
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-text-primary">{t.name}</p>
-                  <p className="text-xs text-text-tertiary">{t.role}</p>
+                  <p className="text-sm font-semibold text-text-inverse">{t.name}</p>
+                  <p className="text-xs text-white/60">{t.role}</p>
                 </div>
               </div>
             </motion.div>

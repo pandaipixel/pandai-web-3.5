@@ -10,6 +10,7 @@ const navLinks = [
   { label: 'Students', href: '/students' },
   { label: 'Teachers', href: '/teachers' },
   { label: 'Parents', href: '/parents' },
+  { label: 'About', href: '/about' },
   { label: 'Blog', href: '/blog' },
 ]
 
@@ -37,7 +38,7 @@ export default function Navbar() {
           {/* Logo */}
           <Link href="/" className="flex items-center shrink-0">
             <Image
-              src="/images/logo-normal.svg"
+              src={scrolled ? '/images/logo-normal.svg' : '/images/logo-white.svg'}
               alt="Pandai"
               width={120}
               height={29}
@@ -51,7 +52,12 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-sm font-medium text-text-secondary hover:text-text-primary transition-colors duration-150"
+                className={cn(
+                  'text-sm font-medium transition-colors duration-150',
+                  scrolled
+                    ? 'text-text-secondary hover:text-text-primary'
+                    : 'text-white/80 hover:text-white'
+                )}
               >
                 {link.label}
               </Link>
@@ -61,32 +67,47 @@ export default function Navbar() {
           {/* CTA */}
           <div className="hidden lg:flex items-center gap-3">
             <Link
+              href="https://app.pandai.org/app/login"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={cn(
+                'inline-flex items-center px-5 py-2 rounded-full text-sm font-semibold transition-all duration-150 border',
+                scrolled
+                  ? 'border-border-strong text-text-primary hover:border-brand-green hover:text-brand-green'
+                  : 'border-white/50 text-white hover:border-white hover:bg-white/10'
+              )}
+            >
+              Sign In
+            </Link>
+            <Link
               href="https://app.pandai.org/app/signup"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center px-5 py-2.5 rounded-full bg-brand-green hover:bg-brand-green-dark text-white text-sm font-semibold transition-colors duration-150 shadow-brand"
+              className="inline-flex items-center px-5 py-2 rounded-full bg-brand-green hover:bg-brand-green-dark text-white text-sm font-semibold transition-colors duration-150 shadow-brand"
             >
-              Get Started Free
+              Sign Up
             </Link>
           </div>
 
           {/* Mobile Menu Toggle */}
           <button
-            className="lg:hidden flex flex-col gap-1.5 p-2"
+            className={cn(
+              'lg:hidden flex flex-col gap-1.5 p-2',
+            )}
             onClick={() => setMenuOpen(!menuOpen)}
             aria-label="Toggle menu"
           >
             <motion.span
               animate={menuOpen ? { rotate: 45, y: 7 } : { rotate: 0, y: 0 }}
-              className="block w-6 h-0.5 bg-text-primary origin-center transition-colors"
+              className={cn('block w-6 h-0.5 origin-center transition-colors', scrolled ? 'bg-text-primary' : 'bg-white')}
             />
             <motion.span
               animate={menuOpen ? { opacity: 0 } : { opacity: 1 }}
-              className="block w-6 h-0.5 bg-text-primary"
+              className={cn('block w-6 h-0.5', scrolled ? 'bg-text-primary' : 'bg-white')}
             />
             <motion.span
               animate={menuOpen ? { rotate: -45, y: -7 } : { rotate: 0, y: 0 }}
-              className="block w-6 h-0.5 bg-text-primary origin-center"
+              className={cn('block w-6 h-0.5 origin-center', scrolled ? 'bg-text-primary' : 'bg-white')}
             />
           </button>
         </div>
@@ -113,14 +134,24 @@ export default function Navbar() {
                   {link.label}
                 </Link>
               ))}
-              <Link
-                href="https://app.pandai.org/app/signup"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-2 flex items-center justify-center px-5 py-3 rounded-full bg-brand-green text-white font-semibold text-sm"
-              >
-                Get Started Free
-              </Link>
+              <div className="flex gap-3 mt-2">
+                <Link
+                  href="https://app.pandai.org/app/login"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 flex items-center justify-center px-5 py-3 rounded-full border border-border-strong text-text-primary font-semibold text-sm"
+                >
+                  Sign In
+                </Link>
+                <Link
+                  href="https://app.pandai.org/app/signup"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 flex items-center justify-center px-5 py-3 rounded-full bg-brand-green text-white font-semibold text-sm"
+                >
+                  Sign Up
+                </Link>
+              </div>
             </div>
           </motion.div>
         )}

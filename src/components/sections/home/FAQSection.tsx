@@ -6,28 +6,24 @@ import { fadeInUp, staggerContainer } from '@/lib/animations'
 
 const faqs = [
   {
-    question: 'Is Pandai free to use?',
-    answer: 'Yes! Pandai has a free tier that gives access to thousands of practice questions and basic features. Premium plans unlock live tuition, unlimited flashcards, and detailed analytics.',
+    question: 'What is Pandai and who is it for?',
+    answer: 'Pandai is Malaysia\'s #1 online learning app, designed for school students from Year 1 to Form 5. It helps students improve their grades through engaging quizzes, live tuition, quick notes, exam simulations, and AI-powered tools — all aligned to the Malaysian national curriculum (KSSR & KSSM).',
   },
   {
-    question: 'Which school levels does Pandai support?',
-    answer: 'Pandai covers Primary (Year 1–6 / KSSR), Lower Secondary (Form 1–3 / KSSM PT3), and Upper Secondary (Form 4–5 / KSSM SPM). All content is aligned to the Malaysian national curriculum.',
+    question: 'How does Pandai help students prepare for exams?',
+    answer: 'Pandai offers topical tests, full exam simulations, past year papers, and detailed report cards that identify strengths and gaps. Live Tuition classes with experienced tutors provide real-time guidance, while Quick Notes and Ask PBot help students master topics faster.',
   },
   {
-    question: 'How is Pandai different from other apps?',
-    answer: 'Pandai is built specifically for Malaysian students — every question, note, and video is curriculum-aligned. The game-based format keeps students motivated, and live tuition means real teacher interaction, not just passive video watching.',
+    question: 'What plans are available and what\'s included?',
+    answer: 'Pandai offers a free plan with access to core features including quizzes, quick notes, and the student leaderboard. Premium plans unlock unlimited Live Tuition sessions, full exam simulations, Ask PBot (AI study buddy), and detailed progress analytics for parents.',
   },
   {
-    question: 'Can parents track their child\'s progress?',
-    answer: 'Yes. The Parent Dashboard gives real-time visibility into topics mastered, time spent studying, quiz scores, and upcoming tests. You\'ll know exactly where your child needs support.',
+    question: 'Is Pandai aligned with Malaysia\'s curriculum and languages?',
+    answer: 'Yes. All content on Pandai — questions, notes, videos, and exams — is fully aligned with KSSR (Year 1–6) and KSSM (Form 1–5). Content is available in Bahasa Malaysia and English, covering all major subjects from Mathematics to Science and Languages.',
   },
   {
-    question: 'Are the live tuition classes recorded?',
-    answer: 'Yes. All live classes are recorded and available for replay within 48 hours, so students who miss a session can still catch up.',
-  },
-  {
-    question: 'What devices does Pandai work on?',
-    answer: 'Pandai is available on iOS and Android via the app, and also accessible on desktop through the web browser at app.pandai.org.',
+    question: 'Which devices can I use, and how do I start?',
+    answer: 'Pandai is available on iOS (App Store), Android (Google Play), and Huawei devices (AppGallery). You can also access it via web browser at app.pandai.org. Simply sign up for free, select your year and subjects, and start learning immediately.',
   },
 ]
 
@@ -47,7 +43,7 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
         <motion.span
           animate={{ rotate: open ? 45 : 0 }}
           transition={{ duration: 0.2 }}
-          className="text-text-tertiary group-hover:text-brand-green text-xl shrink-0 transition-colors"
+          className="text-text-tertiary group-hover:text-brand-green text-xl shrink-0 transition-colors leading-none"
         >
           +
         </motion.span>
@@ -74,7 +70,6 @@ export default function FAQSection() {
   return (
     <section className="py-20 lg:py-28 bg-surface-secondary">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
         <motion.div
           variants={staggerContainer}
           initial="hidden"
@@ -82,9 +77,6 @@ export default function FAQSection() {
           viewport={{ once: true, margin: '-80px' }}
           className="text-center mb-12"
         >
-          <motion.span variants={fadeInUp} className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-green/10 text-text-brand text-sm font-semibold mb-4">
-            Got questions?
-          </motion.span>
           <motion.h2 variants={fadeInUp} className="text-3xl sm:text-4xl font-bold text-text-primary mb-4">
             Frequently asked questions
           </motion.h2>
@@ -93,7 +85,6 @@ export default function FAQSection() {
           </motion.p>
         </motion.div>
 
-        {/* FAQ items */}
         <motion.div
           variants={fadeInUp}
           initial="hidden"

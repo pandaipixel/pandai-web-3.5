@@ -52,15 +52,15 @@ export default function Navbar() {
             <Image src="/images/logo-normal.svg" alt="Pandai" width={110} height={26} priority />
           </Link>
 
-          {/* Desktop Nav — centered */}
-          <nav className="hidden lg:flex items-center gap-0.5 flex-1 justify-center">
+          {/* Desktop Nav — centered via mx-auto */}
+          <nav className="hidden lg:flex items-center gap-0.5 mx-auto">
             {navLinks.map((link) => (
               <NavLink key={link.href} {...link} />
             ))}
           </nav>
 
           {/* CTA buttons — right-aligned */}
-          <div className="hidden lg:flex items-center gap-2 ml-auto">
+          <div className="hidden lg:flex items-center gap-2 shrink-0">
             <Link
               href={navCTA.signIn.href}
               target="_blank"

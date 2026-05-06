@@ -3,6 +3,10 @@
 // Edit all text, images, and data here
 // ─────────────────────────────────────────────
 
+export const tagline = {
+  text: "Pandai is Malaysia's online learning platform for students aged 7–17. It combines live tuition, quiz battles, quick notes, topical tests and exams, student leaderboards, detailed report cards, and academic-competition practice to help students learn effectively, track progress, and improve grades — all from home.",
+}
+
 export const hero = {
   // Main headline — each string is one line
   headlineLines: ["Malaysia's", '#1 Online', 'Learning App'],

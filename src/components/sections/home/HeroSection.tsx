@@ -5,42 +5,10 @@ import Image from 'next/image'
 import { fadeInUp, staggerContainer, slideInRight } from '@/lib/animations'
 
 const badges = [
-  {
-    label: 'MOE Curriculum',
-    sub: 'Supported',
-    color: '#e8a020',
-  },
-  {
-    label: 'Personalized Learning',
-    sub: 'Certified',
-    color: '#e8a020',
-  },
-  {
-    label: 'Education Alliance Finland',
-    sub: 'Certified',
-    color: '#e8a020',
-  },
+  { src: '/images/badge-moe.png', alt: 'MOE Curriculum Supported' },
+  { src: '/images/badge-personalized.png', alt: 'Personalized Learning Certified' },
+  { src: '/images/badge-finland.png', alt: 'Education Alliance Finland Certified' },
 ]
-
-function CertBadge({ label, sub, color }: { label: string; sub: string; color: string }) {
-  return (
-    <div className="flex flex-col items-center gap-1">
-      <div
-        className="w-16 h-16 rounded-full flex items-center justify-center relative"
-        style={{ border: `3px solid ${color}` }}
-      >
-        {/* Laurel wreath simulation */}
-        <svg viewBox="0 0 64 64" className="absolute inset-0 w-full h-full" fill="none">
-          <circle cx="32" cy="32" r="28" stroke={color} strokeWidth="2" strokeDasharray="4 3" />
-        </svg>
-        <span className="text-xs font-bold text-center leading-tight px-1" style={{ color, fontSize: '0.45rem' }}>
-          {label}
-        </span>
-      </div>
-      <span className="text-xs font-semibold text-text-secondary text-center leading-tight">{sub}</span>
-    </div>
-  )
-}
 
 export default function HeroSection() {
   return (
@@ -67,7 +35,7 @@ export default function HeroSection() {
             {/* Certification badges */}
             <motion.div variants={fadeInUp} className="flex items-start gap-4 sm:gap-6">
               {badges.map((b) => (
-                <CertBadge key={b.label} {...b} />
+                <Image key={b.alt} src={b.src} alt={b.alt} width={128} height={126} className="w-16 h-auto sm:w-20" />
               ))}
             </motion.div>
           </motion.div>

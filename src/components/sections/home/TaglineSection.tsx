@@ -7,7 +7,7 @@ import { fadeInUp } from "@/lib/animations";
 export default function TaglineSection() {
   return (
     <section className="w-full px-4 sm:px-6 lg:px-8 py-8">
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-5xl mx-auto">
         <motion.div
           variants={fadeInUp}
           initial="hidden"
@@ -15,7 +15,7 @@ export default function TaglineSection() {
           viewport={{ once: true, margin: "-60px" }}
           className="relative rounded-3xl overflow-hidden"
           style={{
-            backgroundColor: "#ccf5e7" /* OG-Green/100 */,
+            background: "linear-gradient(to right, #CCFFCC 3.5%, #F2FFF2 3.5%)",
             border: "2px solid #66e0b6" /* OG-Green/300 — more visible */,
             padding:
               "30px 30px 30px 68px" /* 30px all sides, extra left to clear bookmark */,

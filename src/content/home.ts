@@ -144,3 +144,72 @@ export const faq = [
       'Yes — all content is mapped to the Kementerian Pendidikan Malaysia (KPM) curriculum and updated regularly.',
   },
 ]
+
+// ─────────────────────────────────────────────
+// Testimonials Section
+// Edit card text/images and store ratings here
+// ─────────────────────────────────────────────
+
+export const testimonialsSection = {
+  // Heading — {users} and {questions} are replaced with live API counts
+  headingPrefix: 'Pandai helped',
+  headingMid: 'Malaysian students practise and complete',
+  headingSuffix: 'questions since January 2020',
+
+  // ── Testimonial cards ──
+  // Edit: name, role, avatar path, quote, rating (1–5)
+  cards: [
+    {
+      name: 'Ezran',
+      role: 'Primary Student',
+      avatar: '/images/avatar-ezran.png',
+      quote:
+        'Saya menggunakan pandai untuk mengulangkaji dan membuat latihan, saya juga suka mencabar diri saya di Pandai untuk mendapatkan skor tertinggi',
+      rating: 5,
+    },
+    {
+      name: 'Hafizah',
+      role: 'Primary Student',
+      avatar: '/images/avatar-hafizah.png',
+      quote:
+        'Saya menggunakan pandai untuk mengulangkaji pelajaran di rumah. Pandai memberi peluang kepada pelajar untuk belajar dari kesilapan. Terima kasih pandai!',
+      rating: 5,
+    },
+    {
+      name: 'Irfan',
+      role: 'Secondary Student',
+      avatar: '/images/avatar-irfan.png',
+      quote:
+        'Saya suka menghadiri kelas Live Tuition Pandai! Para tutor yang mengajar dalam kelas semuanya menarik dan sangat membantu. Saya senang faham dan hadam apa yang mereka ajarkan.',
+      rating: 5,
+    },
+    {
+      name: 'Ain',
+      role: 'Secondary Student',
+      avatar: '/images/avatar-ain.png',
+      quote:
+        'Saya menggunakan semua fungsi yg terdapat dalam PANDAI untuk membantu saya dalam persediaan SPM. Selepas menggunakan Pandai keputusan peperiksaan saya sangat cemerlang dan bertambah baik!',
+      rating: 5,
+    },
+  ],
+
+  // ── Store ratings ──
+  // Edit: platform label, numeric score, icon URL
+  storeRatings: [
+    {
+      platform: 'Play Store Rating',
+      score: 4.7,
+      icon: 'https://imagedelivery.net/zy4C5mYDeC8QYHozzOk2nQ/0857e4da-2767-43d6-aaa6-e4b2105dc500/64px',
+    },
+    {
+      platform: 'App Store Rating',
+      score: 4.7,
+      icon: 'https://imagedelivery.net/zy4C5mYDeC8QYHozzOk2nQ/2ab607db-ef11-44ec-c36e-1087bd643d00/64px',
+    },
+    {
+      platform: 'TrustPilot Score',
+      score: 4.8,
+      icon: 'https://imagedelivery.net/zy4C5mYDeC8QYHozzOk2nQ/543b4257-486b-4300-b714-76b8e6c56600/64px',
+    },
+  ],
+}

@@ -1,16 +1,15 @@
-'use client'
+"use client";
 
-import Image from 'next/image'
-import { motion } from 'framer-motion'
-import { hero } from '@/content/home'
-import { fadeInUp, staggerContainer, scaleIn } from '@/lib/animations'
+import Image from "next/image";
+import { motion } from "framer-motion";
+import { hero } from "@/content/home";
+import { fadeInUp, staggerContainer, scaleIn } from "@/lib/animations";
 
 export default function HeroSection() {
   return (
     <section className="relative bg-white overflow-hidden pt-24">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-[30px]">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-8">
         <div className="flex flex-col lg:grid lg:grid-cols-2 gap-6 lg:gap-4 items-center">
-
           {/* ── LEFT: Headline + Trust badges ── */}
           <motion.div
             variants={staggerContainer}
@@ -22,11 +21,13 @@ export default function HeroSection() {
             {/* Edit lines: content/home.ts → hero.headlineLines */}
             <motion.h1
               variants={fadeInUp}
-              className="font-extrabold leading-[1.05] tracking-tight text-[41px] md:text-[50px] lg:text-[60px]"
-              style={{ color: '#00cc85' }}
+              className="font-bold leading-[1.05] tracking-tight text-[41px] md:text-[50px] lg:text-[60px]"
+              style={{ color: "#00cc85" }}
             >
               {hero.headlineLines.map((line, i) => (
-                <span key={i} className="block">{line}</span>
+                <span key={i} className="block">
+                  {line}
+                </span>
               ))}
             </motion.h1>
 
@@ -65,9 +66,8 @@ export default function HeroSection() {
               priority
             />
           </motion.div>
-
         </div>
       </div>
     </section>
-  )
+  );
 }

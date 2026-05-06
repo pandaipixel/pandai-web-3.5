@@ -4,7 +4,7 @@
 > **Repo:** https://github.com/pandaipixel/pandai-web-3.5  
 > **Deployment:** Cloudflare Pages (auto-deploy on push to `main`)  
 > **Design source:** Figma DS 1.5 — file key `TLVKe3bgJTdVvuPAzgDq2f`  
-> **Last updated:** 2026-05-06
+> **Last updated:** 2026-05-07
 
 ---
 
@@ -26,6 +26,7 @@
 ```
 src/
 ├── app/
+│   ├── icon.svg                     # Favicon — Pandai icon mark (auto-picked by Next.js App Router)
 │   ├── layout.tsx                   # Root layout — metadata, Poppins, globals.css
 │   ├── globals.css                  # @import tokens.css + Tailwind + base resets
 │   └── (marketing)/
@@ -121,23 +122,27 @@ All tokens are in `src/styles/tokens.css`. Never hardcode hex values in componen
 ### ✅ TestimonialsSection (`src/components/sections/home/TestimonialsSection.tsx`)
 - Outer frame: rounded-3xl, `2px solid #99ebce` border, background image from Cloudflare Images
   - BG image URL: `https://imagedelivery.net/zy4C5mYDeC8QYHozzOk2nQ/7f059ac0-95c3-4213-59e9-c5cbf1160e00/1024px`
+- **Floating mascot**: absolutely positioned outside the `overflow-hidden` frame, left edge, `top: 28%`
+  - Image URL: `https://imagedelivery.net/zy4C5mYDeC8QYHozzOk2nQ/ad44940d-1c50-4b50-0a5b-33ea6f0f3600/1024px`
+  - `animate={{ y: [0, -10, 0] }}`, 2.5s loop, hidden on mobile (`hidden sm:block`)
+  - Width: 92px, `left: -16px` to overlap the frame's left border
 - **Dynamic heading**: fetches live `users` + `questions` from `https://pandai.org/count/` via `usePandaiCount` hook; falls back to `878,501` / `722,682,777` on CORS error
 - **2×2 testimonial cards**:
   - Top half: `#e8faf0` mint bg, 72px avatar (green border + mint fill), green name, dark role
   - Divider: `1.5px solid #99ebce`
   - Bottom half: white, quote text, 5-star gold rating
-- **3 store rating pills** (two-tone):
+- **3 store rating pills** (two-tone, each is a clickable `<motion.a>` opening in new tab):
   - Left half: mint `#e8faf0`, inner border `#99ebce`, platform icon via Cloudflare Images URL
   - Right half: white, large score, half-star-aware stars, label, filled green chevron button
   - Pill shape: `border-radius: 9999px`, `border: 1.5px solid #99ebce`
 - Content: `src/content/home.ts` → `testimonialsSection`
 
-**Store rating icon URLs** (stored in `home.ts` → `testimonialsSection.storeRatings[].icon`):
-```
-Play Store:  https://imagedelivery.net/zy4C5mYDeC8QYHozzOk2nQ/0857e4da-2767-43d6-aaa6-e4b2105dc500/64px
-App Store:   https://imagedelivery.net/zy4C5mYDeC8QYHozzOk2nQ/2ab607db-ef11-44ec-c36e-1087bd643d00/64px
-TrustPilot:  https://imagedelivery.net/zy4C5mYDeC8QYHozzOk2nQ/543b4257-486b-4300-b714-76b8e6c56600/64px
-```
+**Store rating assets & links** (all stored in `home.ts` → `testimonialsSection.storeRatings[]`):
+| Platform | `icon` | `href` |
+|---|---|---|
+| Play Store | `…/0857e4da…/64px` | `https://play.google.com/store/apps/details?id=com.pandai.app&showAllReviews=true&pli=1` |
+| App Store | `…/2ab607db…/64px` | `https://apps.apple.com/my/app/pandai-practice-for-exam/id1495066585` |
+| TrustPilot | `…/543b4257…/64px` | `https://www.trustpilot.com/review/pandai.org` |
 
 ---
 
@@ -250,6 +255,9 @@ npm run lint     # ESLint
 - Stars in testimonial cards = 5 full gold stars; stars in rating pills = half-star-aware (fractional support via SVG `linearGradient`)
 - `type` field was removed from `storeRatings` — icon URL is the single source of truth
 - `usePandaiCount` uses `users` for student count and `questions` for questions count in the testimonials heading
+- Favicon uses `src/app/icon.svg` (Pandai icon mark only, extracted from `logo-normal.svg` paths 1–12); Next.js App Router picks it up automatically — no config needed
+- Floating mascot in TestimonialsSection must be a sibling of the `overflow-hidden` frame div (not inside it) so it can visually overflow the left border
+- Store rating pills use `<motion.a>` with `target="_blank" rel="noopener noreferrer"` — each `href` lives in `home.ts` for easy updates
 
 ---
 

@@ -200,16 +200,19 @@ export const testimonialsSection = {
       platform: 'Play Store Rating',
       score: 4.7,
       icon: 'https://imagedelivery.net/zy4C5mYDeC8QYHozzOk2nQ/0857e4da-2767-43d6-aaa6-e4b2105dc500/64px',
+      href: 'https://play.google.com/store/apps/details?id=com.pandai.app&showAllReviews=true&pli=1',
     },
     {
       platform: 'App Store Rating',
       score: 4.7,
       icon: 'https://imagedelivery.net/zy4C5mYDeC8QYHozzOk2nQ/2ab607db-ef11-44ec-c36e-1087bd643d00/64px',
+      href: 'https://apps.apple.com/my/app/pandai-practice-for-exam/id1495066585',
     },
     {
       platform: 'TrustPilot Score',
       score: 4.8,
       icon: 'https://imagedelivery.net/zy4C5mYDeC8QYHozzOk2nQ/543b4257-486b-4300-b714-76b8e6c56600/64px',
+      href: 'https://www.trustpilot.com/review/pandai.org',
     },
   ],
 }

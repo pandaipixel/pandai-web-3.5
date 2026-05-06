@@ -159,8 +159,11 @@ export default function TestimonialsSection() {
             className="grid grid-cols-1 sm:grid-cols-3 gap-3"
           >
             {storeRatings.map((item) => (
-              <motion.div
+              <motion.a
                 key={item.platform}
+                href={item.href}
+                target="_blank"
+                rel="noopener noreferrer"
                 variants={fadeInUp}
                 className="flex overflow-hidden"
                 style={{ border: '1.5px solid #99ebce', borderRadius: '9999px' }}
@@ -210,7 +213,7 @@ export default function TestimonialsSection() {
                     </svg>
                   </div>
                 </div>
-              </motion.div>
+              </motion.a>
             ))}
           </motion.div>
 

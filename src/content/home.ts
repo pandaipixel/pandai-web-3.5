@@ -146,6 +146,30 @@ export const faq = [
 ]
 
 // ─────────────────────────────────────────────
+// Feature Cards Section
+// Edit: theme ('light'|'dark'), image URL, title, button label, button href
+// ─────────────────────────────────────────────
+
+export const featureCards = [
+  {
+    theme: 'light' as const,
+    image: 'https://imagedelivery.net/zy4C5mYDeC8QYHozzOk2nQ/1f1850cd-8ab3-47f0-267a-6f63be111500/512px',
+    imageAlt: 'Students, Parents & Teachers using Pandai',
+    title: 'What other Students, Parents, & Teachers say after using Pandai?',
+    buttonLabel: 'Find Out More',
+    buttonHref: 'https://www.google.com', // ← replace with real URL when page is ready
+  },
+  {
+    theme: 'dark' as const,
+    image: 'https://imagedelivery.net/zy4C5mYDeC8QYHozzOk2nQ/90762f8a-ef31-42e2-66ac-7dfdcfdd3d00/1024px',
+    imageAlt: 'Ask PBot — AI study buddy',
+    title: 'Experience the future of learning with Ask PBot, your AI study buddy',
+    buttonLabel: 'Meet Ask PBot',
+    buttonHref: 'https://www.google.com', // ← replace with real URL when page is ready
+  },
+]
+
+// ─────────────────────────────────────────────
 // Testimonials Section
 // Edit card text/images and store ratings here
 // ─────────────────────────────────────────────

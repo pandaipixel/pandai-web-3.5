@@ -1,6 +1,7 @@
 import HeroSection from '@/components/sections/home/HeroSection'
 import TaglineSection from '@/components/sections/home/TaglineSection'
 import TestimonialsSection from '@/components/sections/home/TestimonialsSection'
+import FeatureCardsSection from '@/components/sections/home/FeatureCardsSection'
 
 export default function HomePage() {
   return (
@@ -8,6 +9,7 @@ export default function HomePage() {
       <HeroSection />
       <TaglineSection />
       <TestimonialsSection />
+      <FeatureCardsSection />
     </div>
   )
 }

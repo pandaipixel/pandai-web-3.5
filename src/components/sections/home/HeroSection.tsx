@@ -67,13 +67,17 @@ export default function HeroSection() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            className="relative rounded-2xl flex items-start gap-6 px-8 py-8 lg:px-10 lg:py-10"
-            style={{ backgroundColor: '#cbffcc' }}
+            className="relative rounded-2xl py-8 pr-8 lg:py-10 lg:pr-12"
+            style={{
+              backgroundColor: '#cbffcc',
+              border: '1.5px solid #86efac',
+              paddingLeft: '3.5rem',
+            }}
           >
-            {/* Bookmark ribbon icon */}
-            <div className="shrink-0 self-start pt-1">
-              <svg width="20" height="56" viewBox="0 0 20 56" fill="none" aria-hidden="true">
-                <path d="M0 0 H20 V56 L10 44 L0 56 Z" fill="#00cc85" />
+            {/* Bookmark ribbon — absolute at top-left, matching reference */}
+            <div className="absolute top-0 left-6">
+              <svg width="22" height="68" viewBox="0 0 22 68" fill="none" aria-hidden="true">
+                <path d="M0 0 H22 V68 L11 56 L0 68 Z" fill="#22c55e" />
               </svg>
             </div>
             <p className="text-base sm:text-lg lg:text-xl font-semibold text-text-primary leading-relaxed">

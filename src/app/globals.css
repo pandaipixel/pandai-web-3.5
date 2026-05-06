@@ -13,6 +13,8 @@
   --color-brand-orange: var(--color-brand-orange);
   --color-brand-red: var(--color-brand-red);
   --color-brand-indigo: var(--color-brand-indigo);
+  --color-surface-mint: var(--color-surface-mint);
+  --color-nav-border: var(--color-nav-border);
 
   /* Surface colors */
   --color-surface-primary: var(--color-surface-primary);

@@ -16,7 +16,6 @@ export interface FeatureCardProps {
   buttonHref: string
 }
 
-// ── Chevron button (green pill, white circle arrow) ──
 function CardButton({ label, href }: { label: string; href: string }) {
   return (
     <Link
@@ -64,94 +63,89 @@ export default function FeatureCard({
 }: FeatureCardProps) {
   const isLight = theme === 'light'
 
-  // Theme-specific values
-  const cardBg        = isLight ? '#e9fbf5' : '#1a1f6b'
-  const textColor     = isLight ? '#1a1a1a' : '#ffffff'
-  const gradientStop  = isLight ? 'rgba(233,251,245,' : 'rgba(26,31,107,'
-  const border        = isLight ? '1.5px solid #d1fae5' : 'none'
-
   return (
     <div
       className="relative flex flex-col rounded-3xl overflow-hidden"
-      style={{ backgroundColor: cardBg, border }}
+      style={{
+        backgroundColor: isLight ? '#ffffff' : '#1a1f6b',
+        border: isLight ? '1.5px solid #d1fae5' : 'none',
+      }}
     >
 
-      {/* ── Background decorative circles ── */}
+      {/* ── Background circles — zIndex 0, always behind content ── */}
       {isLight ? (
         <>
-          {/* Top-right — medium green, larger */}
+          {/* Top-right — large dark green */}
           <div
             className="absolute rounded-full pointer-events-none"
             style={{
               width: 220, height: 220,
               top: -55, right: -55,
-              backgroundColor: '#66d59d',
+              backgroundColor: '#52c491',
+              zIndex: 0,
             }}
           />
-          {/* Bottom-left — medium green, larger */}
+          {/* Bottom-left — medium light green */}
           <div
             className="absolute rounded-full pointer-events-none"
             style={{
-              width: 180, height: 180,
-              bottom: -45, left: -45,
-              backgroundColor: '#66d59d',
+              width: 160, height: 160,
+              bottom: -40, left: -40,
+              backgroundColor: '#b4f3bf',
+              zIndex: 0,
             }}
           />
         </>
       ) : (
         <>
-          {/* Large teal radial orb — upper-center */}
+          {/* Large teal radial orb */}
           <div
             className="absolute rounded-full pointer-events-none"
             style={{
-              width: '130%',
+              width: '150%',
               aspectRatio: '1',
-              top: '-30%',
+              top: '-25%',
               left: '50%',
               transform: 'translateX(-50%)',
               background:
-                'radial-gradient(circle at 42% 38%, rgba(60,220,220,0.75) 0%, rgba(30,185,185,0.40) 38%, rgba(15,150,155,0.15) 60%, transparent 78%)',
+                'radial-gradient(circle, rgba(55,215,205,0.85) 0%, rgba(30,185,195,0.45) 40%, rgba(15,145,155,0.12) 65%, transparent 80%)',
+              zIndex: 0,
             }}
           />
           {/* Top-right small mint circle */}
           <div
             className="absolute rounded-full pointer-events-none"
-            style={{ width: 34, height: 34, top: 16, right: 16, backgroundColor: '#ccf5e7' }}
+            style={{ width: 34, height: 34, top: 16, right: 16, backgroundColor: '#ccf5e7', zIndex: 1 }}
           />
           {/* Mid-right small green circle */}
           <div
             className="absolute rounded-full pointer-events-none"
-            style={{ width: 20, height: 20, top: '38%', right: 14, backgroundColor: '#4db570' }}
+            style={{ width: 20, height: 20, top: '42%', right: 14, backgroundColor: '#4db570', zIndex: 1 }}
           />
         </>
       )}
 
-      {/* ── Image section ── */}
-      <div className="relative overflow-hidden" style={{ aspectRatio: '4/3' }}>
+      {/* ── Image — zIndex 1, above circles ── */}
+      <div className="relative overflow-hidden" style={{ aspectRatio: '4/3', zIndex: 1 }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={image}
           alt={imageAlt}
           className="absolute inset-0 w-full h-full object-cover"
         />
-        {/* Gradient blend — bottom of image fades into content bg */}
-        <div
-          className="absolute inset-x-0 bottom-0 pointer-events-none"
-          style={{
-            height: '40%',
-            background: `linear-gradient(to bottom, ${gradientStop}0) 0%, ${gradientStop}1) 100%)`,
-          }}
-        />
       </div>
 
-      {/* ── Content section ── */}
+      {/* ── Content — zIndex 2, always on top ── */}
       <div
-        className="flex flex-col items-center gap-5 px-6 pt-3 pb-7"
-        style={{ backgroundColor: cardBg }}
+        className="relative flex flex-col items-center gap-5 px-6 pt-4 pb-7"
+        style={{
+          backgroundColor: isLight ? '#ffffff' : 'rgba(12, 17, 75, 0.9)',
+          zIndex: 2,
+        }}
       >
         <p
           className="text-center font-bold text-base sm:text-lg leading-snug"
-          style={{ color: textColor }}
+          style={{ color: isLight ? '#1a1a1a' : '#ffffff' }}
         >
           {title}
         </p>

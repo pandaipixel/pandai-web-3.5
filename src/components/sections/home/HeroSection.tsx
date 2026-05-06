@@ -82,8 +82,8 @@ export default function HeroSection() {
             <Image
               src="/images/hero-student.png"
               alt="Pandai student learning"
-              width={800}
-              height={800}
+              width={1024}
+              height={802}
               className="w-full max-w-sm lg:max-w-lg h-auto"
               priority
             />

@@ -3,11 +3,13 @@
 // Edit links, labels, and URLs here
 // ─────────────────────────────────────────────
 
+// hoverBg: pill background on hover (from DS)
+// hoverText: text color on hover ('white' or 'dark')
 export const navLinks = [
-  { label: 'Students', href: '/students' },
-  { label: 'Parents', href: '/parents' },
-  { label: 'Teachers', href: '/teachers' },
-  { label: 'About', href: '/about' },
+  { label: 'Students', href: '/students', hoverBg: '#00cc85', hoverText: 'white' },
+  { label: 'Parents',  href: '/parents',  hoverBg: '#fece00', hoverText: 'dark'  },
+  { label: 'Teachers', href: '/teachers', hoverBg: '#ff5c98', hoverText: 'white' },
+  { label: 'About',    href: '/about',    hoverBg: '#00cc85', hoverText: 'white' },
 ]
 
 export const navCTA = {

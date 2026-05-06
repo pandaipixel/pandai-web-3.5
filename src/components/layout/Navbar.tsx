@@ -1,44 +1,49 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
-import { cn } from '@/lib/utils'
 
 const navLinks = [
   { label: 'Students', href: '/students' },
-  { label: 'Teachers', href: '/teachers' },
   { label: 'Parents', href: '/parents' },
+  { label: 'Teachers', href: '/teachers' },
   { label: 'About', href: '/about' },
-  { label: 'Blog', href: '/blog' },
 ]
 
+function ChevronDown() {
+  return (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 14 14"
+      fill="none"
+      aria-hidden="true"
+      className="shrink-0 opacity-60"
+    >
+      <path
+        d="M3 5L7 9L11 5"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
 
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 64)
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
-
   return (
-    <header
-      className={cn(
-        'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
-        scrolled
-          ? 'bg-white/95 backdrop-blur-md shadow-sm border-b border-border-default'
-          : 'bg-transparent'
-      )}
-    >
+    <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-border-default shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 lg:h-18">
+        <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center shrink-0">
             <Image
-              src={scrolled ? '/images/logo-normal.svg' : '/images/logo-white.svg'}
+              src="/images/logo-normal.svg"
               alt="Pandai"
               width={120}
               height={29}
@@ -47,19 +52,15 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop Nav */}
-          <nav className="hidden lg:flex items-center gap-8">
+          <nav className="hidden lg:flex items-center gap-1">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className={cn(
-                  'text-sm font-medium transition-colors duration-150',
-                  scrolled
-                    ? 'text-text-secondary hover:text-text-primary'
-                    : 'text-white/80 hover:text-white'
-                )}
+                className="flex items-center gap-1 px-4 py-2 rounded-lg text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-surface-secondary transition-colors duration-150"
               >
                 {link.label}
+                <ChevronDown />
               </Link>
             ))}
           </nav>
@@ -70,12 +71,7 @@ export default function Navbar() {
               href="https://app.pandai.org/app/login"
               target="_blank"
               rel="noopener noreferrer"
-              className={cn(
-                'inline-flex items-center px-5 py-2 rounded-full text-sm font-semibold transition-all duration-150 border',
-                scrolled
-                  ? 'border-border-strong text-text-primary hover:border-brand-green hover:text-brand-green'
-                  : 'border-white/50 text-white hover:border-white hover:bg-white/10'
-              )}
+              className="inline-flex items-center px-5 py-2 rounded-full border border-border-strong text-text-primary text-sm font-semibold hover:border-brand-green hover:text-brand-green transition-all duration-150"
             >
               Sign In
             </Link>
@@ -89,25 +85,23 @@ export default function Navbar() {
             </Link>
           </div>
 
-          {/* Mobile Menu Toggle */}
+          {/* Mobile Toggle */}
           <button
-            className={cn(
-              'lg:hidden flex flex-col gap-1.5 p-2',
-            )}
+            className="lg:hidden flex flex-col gap-1.5 p-2"
             onClick={() => setMenuOpen(!menuOpen)}
             aria-label="Toggle menu"
           >
             <motion.span
               animate={menuOpen ? { rotate: 45, y: 7 } : { rotate: 0, y: 0 }}
-              className={cn('block w-6 h-0.5 origin-center transition-colors', scrolled ? 'bg-text-primary' : 'bg-white')}
+              className="block w-6 h-0.5 bg-text-primary origin-center"
             />
             <motion.span
               animate={menuOpen ? { opacity: 0 } : { opacity: 1 }}
-              className={cn('block w-6 h-0.5', scrolled ? 'bg-text-primary' : 'bg-white')}
+              className="block w-6 h-0.5 bg-text-primary"
             />
             <motion.span
               animate={menuOpen ? { rotate: -45, y: -7 } : { rotate: 0, y: 0 }}
-              className={cn('block w-6 h-0.5 origin-center', scrolled ? 'bg-text-primary' : 'bg-white')}
+              className="block w-6 h-0.5 bg-text-primary origin-center"
             />
           </button>
         </div>
@@ -129,9 +123,10 @@ export default function Navbar() {
                   key={link.href}
                   href={link.href}
                   onClick={() => setMenuOpen(false)}
-                  className="py-3 px-4 rounded-lg text-text-secondary hover:text-text-primary hover:bg-surface-secondary font-medium text-sm transition-colors"
+                  className="flex items-center justify-between py-3 px-4 rounded-lg text-text-secondary hover:text-text-primary hover:bg-surface-secondary font-medium text-sm transition-colors"
                 >
                   {link.label}
+                  <ChevronDown />
                 </Link>
               ))}
               <div className="flex gap-3 mt-2">
@@ -139,7 +134,7 @@ export default function Navbar() {
                   href="https://app.pandai.org/app/login"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 flex items-center justify-center px-5 py-3 rounded-full border border-border-strong text-text-primary font-semibold text-sm"
+                  className="flex-1 flex items-center justify-center px-5 py-3 rounded-full border border-border-strong text-text-primary font-semibold text-sm hover:border-brand-green hover:text-brand-green transition-all"
                 >
                   Sign In
                 </Link>

@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 
 export default function Footer() {
   return (
@@ -6,11 +7,13 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
           <div className="col-span-2 md:col-span-1">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-lg bg-brand-green flex items-center justify-center">
-                <span className="text-white font-bold text-sm">P</span>
-              </div>
-              <span className="font-bold text-xl">pandai</span>
+            <div className="mb-4">
+              <Image
+                src="/images/logo-white.svg"
+                alt="Pandai"
+                width={120}
+                height={29}
+              />
             </div>
             <p className="text-sm text-text-tertiary leading-relaxed">
               Malaysia&apos;s #1 online learning app for school students.

@@ -42,7 +42,17 @@ export default function TestimonialsSection() {
 
   return (
     <section className="w-full px-4 sm:px-6 lg:px-8 py-8">
-      <div className="max-w-5xl mx-auto">
+      <div className="max-w-5xl mx-auto relative">
+
+        {/* ── Floating mascot — left edge, outside the overflow-hidden frame ── */}
+        <motion.img
+          src="https://imagedelivery.net/zy4C5mYDeC8QYHozzOk2nQ/ad44940d-1c50-4b50-0a5b-33ea6f0f3600/1024px"
+          alt=""
+          className="absolute z-10 hidden sm:block pointer-events-none"
+          style={{ left: -16, top: '28%', width: 92 }}
+          animate={{ y: [0, -10, 0] }}
+          transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
+        />
 
         {/* ── Outer frame: rounded box with background image + border ── */}
         <motion.div

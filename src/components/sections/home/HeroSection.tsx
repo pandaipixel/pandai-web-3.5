@@ -67,15 +67,16 @@ export default function HeroSection() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            className="relative rounded-2xl overflow-hidden px-8 py-8 lg:px-12 lg:py-10"
+            className="relative rounded-2xl flex items-start gap-6 px-8 py-8 lg:px-10 lg:py-10"
             style={{ backgroundColor: '#cbffcc' }}
           >
-            {/* Green left bookmark */}
-            <div
-              className="absolute left-0 top-4 bottom-4 w-1.5 rounded-r-full"
-              style={{ backgroundColor: '#00cc85' }}
-            />
-            <p className="text-base sm:text-lg lg:text-xl font-semibold text-text-primary leading-relaxed pl-4">
+            {/* Bookmark ribbon icon */}
+            <div className="shrink-0 self-start pt-1">
+              <svg width="20" height="56" viewBox="0 0 20 56" fill="none" aria-hidden="true">
+                <path d="M0 0 H20 V56 L10 44 L0 56 Z" fill="#00cc85" />
+              </svg>
+            </div>
+            <p className="text-base sm:text-lg lg:text-xl font-semibold text-text-primary leading-relaxed">
               Pandai is Malaysia&apos;s online learning platform for students aged 7–17. It combines live tuition, quiz battles, quick notes, topical tests and exams, student leaderboards, detailed report cards, and academic-competition practice to help students learn effectively, track progress, and improve grades — all from home.
             </p>
           </motion.div>

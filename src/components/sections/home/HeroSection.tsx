@@ -4,8 +4,11 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { hero } from "@/content/home";
 import { fadeInUp, staggerContainer, scaleIn } from "@/lib/animations";
+import { useT } from "@/context/LanguageContext";
+import { homeTranslations } from "@/content/translations/home";
 
 export default function HeroSection() {
+  const t = useT(homeTranslations)
   return (
     <section className="relative bg-white overflow-hidden pt-24">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-8">
@@ -24,9 +27,9 @@ export default function HeroSection() {
               className="font-bold leading-[1.05] tracking-tight text-[41px] md:text-[50px] lg:text-[60px]"
               style={{ color: "#00cc85" }}
             >
-              {hero.headlineLines.map((line, i) => (
+              {(['hero.line1', 'hero.line2', 'hero.line3'] as const).map((key, i) => (
                 <span key={i} className="block">
-                  {line}
+                  {t(key)}
                 </span>
               ))}
             </motion.h1>

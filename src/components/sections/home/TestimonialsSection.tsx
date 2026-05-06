@@ -5,6 +5,8 @@ import Image from "next/image";
 import { fadeInUp, staggerContainer } from "@/lib/animations";
 import { usePandaiCount } from "@/lib/usePandaiCount";
 import { testimonialsSection } from "@/content/home";
+import { useT } from "@/context/LanguageContext";
+import { homeTranslations } from "@/content/translations/home";
 
 // ── Stars — supports half-star (for fractional ratings) ──
 function Stars({ rating, size = 16 }: { rating: number; size?: number }) {
@@ -37,8 +39,8 @@ function Stars({ rating, size = 16 }: { rating: number; size?: number }) {
 
 export default function TestimonialsSection() {
   const count = usePandaiCount();
-  const { headingPrefix, headingMid, headingSuffix, cards, storeRatings } =
-    testimonialsSection;
+  const t = useT(homeTranslations);
+  const { cards, storeRatings } = testimonialsSection;
 
   return (
     <section className="w-full px-4 sm:px-6 lg:px-8 py-8">
@@ -82,17 +84,17 @@ export default function TestimonialsSection() {
               className="text-2xl sm:text-3xl lg:text-[2rem] font-bold leading-snug"
               style={{ color: "#1a1a1a" }}
             >
-              {headingPrefix}{" "}
+              {t('testimonials.headingPrefix')}{" "}
               <span style={{ color: "#00cc85" }}>
                 {count.users.toLocaleString()}
               </span>
               <br />
-              {headingMid}
+              {t('testimonials.headingMid')}
               <br />
               <span style={{ color: "#00cc85" }}>
                 {count.questions.toLocaleString()}
               </span>{" "}
-              {headingSuffix}
+              {t('testimonials.headingSuffix')}
             </h2>
           </div>
 
@@ -160,7 +162,7 @@ export default function TestimonialsSection() {
                     className="text-xs leading-relaxed"
                     style={{ color: "#374151" }}
                   >
-                    {card.quote}
+                    {t(`testimonials.quote.${card.name.toLowerCase()}`)}
                   </p>
                   <Stars rating={card.rating} size={13} />
                 </div>
@@ -221,7 +223,7 @@ export default function TestimonialsSection() {
                       className="text-xs mt-0.5"
                       style={{ color: "#6b7280" }}
                     >
-                      {item.platform}
+                      {t(item.translationKey)}
                     </span>
                   </div>
 

@@ -1,10 +1,12 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { tagline } from "@/content/home";
 import { fadeInUp } from "@/lib/animations";
+import { useT } from "@/context/LanguageContext";
+import { homeTranslations } from "@/content/translations/home";
 
 export default function TaglineSection() {
+  const t = useT(homeTranslations)
   return (
     <section className="w-full px-4 sm:px-6 lg:px-8 py-8">
       <div className="max-w-5xl mx-auto">
@@ -40,7 +42,7 @@ export default function TaglineSection() {
             className="text-base sm:text-lg lg:text-xl font-bold leading-relaxed"
             style={{ color: "#1a1a1a" }}
           >
-            {tagline.text}
+            {t('tagline')}
           </p>
         </motion.div>
       </div>

@@ -4,13 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
-
-const navLinks = [
-  { label: 'Students', href: '/students' },
-  { label: 'Parents', href: '/parents' },
-  { label: 'Teachers', href: '/teachers' },
-  { label: 'About', href: '/about' },
-]
+import { navLinks, navCTA } from '@/content/nav'
 
 function ChevronDown() {
   return (
@@ -33,13 +27,7 @@ export default function Navbar() {
         >
           {/* Logo */}
           <Link href="/" className="flex items-center shrink-0">
-            <Image
-              src="/images/logo-normal.svg"
-              alt="Pandai"
-              width={110}
-              height={26}
-              priority
-            />
+            <Image src="/images/logo-normal.svg" alt="Pandai" width={110} height={26} priority />
           </Link>
 
           {/* Desktop Nav */}
@@ -59,22 +47,22 @@ export default function Navbar() {
           {/* CTA buttons */}
           <div className="hidden lg:flex items-center gap-2">
             <Link
-              href="https://app.pandai.org/app/login"
+              href={navCTA.signIn.href}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center px-5 py-2 rounded-full border text-sm font-semibold transition-all duration-150 hover:bg-surface-secondary"
               style={{ borderColor: '#00cc85', color: '#00cc85' }}
             >
-              Sign In
+              {navCTA.signIn.label}
             </Link>
             <Link
-              href="https://app.pandai.org/app/signup"
+              href={navCTA.signUp.href}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center px-5 py-2 rounded-full text-white text-sm font-semibold transition-colors duration-150"
               style={{ backgroundColor: '#00cc85' }}
             >
-              Sign Up
+              {navCTA.signUp.label}
             </Link>
           </div>
 
@@ -115,22 +103,22 @@ export default function Navbar() {
               ))}
               <div className="flex gap-2 mt-2">
                 <Link
-                  href="https://app.pandai.org/app/login"
+                  href={navCTA.signIn.href}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex-1 flex items-center justify-center px-4 py-3 rounded-full border font-semibold text-sm"
                   style={{ borderColor: '#00cc85', color: '#00cc85' }}
                 >
-                  Sign In
+                  {navCTA.signIn.label}
                 </Link>
                 <Link
-                  href="https://app.pandai.org/app/signup"
+                  href={navCTA.signUp.href}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex-1 flex items-center justify-center px-4 py-3 rounded-full text-white font-semibold text-sm"
                   style={{ backgroundColor: '#00cc85' }}
                 >
-                  Sign Up
+                  {navCTA.signUp.label}
                 </Link>
               </div>
             </div>

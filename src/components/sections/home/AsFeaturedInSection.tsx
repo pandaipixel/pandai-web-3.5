@@ -89,7 +89,7 @@ export default function AsFeaturedInSection() {
                   <img
                     src={logo.src}
                     alt={logo.name}
-                    style={{ height: '44px', width: 'auto', maxWidth: '160px', objectFit: 'contain' }}
+                    style={{ height: logo.height ? `${logo.height}px` : '44px', width: 'auto', maxWidth: '160px', objectFit: 'contain' }}
                     loading="lazy"
                   />
                 </div>

@@ -48,6 +48,44 @@ export const homeTranslations: TranslationDict = {
     "competition.description":
       "Gain access to various academic competition questions to improve your chances at scoring greater marks!",
     "competition.cta": "Academic Competitions",
+
+    // ── StudentFeaturesSection ──
+    "studentFeatures.heading": "Top Features for Students",
+    "studentFeatures.card1.title": "Learn in fun, interactive classes with experienced tutors—group or 1-on-1.",
+    "studentFeatures.card1.button": "Online Tuition",
+    "studentFeatures.card2.title": "Compete in real-time quiz games with friends across Malaysia.",
+    "studentFeatures.card2.button": "Quiz Battle",
+    "studentFeatures.card3.title": "Understand tough topics with concise, enjoyable notes.",
+    "studentFeatures.card3.button": "Quick Notes",
+    "studentFeatures.card4.title": "Practice by topic and prepare with full exam simulations.",
+    "studentFeatures.card4.button": "Topical Test & Exams",
+    "studentFeatures.card5.title": "See your rank and scores compared to other students.",
+    "studentFeatures.card5.button": "Student Leaderboard",
+    "studentFeatures.card6.title": "Track progress by subject and spot strengths & gaps.",
+    "studentFeatures.card6.button": "Report Card",
+
+    // ── LiveTuitionSection ──
+    "liveTuition.headingPre": "Get ",
+    "liveTuition.headingHighlight": "A+",
+    "liveTuition.headingPost": " with Pandai Tutors",
+    "liveTuition.subtitle":
+      "Score with ease with the help of our amazing tutors through Online Tuition. Pack yourself A with a thorough understanding of basic topics for each subject and get ready to rock your upcoming academic journey!",
+    "liveTuition.ctaSchedule": "Check Schedule",
+    "liveTuition.ctaTutors": "Tutor List",
+
+    // ── DownloadSection ──
+    "download.headingPre": "Download",
+    "download.headingSuffix": "App Now!",
+    "download.subtitlePre": "Available on ",
+    "download.subtitleHighlight": "All Platforms",
+    "download.btn1.label": "Get Pandai On",
+    "download.btn1.name": "Google Play",
+    "download.btn2.label": "Download Now",
+    "download.btn2.name": "App Store",
+    "download.btn3.label": "Explore Now",
+    "download.btn3.name": "App Gallery",
+    "download.btn4.label": "Sign In Now On Web",
+    "download.btn4.name": "pandai.org",
   },
 
   ms: {
@@ -97,5 +135,43 @@ export const homeTranslations: TranslationDict = {
     "competition.description":
       "Dapatkan akses kepada pelbagai soalan pertandingan akademik untuk meningkatkan peluang anda mendapat markah yang lebih baik!",
     "competition.cta": "Pertandingan Akademik",
+
+    // ── StudentFeaturesSection ──
+    "studentFeatures.heading": "Ciri Terbaik untuk Pelajar",
+    "studentFeatures.card1.title": "Belajar dalam kelas interaktif yang menyeronokkan bersama tutor berpengalaman—berkumpulan atau 1-on-1.",
+    "studentFeatures.card1.button": "Tuisyen Dalam Talian",
+    "studentFeatures.card2.title": "Bertanding dalam permainan kuiz masa nyata bersama rakan-rakan di seluruh Malaysia.",
+    "studentFeatures.card2.button": "Pertandingan Kuiz",
+    "studentFeatures.card3.title": "Fahami topik sukar dengan nota yang ringkas dan menarik.",
+    "studentFeatures.card3.button": "Nota Pantas",
+    "studentFeatures.card4.title": "Berlatih mengikut topik dan bersedia dengan simulasi peperiksaan penuh.",
+    "studentFeatures.card4.button": "Ujian Topikal & Peperiksaan",
+    "studentFeatures.card5.title": "Lihat kedudukan dan markah anda berbanding pelajar lain.",
+    "studentFeatures.card5.button": "Papan Pendahulu Pelajar",
+    "studentFeatures.card6.title": "Pantau kemajuan mengikut subjek dan kenal pasti kekuatan & jurang anda.",
+    "studentFeatures.card6.button": "Kad Laporan",
+
+    // ── LiveTuitionSection ──
+    "liveTuition.headingPre": "Raih ",
+    "liveTuition.headingHighlight": "A+",
+    "liveTuition.headingPost": " bersama Tutor Pandai",
+    "liveTuition.subtitle":
+      "Capai keputusan cemerlang dengan bantuan tutor-tutor kami yang hebat melalui Tuisyen Dalam Talian. Kuasai asas setiap subjek dan bersedialah untuk menakluk perjalanan akademik anda!",
+    "liveTuition.ctaSchedule": "Semak Jadual",
+    "liveTuition.ctaTutors": "Senarai Tutor",
+
+    // ── DownloadSection ──
+    "download.headingPre": "Muat Turun Aplikasi",
+    "download.headingSuffix": "Sekarang!",
+    "download.subtitlePre": "Tersedia di ",
+    "download.subtitleHighlight": "Semua Peranti",
+    "download.btn1.label": "Dapatkan Pandai di",
+    "download.btn1.name": "Google Play",
+    "download.btn2.label": "Muat Turun Sekarang",
+    "download.btn2.name": "App Store",
+    "download.btn3.label": "Terokai Sekarang",
+    "download.btn3.name": "App Gallery",
+    "download.btn4.label": "Log Masuk di Web",
+    "download.btn4.name": "pandai.org",
   },
 };

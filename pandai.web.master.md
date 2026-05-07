@@ -8,6 +8,38 @@
 
 ---
 
+## ⚡ On Session Start — Always Do This First
+
+When this file is loaded at the start of a new session, **immediately and automatically**:
+
+1. **Check Framer MCP connection:**
+```bash
+claude mcp list
+```
+If `design-bridge` shows ✗ Failed, re-add it:
+```bash
+claude mcp remove design-bridge
+claude mcp add --transport http design-bridge "https://framer-mcp-relay.orange-lamp-studio.workers.dev/mcp?userId=f355240a47ad9d8da33c3ddb3909680b86618f667fb2d8216d855ce03161058d"
+```
+
+2. **Start the dev server:**
+```bash
+npm run dev
+```
+Confirm it's running at `http://localhost:3000`
+
+3. **Pages to verify locally:**
+   - `http://localhost:3000` → Home page (all sections)
+   - `http://localhost:3000/parents` → Parents page
+   - `http://localhost:3000/students` → Students page
+
+4. **For each page, verify:**
+   - All sections render correctly
+   - Language toggle switches between **EN** and **BM (Bahasa Malaysia)** — all visible text must translate, nothing should fall back to English when BM is selected
+   - No console errors
+
+---
+
 ## Stack
 
 | Layer | Choice |
@@ -28,7 +60,7 @@ src/
 ├── app/
 │   ├── icon.svg                     # Favicon — Pandai icon mark (auto-picked by Next.js App Router)
 │   ├── layout.tsx                   # Root layout — metadata, Poppins, globals.css
-│   ├── globals.css                  # @import tokens.css + Tailwind + base resets
+│   ├── globals.css                  # @import tokens.css + Tailwind + base resets + marquee keyframes
 │   └── (marketing)/
 │       ├── layout.tsx               # Marketing layout — Navbar + main + Footer
 │       └── page.tsx                 # Homepage — imports all sections in order
@@ -37,222 +69,133 @@ src/
 │   ├── layout/
 │   │   ├── Navbar.tsx               # Sticky navbar, colored pill hover, mobile drawer
 │   │   └── Footer.tsx               # Dark footer, 5 link columns + social icons
+│   ├── ui/
+│   │   └── FeatureCard.tsx          # Reusable card — light / dark / student themes
 │   └── sections/home/
-│       ├── HeroSection.tsx          # Hero — headline, trust badges, student image
-│       ├── TaglineSection.tsx        # Tagline card — two-tone bg, bookmark ribbon
-│       ├── TestimonialsSection.tsx   # Testimonials — live count heading, 2×2 cards, rating pills
-│       ├── FeatureCardsSection.tsx   # 2-col feature cards grid (light + dark themes)
-│       ├── AsFeaturedInSection.tsx   # Infinite marquee ticker of 14 media logos
-│       └── CompetitionSection.tsx    # Competition image card with CTA button
+│       ├── HeroSection.tsx
+│       ├── TaglineSection.tsx
+│       ├── TestimonialsSection.tsx
+│       ├── FeatureCardsSection.tsx
+│       ├── StudentFeaturesSection.tsx
+│       ├── AsFeaturedInSection.tsx
+│       ├── CompetitionSection.tsx
+│       ├── LiveTuitionSection.tsx
+│       └── DownloadSection.tsx
 │
 ├── content/                         # ✏️ ALL editable copy lives here — never edit components directly
-│   ├── home.ts                      # Hero, tagline, testimonials, stats, features, FAQ, app download, asFeaturedIn, competitionSection
+│   ├── home.ts                      # All homepage section data
 │   ├── translations/
-│   │   └── home.ts                  # EN + BM strings for every homepage section — add keys here for all new sections
+│   │   └── home.ts                  # EN + BM strings for every homepage section
 │   ├── nav.ts                       # Navbar links + CTA + full footer content
-│   ├── students.ts                  # (placeholder)
+│   ├── students.ts                  # Students page content
+│   ├── parents.ts                   # Parents page content
 │   ├── teachers.ts                  # (placeholder)
-│   ├── parents.ts                   # (placeholder)
 │   └── about.ts                     # (placeholder)
 │
 ├── lib/
 │   ├── animations.ts                # Framer Motion variants (fadeInUp, staggerContainer, scaleIn…)
-│   ├── usePandaiCount.ts            # Hook — fetches live user/question counts from pandai.org/count/
+│   ├── usePandaiCount.ts            # Hook — fetches live user/question counts
 │   └── utils.ts                     # cn() helper (clsx + tailwind-merge)
 │
 └── styles/
-    └── tokens.css                   # Pandai DS 1.5 CSS custom properties (colors, radii, shadows…)
-
-public/images/
-    hero-student.png                 # Hero right-side student photo
-    avatar-{ain,ezran,hafizah,irfan}.png   # Testimonial avatars
-    badge-{moe,finland,personalized}.png   # Trust badges (hero)
-    badge-1.svg / badge-2.svg        # App Store / Play Store download badges
-    logo-normal.svg / logo-white.svg # Pandai logos
-    bg-left.png / bg-right.png       # Background decoration assets
-    testimonial-bg.jpeg              # (unused — replaced by Cloudflare Images URL)
+    └── tokens.css                   # Pandai DS 1.5 CSS custom properties
 ```
 
 ---
 
 ## Design System Tokens (Key Colors)
 
-All tokens are in `src/styles/tokens.css`. Never hardcode hex values in components — use these.
+All tokens are in `src/styles/tokens.css`. **Never hardcode hex values in components** — use these.
 
 | Token | Hex | Usage |
 |---|---|---|
-| OG-Green/50 | `#e9fbf5` | Section backgrounds, card light bg |
-| OG-Green/100 | `#ccf5e7` | Tagline card background left strip |
-| OG-Green/200 | `#99ebce` | Borders, dividers |
+| OG-Green/500 | `#00cc85` | Primary brand green — CTAs, highlights, borders |
 | OG-Green/300 | `#66e0b6` | Tagline card border |
-| OG-Green/500 | `#00cc85` | Primary brand green — CTAs, names, highlights |
-| OG-Green/700 | `#007a50` | Bookmark ribbon right half |
+| OG-Green/200 | `#99ebce` | Borders, dividers |
+| OG-Green/100 | `#ccffcc` / `#ccf5e7` | Arrow circle bg, card light tint |
+| OG-Green/50 | `#e9fbf5` / `#e8faf0` | Section backgrounds, mint areas |
+| Dark Teal | `#0b5851` | Button borders, chevron icon, title text on light cards |
+| Deep Blue | `#2253e6` | Dark feature card background |
+| Navy | `#0b1f3a` | Platform button name text |
 | `#1a1a1a` | — | Body text (near-black) |
-| `#374151` | — | Quote/secondary text |
+| `#374151` | — | Secondary text |
 | `#6b7280` | — | Tertiary/label text |
 | `#F5A623` | — | Star rating gold |
+| `#FFD700` | — | "A+" highlight yellow in LiveTuitionSection |
+| Purple bg | `#d1d4ff` | Decorative semi-circle in LiveTuitionSection |
 
 ---
 
-## Sections Built
+## ─── BUTTON DESIGN STANDARD ─── (Apply to ALL buttons sitewide)
 
-### ✅ Navbar (`src/components/layout/Navbar.tsx`)
-- Sticky, transparent → white + shadow after 64px scroll
-- Logo left, nav links center-left, Sign In + Sign Up CTAs right (`ml-auto`)
-- Per-link colored hover pills: Students=green, Parents=yellow, Teachers=pink, About=green
-- Mobile: hamburger → animated drawer with same colored pills
-- Content: `src/content/nav.ts` → `navLinks`, `navCTA`
+> **This is the single source of truth for all CTA/arrow-circle buttons. Every new button must use this exact pattern. Never deviate.**
 
-### ✅ Footer (`src/components/layout/Footer.tsx`)
-- Dark background `#1a1a1a`, 5 content columns + brand column
-- Link hover: gray → `#00cc85` green
-- Inline SVG social icons (Facebook, Instagram, X, YouTube, TikTok, Discord) in green
-- Content: `src/content/nav.ts` → `footerBrand`, `footerAcademic`, `footerExamPrep`, `footerCompetition`, `footerFeatures`, `footerCompany`, `footerLegal`
+### Visual spec
+- Background: `#00cc85` (green)
+- Border: `1px solid #0b5851`
+- Border radius: `30px`
+- Padding: `8px 8px 8px 20px` (more left padding, tight right for arrow circle)
+- Label: white, `fontWeight: 700`, `fontSize: 14px` (or 15px for larger buttons), `whiteSpace: nowrap`
+- Arrow circle: `34px × 34px` (or `38px` for larger), `backgroundColor: #ccffcc`, `borderRadius: 100%`
+- Chevron SVG inside circle: `width=14 height=14`, `stroke="#0b5851"`, `strokeWidth="2.5"`
 
-### ✅ HeroSection (`src/components/sections/home/HeroSection.tsx`)
-- `max-w-5xl` container, `px-4 sm:px-6 lg:px-8 py-8`, `pt-24` for navbar offset
-- Headline from `hero.headlineLines[]` — green, responsive: 41px/50px/60px
-- Trust badges row from `hero.trustBadges[]`
-- Right side: student photo from `hero.visual.student`
-- Mobile stacked, desktop 2-col grid
-- Content: `src/content/home.ts` → `hero`
+### Hover state (REQUIRED on all buttons)
+- Button bg: `#00cc85` → `white`
+- Label text: `white` → `#00cc85`
+- Arrow circle: stays `#ccffcc` (no change)
+- Transition: `200ms`
 
-### ✅ TaglineSection (`src/components/sections/home/TaglineSection.tsx`)
-- `max-w-5xl` container — matches testimonials width
-- Card: two-tone background (left 3.5% `#CCFFCC`, right `#F2FFF2`), hard stop (no gradient blend)
-- Border: `2px solid #66e0b6` (OG-Green/300)
-- Bookmark ribbon: absolute, top-left, `#00CC85`, V-notch clip-path
-- Content: `src/content/home.ts` → `tagline.text`
-
-### ✅ TestimonialsSection (`src/components/sections/home/TestimonialsSection.tsx`)
-- Outer frame: `rounded-3xl`, `2px solid #99ebce` border
-- **Background**: two-layer approach — CSS gradient + absolute `<img>`:
-  - CSS: `linear-gradient(to bottom, #ffffff 78%, #00cc85 78%)` — white top, brand green bottom
-  - Absolute `<img>` (`zIndex: 1`, `object-fit: contain`) layered on top of gradient
-  - All content at `z-10` to sit above both layers
-  - BG image URL: `https://imagedelivery.net/zy4C5mYDeC8QYHozzOk2nQ/7f059ac0-95c3-4213-59e9-c5cbf1160e00/1024px`
-- **Floating mascot**: absolutely positioned **outside** the `overflow-hidden` frame (sibling div), left edge, `top: 28%`
-  - Image URL: `https://imagedelivery.net/zy4C5mYDeC8QYHozzOk2nQ/ad44940d-1c50-4b50-0a5b-33ea6f0f3600/1024px`
-  - `animate={{ y: [0, -10, 0] }}`, 2.5s loop, hidden on mobile (`hidden sm:block`)
-  - Width: 92px, `left: -16px` to overlap the frame's left border
-- **Dynamic heading**: fetches live `users` + `questions` from `https://pandai.org/count/` via `usePandaiCount` hook; falls back to `878,501` / `722,682,777` on CORS error
-- **2×2 testimonial cards** — constrained to `max-w-2xl mx-auto` (not full-width):
-  - Smaller size: 52px avatar, `text-base` name, `text-sm` role, `px-4 py-3` padding, `text-xs` quote, 13px stars
-  - Top half: `#e8faf0` mint bg, green border avatar, green name, dark role
-  - Divider: `1px solid #99ebce`
-  - Bottom half: white, quote text, stars
-  - Cards grid uses `animate="visible"` (not `whileInView`) because `overflow: hidden` on the parent breaks Intersection Observer — do NOT use `whileInView` inside `overflow: hidden` containers
-- **3 store rating pills** (two-tone, each is a clickable `<motion.a>` opening in new tab):
-  - Left half: mint `#e8faf0`, inner border `#99ebce`, platform icon via Cloudflare Images URL
-  - Right half: white, large score, half-star-aware stars, label, filled green chevron button
-  - Pill shape: `border-radius: 9999px`, `border: 1.5px solid #99ebce`
-  - Uses `animate="visible"` instead of `whileInView` for same reason as cards above
-- Content: `src/content/home.ts` → `testimonialsSection`
-
-**Store rating assets & links** (all stored in `home.ts` → `testimonialsSection.storeRatings[]`):
-| Platform | `icon` | `href` |
-|---|---|---|
-| Play Store | `…/0857e4da…/64px` | `https://play.google.com/store/apps/details?id=com.pandai.app&showAllReviews=true&pli=1` |
-| App Store | `…/2ab607db…/64px` | `https://apps.apple.com/my/app/pandai-practice-for-exam/id1495066585` |
-| TrustPilot | `…/543b4257…/64px` | `https://www.trustpilot.com/review/pandai.org` |
-
----
-
-### ✅ FeatureCardsSection (`src/components/sections/home/FeatureCardsSection.tsx`)
-- 2-column grid (`grid-cols-1 sm:grid-cols-2 gap-5`), `max-w-5xl` container
-- Each card is the reusable `FeatureCard` UI component (`src/components/ui/FeatureCard.tsx`)
-- Both `motion.div` wrappers use `h-full` to pass grid height down to cards
-
-### ✅ FeatureCard (`src/components/ui/FeatureCard.tsx`) — reusable across pages
-Pixel-accurate to Framer source (all values confirmed via Chrome DevTools inspection).
-
-**Both themes share:** same green border (`1px solid #00cc85`), same 3 circles, same button, same image handling.
-
-**Light theme:**
-- Card bg: `#ffffff`, border-radius: `25px`
-- Content bg: `rgba(204, 255, 204, 0.75)` + `borderTop: 1px solid #00cc85`
-- Title color: `#0b5851` (dark teal)
-
-**Dark theme:**
-- Card bg: `#2253e6` (bright blue — NOT dark navy)
-- Content bg: `rgba(17, 41, 144, 0.8)` + `borderTop: 1px solid #00cc85`
-- Title color: `#ffffff`
-
-**3 background circles (confirmed from DevTools — same positions for both themes):**
-| Class | Color | Size | Position |
-|---|---|---|---|
-| `framer-zcg75a` | `#8ceb8b` | 140×140px | `bottom: 102px, left: -70px` |
-| `framer-10nunue` | `#00cc85` | 210×210px | `top: 70px, right: -105px` |
-| `framer-kczqee` | `#ccffcc` | 84×84px | `top: 28px, left: 34px` |
-
-All circles: `zIndex: 0` (behind image and content).
-
-**Image:** `object-fit: contain`, `object-position: bottom` (anchors image to bottom of wrapper, no gap above content section). Image wrapper: `flex: 1` so both cards in a row reach equal height.
-
-**Button (identical for both themes):**
-- Bg: `#00cc85`, border: `1px solid #0b5851`, radius: `30px`
-- Label: white bold
-- Arrow circle: `#ccffcc` (light green — NOT white)
-- Chevron icon: `#0b5851` dark teal (NOT green)
-
-**Button hrefs** (in `home.ts → featureCards[]`):
-- Card 1: `https://my.pandai.org/about/testimonial`
-- Card 2: `https://blog.pandai.org/meet-ask-pbot-your-ultimate-study-buddy-in-pandai/`
-
-### ✅ AsFeaturedInSection (`src/components/sections/home/AsFeaturedInSection.tsx`)
-- White card with `1px solid #00cc85` border, `border-radius: 25px`
-- Heading: "As Featured In" — 35px, `#00cc85`, centered, 49px tall row
-- Ticker: 134px tall, infinite CSS marquee (`pandai-marquee-track` / `pandai-marquee-item` classes in `globals.css`)
-- 14 logos doubled (28 items) for seamless loop — `animation: pandai-marquee 28s linear infinite`
-- Each logo: `height: 44px; width: auto; maxWidth: 160px; objectFit: contain` — natural aspect ratio (do NOT force a fixed width — logos have different aspect ratios)
-- Each item: `min-width: 100px; padding: 0 16px` so narrow logos don't bunch together
-- Left + right fade edges: 60px `linear-gradient` overlays at `zIndex: 2`
-- Content: `src/content/home.ts` → `asFeaturedIn.logos[]`
-- Translation key: `asFeaturedIn.heading`
-
-### ✅ CompetitionSection (`src/components/sections/home/CompetitionSection.tsx`)
-- White card, horizontal padding `clamp(16px, 5vw, 50px)` (responsive — avoids squeezing image on mobile)
-- Background image in-flow (`display: block; width: 100%; height: auto`) — no clipping
-- Image wrapper: `position: relative; paddingTop: clamp(72px, 9vw, 110px)` — reserves space above the image for the heading text
-- Heading stack `position: absolute; top: 0` sits in that padded space: "Score Better" (`clamp(20px, 3.5vw, 35px)`, `#00cc85`, bold) + subheading (`clamp(13px, 2vw, 16px)`, Pandai Grey `rgb(67,73,85)`)
-- Heading container has `padding: 0 12px` + `wordBreak: break-word` to prevent overflow on BM translations
-- Description paragraph between image and button: `padding: 15px`, centered, `clamp(13px, 2vw, 16px)`
-- CTA button: `height: 62px`, `border-radius: 9999px`, `#00cc85` bg, `1px solid #0b5851` border, arrow circle (`#ccffcc` bg, `#0b5851` chevron)
-- Image URL: `https://imagedelivery.net/zy4C5mYDeC8QYHozzOk2nQ/4863ad76-7afd-49d8-0fca-342ac3890400/1024px`
-- CTA href: `https://my.pandai.org/competitions`
-- Content: `src/content/home.ts` → `competitionSection`
-- Translation keys: `competition.heading`, `competition.subheading`, `competition.description`, `competition.cta`
-
----
-
-## Sections Remaining (Homepage)
-
-Build order — each section follows the same pattern: component in `src/components/sections/home/`, content in `src/content/home.ts`, imported into `src/app/(marketing)/page.tsx`.
-
-| # | Section | Status | Notes |
-|---|---|---|---|
-| 4 | StatsSection | ⬜ Not started | Animated counters: 1M+ students, 40+ subjects, 500K+ questions, 4.8★ |
-| 5 | FeaturesSection | ⬜ Not started | Feature cards grid with icons |
-| 6 | HowItWorksSection | ⬜ Not started | Step-by-step numbered process |
-| 7 | AppDownloadSection | ⬜ Not started | App Store + Play Store CTAs with app mockup |
-| 8 | FAQSection | ⬜ Not started | Accordion, content in `home.ts → faq[]` |
-
----
-
-## Shared Conventions
-
-### Adding a new section
-1. Create `src/components/sections/home/NewSection.tsx` — `'use client'` if using hooks/motion
-2. Add all copy/images to `src/content/home.ts` as a named export
-3. Add translation keys for **every user-visible string** in `src/content/translations/home.ts` — both `en` and `ms` blocks. Use `useT(homeTranslations)` in the component instead of referencing `home.ts` strings directly.
-4. Export from `src/components/sections/home/index.ts`
-5. Import and add to `src/app/(marketing)/page.tsx`
-
-> **Translation rule:** Every string visible to the user (headings, body copy, button labels) must have a key in both `en` and `ms` inside `homeTranslations`. No section is considered done until its translations are wired. Static data that never changes between languages (image URLs, hrefs, logo names) stays in `home.ts` and does not need a translation key.
-
-### Section container standard
-Every section uses this wrapper for consistent alignment:
+### Tailwind implementation (use `group` pattern)
 ```tsx
+// Option A — group on the button/link itself (for standalone buttons)
+<Link
+  href={href}
+  className="group inline-flex items-center gap-2 bg-[#00cc85] hover:bg-white transition-colors duration-200"
+  style={{ border: '1px solid #0b5851', borderRadius: 30, padding: '8px 8px 8px 20px' }}
+>
+  <span className="text-white group-hover:text-[#00cc85] transition-colors duration-200"
+    style={{ fontWeight: 700, fontSize: 14, whiteSpace: 'nowrap' }}>
+    {label}
+  </span>
+  <span className="flex items-center justify-center shrink-0"
+    style={{ width: 34, height: 34, backgroundColor: '#ccffcc', borderRadius: '100%' }}>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0b5851"
+      strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M9 18l6-6-6-6" />
+    </svg>
+  </span>
+</Link>
+
+// Option B — group on parent card wrapper (e.g. FeatureCard student theme)
+// Parent: className="group cursor-pointer"
+// Button: className="inline-flex ... bg-[#00cc85] group-hover:bg-white ..."
+// Label:  className="text-white group-hover:text-[#00cc85] ..."
+```
+
+### Scale animation on buttons (for standalone CTAs like CompetitionSection)
+```tsx
+<motion.a
+  whileHover={{ scale: 1.03 }}
+  whileTap={{ scale: 0.97 }}
+  className="group inline-flex ..."
+>
+```
+
+---
+
+## ─── SECTION PADDING & LAYOUT STANDARD ─── (Enforced across entire site)
+
+> **Every section must use this exact wrapper. Never use different padding values.**
+
+```tsx
+// Standard section wrapper
+<section className="w-full px-4 sm:px-6 lg:px-8" style={{ paddingTop: 25, paddingBottom: 25 }}>
+  <div className="max-w-5xl mx-auto">
+    {/* content */}
+  </div>
+</section>
+
+// Alternative using Tailwind py (for sections without tight vertical spacing needs)
 <section className="w-full px-4 sm:px-6 lg:px-8 py-8">
   <div className="max-w-5xl mx-auto">
     {/* content */}
@@ -260,7 +203,176 @@ Every section uses this wrapper for consistent alignment:
 </section>
 ```
 
-### Animation standard
+- **Max width:** `max-w-5xl` (1024px) — applies to ALL sections without exception
+- **Horizontal padding:** `px-4 sm:px-6 lg:px-8` (16px / 24px / 32px responsive)
+- **Vertical padding:** `paddingTop: 25, paddingBottom: 25` inline (or `py-8` Tailwind)
+- **Never use** `max-w-7xl`, `max-w-6xl`, or `maxWidth: 1100` — these break symmetry with other sections
+- Cards/inner containers can use `clamp(16px, 4vw, 50px)` for internal padding
+
+---
+
+## ─── FRAMER MOTION HOVER VARIANT PROPAGATION ───
+
+> **Key pattern learned: `whileHover="hovered"` on a parent propagates the "hovered" variant name down to ALL child `motion.*` elements that define a matching `hovered` key in their `variants` prop. Plain HTML elements do NOT break the propagation chain.**
+
+```tsx
+// Parent — triggers propagation
+<motion.div
+  whileHover="hovered"
+  variants={{
+    hidden: { opacity: 0, y: 24 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+    hovered: { scale: 1.02, transition: { duration: 0.2 } },
+  }}
+>
+  {/* Child — reacts to parent hover */}
+  <motion.div
+    variants={{ hovered: { x: -18, y: 14, transition: { duration: 1.1, ease: 'easeInOut' } } }}
+  />
+  <motion.img
+    variants={{ hovered: { scale: 1.3, transition: { duration: 0.4, ease: 'easeOut' } } }}
+  />
+</motion.div>
+```
+
+Use this pattern for:
+- Feature card decorative circles (animate outward on card hover)
+- LiveTuitionSection images (side icons slide out, center image scales, semi-circle drops)
+- Any card where background decoration should react to hover
+
+---
+
+## Sections Built — Full Detail
+
+### ✅ Navbar (`src/components/layout/Navbar.tsx`)
+- Sticky, transparent → white + shadow after 64px scroll
+- Logo left, nav links center-left, Sign In + Sign Up CTAs right
+- Per-link colored hover pills: Students=green, Parents=yellow, Teachers=pink, About=green
+- Mobile: hamburger → animated drawer
+- Content: `src/content/nav.ts`
+
+### ✅ Footer (`src/components/layout/Footer.tsx`)
+- Dark background `#1a1a1a`, 5 content columns + brand column
+- Link hover: gray → `#00cc85`
+- Inline SVG social icons in green
+- Content: `src/content/nav.ts`
+
+### ✅ HeroSection (`src/components/sections/home/HeroSection.tsx`)
+- `max-w-5xl`, `pt-24` for navbar offset
+- Headline from `hero.headlineLines[]`, responsive 41px/50px/60px
+- Trust badges row + student photo
+- Content: `src/content/home.ts → hero`
+
+### ✅ TaglineSection (`src/components/sections/home/TaglineSection.tsx`)
+- Two-tone hard split: left 3.5% `#CCFFCC`, right `#F2FFF2`
+- Border: `2px solid #66e0b6`, bookmark ribbon: `#00CC85`
+- Content: `src/content/home.ts → tagline`
+
+### ✅ TestimonialsSection (`src/components/sections/home/TestimonialsSection.tsx`)
+- Two-layer bg: CSS gradient (`#ffffff` → `#00cc85` at 78%) + absolute `<img>` pattern
+- Floating mascot: sibling div (NOT inside `overflow: hidden` frame), left edge, bob animation
+- Dynamic heading: live counts from `https://pandai.org/count/` via `usePandaiCount` hook
+- 2×2 testimonial cards + 3 store rating pills
+- **CRITICAL:** Use `animate="visible"` (NOT `whileInView`) for elements inside `overflow: hidden` — Intersection Observer breaks inside clipped containers
+- Content: `src/content/home.ts → testimonialsSection`
+
+### ✅ FeatureCardsSection (`src/components/sections/home/FeatureCardsSection.tsx`)
+- 2-col grid (`grid-cols-1 sm:grid-cols-2 gap-5`)
+- Uses `FeatureCard` with `light` and `dark` themes
+- Translation keys: `featureCard1.title`, `featureCard1.button`, `featureCard2.title`, `featureCard2.button`
+
+### ✅ FeatureCard (`src/components/ui/FeatureCard.tsx`) — reusable
+Three themes: `light`, `dark`, `student`
+
+| Theme | Card bg | Content bg | Title color |
+|---|---|---|---|
+| light | `#ffffff` | `rgba(204,255,204,0.75)` | `#0b5851` |
+| dark | `#2253e6` | `rgba(17,41,144,0.8)` | `#ffffff` |
+| student | `#ffffff` | `rgba(255,255,255,0.5)` | `#0b5851` |
+
+**3 decorative circles** (same positions all themes, all `motion.div` for hover animation):
+| Color | Size | Position |
+|---|---|---|
+| `#8ceb8b` | 140×140 | `bottom:102, left:-70` → hover: `x:-18, y:14` |
+| `#00cc85` | 210×210 | `top:70, right:-105` → hover: `x:22, y:-18` |
+| `#ccffcc` | 84×84 | `top:28, left:34` → hover: `x:12, y:-16` |
+
+**Button:** Follows the BUTTON DESIGN STANDARD above exactly (both `isStudent` and non-student paths).
+
+### ✅ StudentFeaturesSection (`src/components/sections/home/StudentFeaturesSection.tsx`)
+- Background: tiled pattern image (`220px` repeat)
+- `paddingTop: 30px, paddingBottom: 70px`
+- 3-col grid (`grid-cols-1 md:grid-cols-3 gap-5`), each card `height: 407px, minWidth: 300px`
+- Cards use `whileHover="hovered"` — propagates to `FeatureCard`'s `motion.div` circles
+- Translation key: `studentFeatures.heading`
+- Content: `src/content/home.ts → studentFeatureCards`
+
+### ✅ AsFeaturedInSection (`src/components/sections/home/AsFeaturedInSection.tsx`)
+- White card, `1px solid #00cc85` border, `border-radius: 25px`
+- Heading: 35px, `#00cc85`, 49px row height
+- Infinite CSS marquee: `pandai-marquee-track` / `pandai-marquee-item` (defined in `globals.css`)
+- 14 logos doubled for seamless loop, `animation: pandai-marquee 28s linear infinite`
+- Logo default height: `44px`, override via optional `height` field on each logo object in `home.ts`
+- Item padding: `0 5px` (tight — `0 16px` is too wide)
+- Left/right fade edges: 60px gradient overlays
+- **Per-logo height override:** Add `height: N` to a logo entry in `home.ts → asFeaturedIn.logos[]` and the renderer will apply it. Example: `{ name: 'Tech in Asia', src: '...', height: 28 }`
+- Content: `src/content/home.ts → asFeaturedIn`
+
+### ✅ CompetitionSection (`src/components/sections/home/CompetitionSection.tsx`)
+- White card, horizontal padding `clamp(16px, 5vw, 50px)`
+- Background image in-flow (not absolute/cover)
+- Heading stack: `position: absolute; top: 0` in padded wrapper
+- CTA button: `height: 62px`, follows BUTTON DESIGN STANDARD (with `group` on `motion.a`)
+- Scale animation: `whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}`
+- Content: `src/content/home.ts → competitionSection`
+
+### ✅ LiveTuitionSection (`src/components/sections/home/LiveTuitionSection.tsx`)
+- Purple upper section with tiled bg image, dark navy CTA strip below
+- **Outer wrapper:** `motion.div` with `whileHover="hovered"` — propagates to all child motion elements
+- **Decorative semi-circle:** `motion.div`, `720×720px`, `#d1d4ff`, `opacity: 0.3`, centered (`left:50%, translateX:-50%`), `bottom: -250` (clips bottom half via parent `overflow:hidden` = dome effect)
+  - On hover: `y: 100` (drops further down, 0.4s easeOut)
+- **Three images layout:** `display:flex, alignItems:flex-end, justifyContent:center`
+  - Left icons (`motion.img`): `width: 21%` → hover: `x: -18`
+  - Center tutors (`motion.img`): `width: 70%` → hover: `scale: 1.3`
+  - Right icons (`motion.img`): `width: 21%` → hover: `x: 18`
+- **CTA strip:** `rgba(47,59,128,0.9)` bg, `borderTop: 1.5px solid rgba(255,255,255,0.3)`
+- **Buttons:** Follow BUTTON DESIGN STANDARD — uses Tailwind `group`/`group-hover:` on `<Link>`
+- Content: `src/content/home.ts` (image URLs inline), translations: `liveTuition.*`
+
+### ✅ DownloadSection (`src/components/sections/home/DownloadSection.tsx`)
+- White card, `1px solid #00cc85` border, `border-radius: 25px`, `padding: 20px 20px 30px`
+- **3 animated decorative blobs** (Framer Motion `animate` keyframe arrays, looping):
+  - Large `#00cc85` (432×432): `left:-232, bottom:-229` — slow 12s drift
+  - Medium `#ccffcc` (277×277): `right:-130, bottom:-119` — 10s drift, 1.5s delay
+  - Small `#8ceb8b` (118×118): `right:60, top:30` — fast 8s drift, 0.8s delay
+- **Heading:** "Download" + inline Pandai logo `<img>` (no background/capsule) + "App Now!"
+- **Subtitle:** "Available on " + `<span style={{ color: '#00cc85' }}>All Platforms</span>`
+  - Font size: `clamp(16px, 1.9vw, 21px)` (bumped 5% from base)
+- **Platform buttons** (300px wide, `border-radius: 33px`, `1px solid #00cc85`):
+  - Left section: `#cbffcc` bg, right divider, `36×36` icon
+  - Right section: label (`11px, #555, 500`), name (`15px, #0b1f3a, 700`), arrow circle (`41×41, #8ceb8b`)
+  - **NOTE: Download buttons intentionally have NO hover bg-swap** — they have a scale+shadow effect via inline `onMouseEnter`/`onMouseLeave`. Do NOT apply the standard green→white hover to these.
+- Row 1: 3 buttons (Play Store, App Store, Huawei); Row 2: 1 button (Web)
+- Content: inline in component + translations `download.*`
+
+---
+
+## Localization — BM (Bahasa Malaysia) Requirements
+
+> **Every visible string must be translated. No section is done without BM keys.**
+
+- Translation file: `src/content/translations/home.ts`
+- Hook: `useT(homeTranslations)` — call in every section component
+- Structure: `{ en: { ... }, ms: { ... } }` — both blocks must have identical keys
+- Language toggle: handled by `LanguageContext` (`src/context/LanguageContext.tsx`)
+- Static data (image URLs, hrefs, logo names) stays in `home.ts` — no translation key needed
+- **Check:** When testing locally, toggle to BM and verify every section updates. If any text stays in English, a key is missing from the `ms` block.
+
+---
+
+## Framer Motion — Key Patterns
+
+### Standard scroll-in animation
 ```tsx
 <motion.div
   variants={fadeInUp}
@@ -269,71 +381,72 @@ Every section uses this wrapper for consistent alignment:
   viewport={{ once: true, margin: '-60px' }}
 >
 ```
-Use `staggerContainer` on the parent when animating a list of children with `fadeInUp`.
 
-### Font rule
-**Poppins is the only font.** It is enforced globally in `globals.css`:
-```css
-html, body { font-family: 'Poppins', sans-serif; }
-*, *::before, *::after { font-family: inherit; }
+### Stagger children
+```tsx
+<motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-60px' }}>
+  {items.map(item => <motion.div key={item.id} variants={fadeInUp} />)}
+</motion.div>
 ```
-Never set `font-family` anywhere else.
 
-### External images
-Cloudflare Images URLs are used directly as `<img src="...">` (not Next.js `<Image>`) to avoid remote pattern config. This is fine since `output: 'export'` disables image optimisation anyway.
+### Looping ambient animation (blobs)
+```tsx
+<motion.div
+  animate={{ x: [0, 30, -20, 0], y: [0, -25, 15, 0] }}
+  transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
+/>
+```
+
+### Hover variant propagation (card + children)
+See the FRAMER MOTION HOVER VARIANT PROPAGATION section above.
+
+**CRITICAL:** Never use `whileInView` inside an `overflow: hidden` parent — Intersection Observer breaks. Use `animate="visible"` instead.
 
 ---
 
 ## API Integration
 
 **Live count endpoint:** `https://pandai.org/count/`
-
-Returns:
 ```json
 { "users": 878501, "questions": 722682777, "quizzess": 86750, "teachers": 92610 }
 ```
-
-Hook: `src/lib/usePandaiCount.ts` — call it in any client component that needs live counts. Falls back to hardcoded values silently on CORS/network error.
+Hook: `src/lib/usePandaiCount.ts` — falls back silently on CORS/network error.
 
 ---
 
 ## MCP Connections
-
-Run these at the start of every session to ensure tools are connected:
-
-```bash
-# Framer design-bridge relay (Streamable HTTP — must use --transport http)
-claude mcp add --transport http design-bridge "https://framer-mcp-relay.orange-lamp-studio.workers.dev/mcp?userId=f355240a47ad9d8da33c3ddb3909680b86618f667fb2d8216d855ce03161058d"
-```
-
-> If already registered and showing ✗ Failed, remove and re-add:
-> `claude mcp remove design-bridge && claude mcp add --transport http design-bridge "<url above>"`
 
 | Server | Transport | Purpose |
 |---|---|---|
 | design-bridge | HTTP (Streamable) | Framer relay — design reference |
 | claude.ai Figma | HTTPS | Figma DS 1.5 token inspection |
 
+```bash
+# Add Framer design-bridge
+claude mcp add --transport http design-bridge "https://framer-mcp-relay.orange-lamp-studio.workers.dev/mcp?userId=f355240a47ad9d8da33c3ddb3909680b86618f667fb2d8216d855ce03161058d"
+
+# Re-add if failing
+claude mcp remove design-bridge && claude mcp add --transport http design-bridge "<url above>"
+```
+
 ---
 
 ## Deployment
 
-- **Cloudflare Pages** auto-deploys on push to `main`
-- Build command: `npm run build` → outputs to `out/`
+- Cloudflare Pages auto-deploys on push to `main`
 - `next.config.ts`: `output: 'export'`, `images: { unoptimized: true }`
-- GitHub Actions CI: builds + type-checks on every PR (does not deploy — Cloudflare handles that)
+- Build: `npm run build` → `out/`
 
 **Workflow:**
 ```bash
-# Work on staging
-git checkout staging
-# … make changes, test on localhost:3000 …
-git add . && git commit -m "feat: ..."
+git checkout staging       # always develop on staging
+# ... make changes ...
+git add <files> && git commit -m "feat: ..."
 git push origin staging
 
-# Merge to main to deploy
+# Deploy: merge to main
 git checkout main && git merge staging && git push origin main
-git checkout staging   # return to staging for next task
+git checkout staging
 ```
 
 ---
@@ -350,45 +463,66 @@ npm run lint     # ESLint
 
 ## Rules & Lessons Learned (Do Not Repeat)
 
-### Git workflow
-- **NEVER commit or push without explicit user approval.** Always show what changed and ask "shall I commit and push?" first.
-- Always push to both `staging` AND `main` when user says "push" — merge staging → main, then push both.
+### Git
+- **NEVER commit or push without explicit user approval.** Show changes and ask first.
+- Always merge staging → main when deploying. Push both branches.
 
-### FeatureCard — what went wrong and what's right
-- ❌ Card 1 background is NOT mint `#e9fbf5` — it is **white `#ffffff`**
-- ❌ The "green" the user referred to is the content area bg (`rgba(204,255,204,0.75)`), NOT the card bg
-- ❌ Do NOT use `backgroundSize: cover` on the testimonial section background — Framer uses `object-fit: contain` on an `<img>` element
-- ✅ All circle sizes/positions must be confirmed from Chrome DevTools, not estimated
-- ✅ Circles must have explicit `zIndex: 0`; image wrapper `zIndex: 1`; content `zIndex: 2` — without this, large circles cover the text
-- ✅ Arrow circle in CardButton is `#ccffcc` (light green), chevron is `#0b5851` (dark teal) — confirmed from Framer tokens
-- ✅ Image uses `object-fit: contain` + `object-position: bottom` to eliminate gap between image and content section
-- ✅ Image wrapper uses `flex: 1` + `height: 100%` on the `<img>` to equalize card heights — do NOT use absolute positioning (causes collapse)
+### Buttons
+- ✅ Every button must follow the BUTTON DESIGN STANDARD above — green bg, dark teal border, `#ccffcc` arrow circle, hover bg-swap to white
+- ✅ Use `group` + `group-hover:` Tailwind pattern — never use JS state for button hover colors
+- ❌ Do NOT use `fontWeight: 800` (extrabold) on button labels — use `700` (bold)
+- ❌ DownloadSection platform buttons are intentionally different — do NOT add the green→white hover swap to them
 
-### TestimonialsSection — what went wrong and what's right
-- ❌ Do NOT use `whileInView` inside an `overflow: hidden` parent — Intersection Observer breaks, elements stay invisible. Use `animate="visible"` instead for elements inside overflow containers
-- ❌ Do NOT use an absolute `<img>` for the background without explicit `zIndex` on all content — the image covers everything
-- ✅ Correct background approach: CSS `linear-gradient` for the two-tone color + separate absolute `<img>` for the pattern, with content at `z-10`
-- ❌ When editing JSX, always check the opening tag still has its closing `>` — a missing `>` causes cascading syntax errors that break the entire component
-- ✅ Floating mascot MUST be a sibling of the `overflow-hidden` frame (not inside it) — otherwise it gets clipped
+### Layout / Spacing
+- ✅ `max-w-5xl mx-auto` is the universal content width — never use `max-w-7xl` or hardcoded `maxWidth: 1100`
+- ✅ `overflow: hidden` on the outer `motion.div` wrapper (not the inner `max-w-5xl` div) — otherwise hover scale clips cards
+- ❌ Never add `overflow: hidden` to the `max-w-5xl` container — this clips hover scale effects on cards
+
+### FeatureCard
+- ❌ Card 1 bg is NOT mint — it is **white `#ffffff`**
+- ✅ Circle zIndex: `0`, image wrapper zIndex: `1`, content zIndex: `2` — always explicit
+- ✅ Arrow circle: `#ccffcc` bg, chevron: `#0b5851` — never white circle, never green chevron
+
+### Animations
+- ❌ Never use `whileInView` inside `overflow: hidden` — elements stay invisible
+- ✅ Use `animate="visible"` for elements inside clipped containers
+- ✅ Floating mascots/decorative elements that visually overflow a card must be **siblings** of the `overflow: hidden` div, not children
+
+### TestimonialsSection
+- ✅ Background = CSS gradient + separate absolute `<img>` overlay, NOT `backgroundImage` CSS combo
+- ✅ Floating mascot is a sibling div (outside `overflow: hidden`)
+
+### CompetitionSection
+- ✅ Background image is in-flow (`display: block; width: 100%`), NOT `background-image: cover`
+- ✅ Heading text sits in padded space above image using `position: absolute; top: 0`
+- ✅ Add `wordBreak: break-word` to heading container to prevent BM text overflow
+
+### AsFeaturedInSection
+- ✅ Item padding `0 5px` (tight) — `0 16px` creates excessive gaps between logos
+- ✅ Per-logo height override: add `height: N` to logo entry in `home.ts`; renderer checks `logo.height ?? 44`
+- ❌ Never force a fixed width on logos — natural aspect ratios must be preserved
+
+### LiveTuitionSection semi-circle
+- ✅ Semi-circle dome effect: large circle (`overflow: hidden` on parent clips bottom half), centered with `left:50%, translateX:-50%`, `bottom: -250`
+- ✅ Use `translateX: '-50%'` in Framer Motion style object (not `transform: 'translateX(-50%)'`) so FM can compose additional transforms without conflict
 
 ### General
-- ❌ Never use `object-fit: cover` for transparent PNG cutout images — use `object-contain` so the cutout blends with the card background
-- ✅ When combining CSS background layers (gradient + image), use comma-separated values in `backgroundImage`, `backgroundSize`, `backgroundPosition`, `backgroundRepeat` — but the gradient will cover the image if `backgroundSize: 100% 100%` is used. Safer to separate them (gradient as `background`, image as absolute `<img>`)
-- ✅ Always confirm Framer design values via Chrome DevTools inspection — never guess circle sizes/positions or color tokens
+- ❌ Never use `object-fit: cover` on transparent PNG cutouts — use `object-contain`
+- ✅ Cloudflare Images URLs used directly as `<img src>` (not Next.js `<Image>`) — no remote patterns config needed
+- ✅ Always confirm Framer design values via Chrome DevTools — never guess circle sizes, positions, or colors
+- ✅ When `.md file` says "update the .md file" — always means `pandai.web.master.md`, NEVER `CLAUDE.md`
 
 ---
 
-## Known Decisions & Context
+## Known Decisions
 
-- `max-w-5xl` is the standard content width for all sections (set to match testimonials frame)
-- TaglineSection background uses a hard two-color split (not gradient): `linear-gradient(to right, #CCFFCC 3.5%, #F2FFF2 3.5%)`
-- TestimonialsSection background uses two-layer system: CSS hard-stop gradient (white → `#00cc85` at 78%) + absolute `<img>` pattern at `zIndex: 1`, content at `z-10`
-- Stars in testimonial cards = 5 full gold stars; stars in rating pills = half-star-aware (fractional support via SVG `linearGradient`)
-- `type` field was removed from `storeRatings` — icon URL is the single source of truth
-- `usePandaiCount` uses `users` for student count and `questions` for questions count in the testimonials heading
-- Favicon uses `src/app/icon.svg` (Pandai icon mark only, extracted from `logo-normal.svg` paths 1–12); Next.js App Router picks it up automatically — no config needed
-- Floating mascot in TestimonialsSection must be a sibling of the `overflow-hidden` frame div (not inside it) so it can visually overflow the left border
-- Store rating pills use `<motion.a>` with `target="_blank" rel="noopener noreferrer"` — each `href` lives in `home.ts` for easy updates
+- `max-w-5xl` is the universal section width (set to match testimonials frame)
+- All images hosted on Cloudflare Images CDN
+- `usePandaiCount` uses `users` for student count, `questions` for question count
+- Favicon: `src/app/icon.svg` — Next.js App Router picks up automatically
+- `pandai-marquee` keyframe and `.pandai-marquee-track` / `.pandai-marquee-item` classes live in `globals.css`
+- Store rating pills in TestimonialsSection intentionally do NOT use the arrow-circle button style
+- BM language code in translations = `ms` (not `bm`)
 
 ---
 

@@ -12,7 +12,7 @@ type PlanTab = "monthly" | "yearly";
 
 function ChevronDown() {
   return (
-    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" style={{ flexShrink: 0 }} role="presentation">
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" style={{ flexShrink: 0 }} role="presentation">
       <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
@@ -20,7 +20,7 @@ function ChevronDown() {
 
 function ChevronUp() {
   return (
-    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" style={{ flexShrink: 0 }} role="presentation">
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" style={{ flexShrink: 0 }} role="presentation">
       <path d="M18 15l-6-6-6 6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
@@ -28,7 +28,7 @@ function ChevronUp() {
 
 function ChevronRight() {
   return (
-    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" style={{ flexShrink: 0 }} role="presentation">
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" style={{ flexShrink: 0 }} role="presentation">
       <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
@@ -40,21 +40,23 @@ export default function FindOutMoreSection() {
 
   return (
     <section className="relative bg-white overflow-hidden">
-      <div className="max-w-[1200px] mx-auto px-[50px] w-full py-[50px]">
+      {/* Responsive outer padding: tighter on mobile, full on sm+ */}
+      <div className="max-w-[1200px] mx-auto px-4 sm:px-[50px] w-full py-8 sm:py-[50px]">
+
         {/* Heading */}
         <motion.h2
           variants={fadeInUp}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-80px" }}
-          className="font-bold text-[36px] md:text-[42px] text-center mb-[28px]"
+          className="font-bold text-[28px] sm:text-[36px] md:text-[42px] text-center mb-[28px]"
           style={{ lineHeight: "1.1em" }}
         >
           <span style={{ color: "#FFD000" }}>{t("pricing.heading.save")}</span>
           <span style={{ color: "#434955" }}>{t("pricing.heading.rest")}</span>
         </motion.h2>
 
-        {/* Outer pricing container — yellow bg acts as frame/gap */}
+        {/* Outer pricing container */}
         <motion.div
           variants={staggerContainer}
           initial="hidden"
@@ -71,11 +73,11 @@ export default function FindOutMoreSection() {
           {/* Description area */}
           <motion.div
             variants={fadeInUp}
-            className="px-[25px] py-[25px]"
+            className="px-4 py-4 sm:px-[25px] sm:py-[25px]"
             style={{ backgroundColor: "rgb(255, 240, 173)" }}
           >
             <p
-              className="text-[17px] md:text-[19px] font-bold leading-relaxed text-center"
+              className="text-[15px] sm:text-[17px] md:text-[19px] font-bold leading-relaxed text-center"
               style={{ color: "#434955" }}
             >
               {t("pricing.desc")}
@@ -84,10 +86,11 @@ export default function FindOutMoreSection() {
 
           {/* Content row: left illustration + right plan table */}
           <div className="flex flex-col lg:flex-row" style={{ gap: "2px" }}>
-            {/* Left: illustration — no bottom padding, image sits flush */}
+
+            {/* Left: illustration — hidden on mobile, visible on lg+ */}
             <motion.div
               variants={fadeInUp}
-              className="flex items-end justify-center pt-[30px] px-[30px] flex-1"
+              className="hidden lg:flex items-end justify-center pt-[30px] px-[30px] flex-1"
               style={{
                 backgroundColor: "rgb(255, 225, 89)",
                 minHeight: "300px",
@@ -105,33 +108,23 @@ export default function FindOutMoreSection() {
             {/* Right: plan table */}
             <motion.div
               variants={fadeInUp}
-              className="flex flex-col flex-1"
-              style={{ padding: "40px" }}
+              className="flex flex-col flex-1 p-4 sm:p-10"
             >
               <div className="flex flex-col">
-                {/* Tab bar */}
-                <div
-                  className="flex"
-                  style={{
-                    height: "43px",
-                    padding: "0 25px",
-                    gap: "33px",
-                  }}
-                >
+
+                {/* Tab bar — mobile: gap 20px px 20px / desktop: gap 33px px 25px */}
+                <div className="flex h-[43px] gap-5 sm:gap-[33px] px-5 sm:px-[25px]">
+
                   {/* Monthly tab — always light green */}
                   <button
                     onClick={() => setActiveTab("monthly")}
-                    className="flex flex-1 items-center justify-center transition-colors duration-200"
+                    className="flex flex-1 items-center justify-center gap-0 sm:gap-[8px] transition-colors duration-200 rounded-tl-[15px] rounded-tr-[15px] sm:rounded-tl-[20px] sm:rounded-tr-[20px] px-[10px] sm:px-[20px]"
                     style={{
-                      gap: "8px",
-                      padding: "0 20px",
                       backgroundColor: "rgb(204, 255, 204)",
-                      borderTopLeftRadius: "20px",
-                      borderTopRightRadius: "20px",
                       color: "rgb(11, 88, 81)",
                     }}
                   >
-                    <span className="font-semibold text-[17px] whitespace-nowrap">
+                    <span className="font-semibold text-[13px] sm:text-[17px] whitespace-nowrap">
                       {t("pricing.tab.monthly")}
                     </span>
                     {activeTab === "monthly" ? <ChevronDown /> : <ChevronUp />}
@@ -140,17 +133,13 @@ export default function FindOutMoreSection() {
                   {/* Yearly tab — always dark green */}
                   <button
                     onClick={() => setActiveTab("yearly")}
-                    className="flex flex-1 items-center justify-center transition-colors duration-200"
+                    className="flex flex-1 items-center justify-center gap-0 sm:gap-[8px] transition-colors duration-200 rounded-tl-[15px] rounded-tr-[15px] sm:rounded-tl-[20px] sm:rounded-tr-[20px] px-[10px] sm:px-[20px]"
                     style={{
-                      gap: "8px",
-                      padding: "0 20px",
                       backgroundColor: "rgb(0, 204, 133)",
-                      borderTopLeftRadius: "20px",
-                      borderTopRightRadius: "20px",
                       color: "#ffffff",
                     }}
                   >
-                    <span className="font-semibold text-[17px] whitespace-nowrap">
+                    <span className="font-semibold text-[13px] sm:text-[17px] whitespace-nowrap">
                       {t("pricing.tab.yearly")}
                     </span>
                     {activeTab === "yearly" ? <ChevronDown /> : <ChevronUp />}
@@ -161,11 +150,11 @@ export default function FindOutMoreSection() {
                 <div
                   style={{
                     backgroundColor: "rgb(255, 255, 255)",
-                    borderRadius: "20px",
+                    borderRadius: "15px 15px 20px 20px",
                     overflow: "hidden",
                   }}
                 >
-                  {/* Header row — bg and text follow active tab colour */}
+                  {/* Header row */}
                   <div
                     className="flex transition-colors duration-200"
                     style={{
@@ -183,32 +172,29 @@ export default function FindOutMoreSection() {
                           activeTab === "yearly"
                             ? "1.5px solid rgba(255,255,255,0.5)"
                             : "1.5px solid rgb(11, 88, 81)",
-                        padding: "16px 12px",
+                        padding: "8px 8px",
                       }}
                     >
                       <span
-                        className="text-[18px] font-bold text-center"
+                        className="text-[12px] sm:text-[16px] font-bold text-center"
                         style={{
-                          color:
-                            activeTab === "yearly"
-                              ? "#ffffff"
-                              : "rgb(11, 88, 81)",
-                          maxWidth: "120px",
+                          color: activeTab === "yearly" ? "#ffffff" : "rgb(11, 88, 81)",
+                          maxWidth: "90px",
                           lineHeight: "1.3",
                         }}
                       >
                         {t("pricing.table.children")}
                       </span>
                     </div>
-                    <div className="flex-1 flex items-center justify-center gap-[8px]" style={{ padding: "16px 12px" }}>
+                    <div
+                      className="flex-1 flex items-center justify-center gap-[6px]"
+                      style={{ padding: "8px 8px" }}
+                    >
                       <span
-                        className="text-[18px] font-bold text-center"
+                        className="text-[12px] sm:text-[16px] font-bold text-center"
                         style={{
-                          color:
-                            activeTab === "yearly"
-                              ? "#ffffff"
-                              : "rgb(11, 88, 81)",
-                          maxWidth: "120px",
+                          color: activeTab === "yearly" ? "#ffffff" : "rgb(11, 88, 81)",
+                          maxWidth: "90px",
                           lineHeight: "1.3",
                         }}
                       >
@@ -216,16 +202,16 @@ export default function FindOutMoreSection() {
                           ? t("pricing.table.monthly")
                           : t("pricing.table.yearly")}
                       </span>
-                      {/* Auto Debit badge — only on yearly tab */}
+                      {/* Auto Debit badge */}
                       {activeTab === "yearly" && (
                         <span
-                          className="inline-flex items-center justify-center text-center font-bold leading-tight"
+                          className="inline-flex items-center justify-center text-center font-bold leading-tight flex-none"
                           style={{
                             backgroundColor: "rgb(255, 208, 0)",
                             color: "rgb(11, 88, 81)",
                             borderRadius: "6px",
-                            fontSize: "9px",
-                            padding: "3px 5px",
+                            fontSize: "8px",
+                            padding: "2px 4px",
                             whiteSpace: "nowrap",
                             lineHeight: "1.2",
                           }}
@@ -251,13 +237,8 @@ export default function FindOutMoreSection() {
                     >
                       {/* Left column: child icons */}
                       <div
-                        className="flex items-center justify-center"
-                        style={{
-                          padding: "14px 20px",
-                          gap: "5px",
-                          flex: "1 0 0",
-                          minWidth: "220px",
-                        }}
+                        className="flex items-center justify-center flex-1"
+                        style={{ padding: "8px 10px", gap: "4px", minWidth: 0 }}
                       >
                         {row.icons.map((icon, i) => (
                           <Image
@@ -266,39 +247,43 @@ export default function FindOutMoreSection() {
                             alt=""
                             width={50}
                             height={46}
-                            className="object-contain flex-none"
-                            style={{ width: "50px", height: "46px" }}
+                            className="object-contain flex-none w-8 h-[30px] sm:w-[50px] sm:h-[46px]"
                           />
                         ))}
                       </div>
 
-                      {/* Arrow — own flex item so it sits centred between columns */}
+                      {/* Arrow — own flex item */}
                       <div
-                        className="flex items-center justify-center"
-                        style={{
-                          width: "26px",
-                          flexShrink: 0,
-                          color: "rgb(255, 185, 0)",
-                        }}
+                        className="flex items-center justify-center flex-none"
+                        style={{ width: "20px", color: "rgb(255, 185, 0)" }}
                       >
                         <ChevronRight />
                       </div>
 
                       {/* Right column: price */}
                       <div
-                        className="flex items-center justify-center"
-                        style={{
-                          padding: "14px 20px",
-                          flex: "1 0 0",
-                          minWidth: "150px",
-                        }}
+                        className="flex items-center justify-center flex-1"
+                        style={{ padding: "8px 10px", minWidth: 0 }}
                       >
-                        <span
-                          className="text-[22px] font-bold"
-                          style={{ color: "rgb(0, 0, 0)" }}
-                        >
-                          {activeTab === "monthly" ? row.monthlyPrice : row.yearlyPrice}
-                        </span>
+                        {activeTab === "monthly" ? (
+                          <span
+                            className="text-[16px] sm:text-[22px] font-bold"
+                            style={{ color: "rgb(0, 0, 0)" }}
+                          >
+                            {row.monthlyPrice}
+                          </span>
+                        ) : (
+                          <span
+                            className="font-bold text-center"
+                            style={{
+                              color: "rgb(0, 0, 0)",
+                              fontSize: "clamp(12px, 3.5vw, 18px)",
+                              lineHeight: "1.3",
+                            }}
+                          >
+                            {row.yearlyDiscount} = {row.yearlyPrice}
+                          </span>
+                        )}
                       </div>
                     </div>
                   ))}

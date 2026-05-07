@@ -1,6 +1,7 @@
 import ParentsHeroSection from '@/components/sections/parents/HeroSection'
 import ParentsFeaturesSection from '@/components/sections/parents/FeaturesSection'
 import FindOutMoreSection from '@/components/sections/parents/FindOutMoreSection'
+import TestimonialSection from '@/components/sections/parents/TestimonialSection'
 
 export default function ParentsPage() {
   return (
@@ -8,6 +9,7 @@ export default function ParentsPage() {
       <ParentsHeroSection />
       <ParentsFeaturesSection />
       <FindOutMoreSection />
+      <TestimonialSection />
     </div>
   )
 }

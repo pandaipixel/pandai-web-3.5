@@ -18,6 +18,17 @@ export const parentsTranslations: TranslationDict = {
     'features.performance.title': 'Assess Subject Specific Performance',
     'features.performance.desc': "Get a clear and easy-to-understand report on your child's performance for each subject, so you can focus your support and help where it's most needed.",
 
+    'testimonials.heading.parents': 'Parents ',
+    'testimonials.heading.word': 'Testimonials',
+    'testimonials.quote.en-hadi': 'A really great app for students. It helps them achieve better academic results. Well done Pandai!',
+    'testimonials.quote.en-najah': 'Pandai is an app that helps students learn using just their phone. Its features are very attractive and easy for students to use.',
+    'testimonials.quote.en-rayyan': 'I love Pandai because it is such an engaging app. The answers and step-by-step workings are thorough, especially for Mathematics. This app is also easy to use.',
+    'testimonials.quote.pn-halizah': 'My child revises their lessons much more on Pandai. They are more interested in studying with this app. I am very grateful for Pandai.',
+    'testimonials.quote.ms-leela': 'My child seems so happy using Pandai everyday. I hope she can do well in study after using Pandai. As a parent, I feel great spending money on high quality learning Apps.',
+    'testimonials.quote.sheryinna': 'I am a Pandai user, and seeing the many benefits that Pandai offers, I do not hesitate to share about Pandai with others.',
+    'testimonials.role': 'Parent',
+    'testimonials.cta': 'Read hundreds more Testimonials from Students, Parents and Teachers',
+
     'pricing.heading.save': 'Save',
     'pricing.heading.rest': ' with Family Subscription Package!',
     'pricing.desc': "Enjoy a discounted rate for Pandai Premium when you subscribe to multiple children's accounts. Easily monitor payment status to avoid disruption to your child's premium access.",
@@ -49,6 +60,17 @@ export const parentsTranslations: TranslationDict = {
 
     'features.performance.title': 'Nilai Prestasi Khusus Subjek',
     'features.performance.desc': "Dapatkan laporan yang jelas dan mudah difahami tentang prestasi anak anda untuk setiap subjek, supaya anda boleh menumpukan sokongan dan bantuan di tempat yang paling diperlukan.",
+
+    'testimonials.heading.parents': 'Ibu Bapa ',
+    'testimonials.heading.word': 'Testimonial',
+    'testimonials.quote.en-hadi': 'Satu Apps yang sangar bagus untuk student. Boleh membantu mereka mendapat pencapaian akademik yang lebih baik. well done Pandai',
+    'testimonials.quote.en-najah': 'Pandai adalah aplikasi yang bantu pelajar belajar dengan gunakan phone sahaja. Ciri feature dia sangat menarik dan mudah digunakan oleh pelajar',
+    'testimonials.quote.en-rayyan': 'Saya suka Pandai sebab app yang menarik. Jawapan dan jalan kira yang lengkap terutama subjek Matematik. App ini juga senang nak guna.',
+    'testimonials.quote.pn-halizah': 'Anak saya lebih banyak mengulangkaji pelajaran di Pandai. Mereka lebih tertarik belajar dengan app ini. Saya sangat berterima kasih dengan Pandai.',
+    'testimonials.quote.ms-leela': 'Anak saya kelihatan sangat gembira menggunakan Pandai setiap hari. Saya berharap dia boleh belajar dengan baik selepas menggunakan Pandai. Sebagai ibu bapa, saya rasa seronok berbelanja untuk aplikasi pembelajaran berkualiti tinggi.',
+    'testimonials.quote.sheryinna': 'Saya adalah Pengguna Pandai, melihat begitu banyak kelebihan yang Pandai tawarkan, saya tidak teragak -agak untuk kongsikan tentang Pandai dengan orang lain.',
+    'testimonials.role': 'Ibu Bapa',
+    'testimonials.cta': 'Baca ratusan lagi Testimoni daripada Pelajar, Ibu Bapa dan Guru',
 
     'pricing.heading.save': 'Jimat',
     'pricing.heading.rest': ' dengan Pakej Langganan Keluarga!',

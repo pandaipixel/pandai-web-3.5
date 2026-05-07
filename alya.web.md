@@ -10,27 +10,27 @@ When Alya asks Claude to read this file, immediately run these steps **without a
 
 ### 1. Check Framer MCP Connection
 ```bash
-curl -s -X POST "https://framer-mcp-relay.orange-lamp-studio.workers.dev/mcp?userId=f355240a47ad9d8da33c3ddb3909680b86618f667fb2d8216d855ce03161058d" \
+curl -s -X POST "https://framer-mcp-relay.orange-lamp-studio.workers.dev/mcp?userId=ulwan@pandai.org" \
   -H "Content-Type: application/json" \
-  -d '{"jsonrpc":"2.0","id":1,"method":"selection_get","params":{}}' | head -c 300
+  -d '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"selection_get","arguments":{}}}' | head -c 300
 ```
-Report: connected ✓ or the error message.
+Report: **connected ✓** or the error message. If "Plugin is not connected" — ask Alya to open Framer and reconnect the Design Bridge MCP plugin.
 
 ### 2. Start Dev Server
 ```bash
-cd "c:\Users\alyaa\OneDrive\Desktop\my.pandai.org" && npm run dev
+cd "c:/Users/alyaa/OneDrive/Desktop/my.pandai.org" && npm run dev
 ```
-Wait ~5s then confirm it's running on `http://localhost:3000`.
+Wait ~5s then confirm it's running on `http://localhost:3000`. If port 3000 is taken, Next.js will use 3001 — report whichever port it binds to.
 
-### 3. Pages to Review (open these routes)
+### 3. Pages to Review
 | Route | Status |
 |---|---|
 | `http://localhost:3000` | Home page ✓ built |
 | `http://localhost:3000/parents` | Parents page ✓ built |
-| `http://localhost:3000/students` | **Not built yet** — flag to Alya |
+| `http://localhost:3000/students` | **NOT BUILT** — flag to Alya |
 
 ### 4. BM Localisation Check
-The language toggle lives in the Navbar. Confirm all three pages render correctly in both **EN** and **BM (ms)**. Flag any missing translation keys (they fall back to the key string itself, e.g. `"pricing.table.children"` appearing as raw text = missing key).
+The language toggle is in the Navbar. Confirm `/` and `/parents` render correctly in both **EN** and **BM (ms)**. Flag any raw translation key strings appearing in the UI (e.g. `"pricing.table.children"` as literal text = missing key).
 
 ---
 
@@ -41,85 +41,107 @@ The language toggle lives in the Navbar. Confirm all three pages render correctl
 | Site | `my.pandai.org` |
 | Stack | Next.js 14 App Router · TypeScript · Tailwind CSS v3 · Framer Motion v11 |
 | Hosting | Cloudflare Pages |
-| Design source | Framer (live site) + Figma DS 1.5 (`TLVKe3bgJTdVvuPAzgDq2f`) |
-| Images CDN | Cloudflare Images — `https://imagedelivery.net/zy4C5mYDeC8QYHozzOk2nQ/<id>/<variant>` |
+| Design source | Framer (live: `my.pandai.org`) + Figma DS 1.5 (`TLVKe3bgJTdVvuPAzgDq2f`) |
+| Images CDN | Cloudflare Images — `https://imagedelivery.net/zy4C5mYDeC8QYHozzOk2nQ/<uuid>/<variant>` |
 | Repo | `https://github.com/pandaipixel/pandai-web-3.5` |
 | Working dir | `c:\Users\alyaa\OneDrive\Desktop\my.pandai.org` |
-| Shell | PowerShell (Windows 11) — but use Bash tool for all shell ops |
+| Shell | PowerShell (Windows 11) — always use **Bash tool** for all shell ops, never PowerShell tool |
+| Branch | `parents-staging` → merges to `staging` → merges to `main` |
 
 ---
 
 ## Framer MCP
 
-**Relay URL:**
+**Relay endpoint:**
 ```
-https://framer-mcp-relay.orange-lamp-studio.workers.dev/mcp?userId=f355240a47ad9d8da33c3ddb3909680b86618f667fb2d8216d855ce03161058d
+POST https://framer-mcp-relay.orange-lamp-studio.workers.dev/mcp?userId=ulwan@pandai.org
+Content-Type: application/json
 ```
 
-**Protocol:** JSON-RPC 2.0 via curl POST
+**Protocol:** JSON-RPC 2.0
 
-**Supported methods (ONLY these work — do not guess others):**
-- `selection_get` — get currently selected node(s) in Framer
-- `nodes_getNode` — get a single node by ID
-- `nodes_getChildren` — get children of a node
-- `nodes_getParent` — get parent of a node
+**Supported methods — ONLY these four work:**
+| Method | What it does |
+|---|---|
+| `selection_get` | Get currently selected node(s) in Framer canvas |
+| `nodes_getNode` | Get a single node's properties by ID |
+| `nodes_getChildren` | Get child nodes of a node |
+| `nodes_getParent` | Get parent node of a node |
 
-**NOT supported (will error):** `get_node_children`, `get_node_properties`, `nodes_getById`, `nodes_getByName`
+**NOT supported (will return error):** `get_node_children`, `get_node_properties`, `nodes_getById`, `nodes_getByName`
 
-**Known Framer page IDs:**
+**Call format:**
+```bash
+curl -s -X POST "https://framer-mcp-relay.orange-lamp-studio.workers.dev/mcp?userId=ulwan@pandai.org" \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"selection_get","arguments":{}}}'
+```
+
+**Fallback when MCP is offline:** scrape the live site and grep for CSS values:
+```bash
+curl -s "https://my.pandai.org/parents" | node -e "
+const c=[]; process.stdin.on('data',d=>c.push(d)); process.stdin.on('end',()=>{
+  const h=Buffer.concat(c).toString();
+  // grep for specific text or CSS patterns
+  console.log(h.slice(h.indexOf('SEARCH_TERM')-200, h.indexOf('SEARCH_TERM')+500));
+});"
+```
+
+**Known Framer node IDs:**
 - Parents page: `WEky7K79T`
-- Parents / Find Out More Section node: `S1k5dKQ4B`
-- Parents / Pricing Variable (Plan Table 2026): `Ir5zVcTrL`
-
-**Workflow when Alya selects a node in Framer:**
-1. Run `selection_get` to get the selected node ID
-2. Run `nodes_getNode` with that ID to read properties
-3. Run `nodes_getChildren` to inspect sub-nodes
-4. If MCP data is incomplete, **scrape the live site** (`https://my.pandai.org/<page>`) and grep the saved HTML for exact CSS values — this is the most reliable fallback
+- Parents / Find Out More Section: `S1k5dKQ4B`
+- Parents / Plan Table 2026: `Ir5zVcTrL`
+- Parents / Plan Table Mobile root: `Spk9GSenp` (310×371px)
 
 ---
 
-## Colour Tokens (Framer DS → Code)
+## Colour Tokens
 
-| Name | Hex / RGB | Framer token | Usage |
-|---|---|---|---|
-| Brand green | `#00CC85` / `rgb(0, 204, 133)` | `--token-eb0954d0` | Active tab, primary CTA bg, navbar border |
-| Light green | `rgb(204, 255, 204)` | `--token-876073ea` | Inactive tab bg, table header bg (monthly), arrow badge |
-| Dark green text | `rgb(11, 88, 81)` | `--token-40612798` | Green text, button border, table header text |
-| Brand yellow | `#FFD000` / `rgb(255, 208, 0)` | `--token-2ada4bf8` | Row separators, outer pricing frame, heading accent |
-| Deep yellow panel | `rgb(255, 225, 89)` | — | Pricing left illustration panel |
-| Pale yellow | `rgb(255, 240, 173)` | — | Pricing description area |
-| Dark text | `#434955` | — | Body text, secondary headings |
-| White | `#ffffff` | — | Active tab text, table body bg |
-| Arrow orange | `rgb(255, 185, 0)` | — | Row chevron arrow colour |
+| Name | Hex / RGB | Usage |
+|---|---|---|
+| Brand green | `#00CC85` / `rgb(0, 204, 133)` | Primary CTA bg, active tab, avatar selector active ring |
+| Light green | `rgb(204, 255, 204)` | Monthly tab bg, CTA arrow badge bg |
+| Dark green text | `rgb(11, 88, 81)` / `#0B5851` | Button border, green text, table text (monthly) |
+| Brand yellow | `#FFD000` / `rgb(255, 208, 0)` | Row separators, outer pricing frame, heading accent, star icons |
+| Testimonial yellow | `rgb(255, 207, 48)` | Avatar selector ring, testimonial name text, testimonial card border |
+| Deep yellow panel | `rgb(255, 225, 89)` | Pricing left illustration panel bg |
+| Pale yellow | `rgb(255, 240, 173)` | Pricing description area bg |
+| Testimonial header bg | `rgb(251, 240, 202)` | Testimonial card header area |
+| Testimonial card border | `rgb(252, 213, 83)` | Testimonial card outer border |
+| Avatar bg green | `rgb(140, 235, 139)` | Main testimonial avatar circle background |
+| Dark text | `#434955` | Body text, secondary headings, role text |
+| Arrow orange | `rgb(255, 185, 0)` | Row chevron arrow colour in pricing table |
+| White | `#ffffff` | Active tab text, table body bg |
 
 ---
 
 ## The Canonical Pandai Button
 
-Every button built in this project must follow this design from `src/components/sections/parents/HeroSection.tsx`.
+**Every button or CTA built in this project must follow this exact design.** No exceptions unless explicitly told otherwise.
 
 ### Visual spec
 - Shape: pill (`borderRadius: "30px"`)
 - Height: `57px`
 - Background: `#00CC85`
 - Border: `1px solid #0B5851`
-- Label text: white, Poppins, 20px, weight 600, `lineHeight: "1em"`
-- Arrow badge: `#CCFFCC` (light green) circle, positioned right inside the pill
+- Label: white · Poppins · 16px (section CTAs) · weight 600 · `lineHeight: "1em"`
+- Arrow badge: `#CCFFCC` circle, right side inside pill, contains dark green chevron SVG
 
-### Hover animation (state-driven with `useState`)
+### Hover animation — `useState` pattern (NOT Framer Motion whileHover)
 ```tsx
-// outer container padding shrinks on hover (pushes badge bigger visually)
-padding: btnHovered ? "7px" : "10px"  // transition: "padding 0.2s ease"
+const [btnHovered, setBtnHovered] = useState(false);
 
-// arrow badge grows
-width:  btnHovered ? "42px" : "38px"  // transition: "width 0.2s ease, height 0.2s ease"
+// Outer padding shrinks → badge appears to grow
+padding: btnHovered ? "7px" : "10px"   // transition: "padding 0.2s ease"
+
+// Badge size grows
+width:  btnHovered ? "42px" : "38px"   // transition: "width 0.2s ease, height 0.2s ease"
 height: btnHovered ? "42px" : "38px"
 ```
 
-### Arrow icon inside badge
+### Arrow SVG inside badge
 ```tsx
-<svg viewBox="0 0 24 24" style={{ width: "24px", height: "24px" }}>
+<svg viewBox="0 0 24 24" style={{ width: "24px", height: "24px", display: "block" }} role="presentation">
   <path
     d="M 0 0 L 3.5 3.25 L 0 6.5"
     fill="transparent"
@@ -132,14 +154,10 @@ height: btnHovered ? "42px" : "38px"
 </svg>
 ```
 
-### Full button JSX pattern
+### Full button JSX template
 ```tsx
-const [btnHovered, setBtnHovered] = useState(false);
-
 <Link
   href={cta.href}
-  target="_blank"
-  rel="noopener noreferrer"
   onMouseEnter={() => setBtnHovered(true)}
   onMouseLeave={() => setBtnHovered(false)}
   className="inline-flex items-center h-[57px] cursor-pointer"
@@ -154,8 +172,8 @@ const [btnHovered, setBtnHovered] = useState(false);
   }}
 >
   <span
-    className="flex-1 px-2 text-center whitespace-pre"
-    style={{ color: "#ffffff", fontFamily: "Poppins, sans-serif", fontSize: "20px", fontWeight: 600, lineHeight: "1em" }}
+    className="flex-1 px-2 text-center"
+    style={{ color: "#ffffff", fontFamily: "Poppins, sans-serif", fontSize: "16px", fontWeight: 600, lineHeight: "1em" }}
   >
     {label}
   </span>
@@ -175,49 +193,53 @@ const [btnHovered, setBtnHovered] = useState(false);
 
 ### Navbar CTA buttons (smaller, no arrow badge)
 ```tsx
-// Sign In — outlined
-className="inline-flex items-center px-5 py-2 rounded-full border text-sm font-semibold transition-all duration-150 hover:bg-surface-secondary"
+// Sign In — outlined green
 style={{ borderColor: '#00cc85', color: '#00cc85' }}
+className="inline-flex items-center px-5 py-2 rounded-full border text-sm font-semibold transition-all duration-150 hover:bg-surface-secondary"
 
-// Sign Up — filled
-className="inline-flex items-center px-5 py-2 rounded-full text-white text-sm font-semibold transition-colors duration-150"
+// Sign Up — filled green
 style={{ backgroundColor: '#00cc85' }}
+className="inline-flex items-center px-5 py-2 rounded-full text-white text-sm font-semibold transition-colors duration-150"
 ```
 
 ---
 
 ## Spacing & Padding Conventions
 
-These values are used consistently across every page. Never deviate without a Framer reference.
-
 | Context | Value |
 |---|---|
-| Page section outer wrapper | `max-w-[1200px] mx-auto px-[50px] py-[50px] w-full` |
+| Page section outer wrapper (desktop) | `max-w-[1200px] mx-auto px-[50px] py-[50px] w-full` |
+| Page section outer wrapper (mobile) | `px-4 py-8` — use `px-4 sm:px-[50px] py-8 sm:py-[50px]` |
 | Inner content max-width (parents hero) | `max-w-[1100px] mx-auto` |
-| Home page section wrapper | `max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8` |
-| Section top padding (below fixed navbar) | `pt-24` |
 | Pricing description area | `px-[25px] py-[25px]` |
-| Pricing right panel (plan table) | `padding: "40px"` |
-| Plan table header cell | `padding: "16px 12px"` |
-| Plan table data row cell | `padding: "14px 20px"` |
+| Pricing right panel (plan table) | `p-4 sm:p-10` |
+| Plan table tab bar | `h-[43px] gap-5 sm:gap-[33px] px-5 sm:px-[25px]` |
+| Plan table header cell | `padding: "10px 8px"` |
+| Plan table data row cell | `padding: "8px 10px"` |
+| Framer gap between panels | `gap: "2px"` (yellow shows through as visual separator) |
 | Hero left stack gap | `gap-[47px]` |
 | Hero headline gap | `gap-[20px]` |
 | Hero headline left indent | `pl-[25px]` (desktop only) |
-| Framer gap between sections/panels | `gap: "2px"` (yellow shows through as visual separator) |
+| Testimonial card header | `padding: "24px 30px"` |
+| Testimonial card body | `padding: "24px 30px"` |
 
 ---
 
-## Typography Scale (parents page)
+## Typography Scale
 
-| Element | Size | Weight | Color |
-|---|---|---|---|
-| Hero H1 | `34px / 44px / 57px` (mobile/tablet/desktop) | 700 | `#FFD000` |
-| Hero H3 | `32px` | 700 | `#434955` |
-| Section heading | `36px / 42px` | 700 | Split: yellow + `#434955` |
-| Description text | `17px / 19px` | 700 | `#434955` |
-| Plan table header | `18px` | 700 | white (yearly) / `rgb(11,88,81)` (monthly) |
-| Tab label | `17px` | 600 | white (yearly tab) / `rgb(11,88,81)` (monthly tab) |
-| Price text | `22px` | 700 | `rgb(0,0,0)` |
+| Element | Mobile | Desktop | Weight | Colour |
+|---|---|---|---|---|
+| Hero H1 | `34px` | `57px` | 700 | `#FFD000` |
+| Hero H3 | — | `32px` | 700 | `#434955` |
+| Section heading | `28px` | `42px` | 700 | Split yellow + `#434955` |
+| Description text | `15px` | `19px` | 700 | `#434955` |
+| Plan table tab label | `13px` | `17px` | 600 | white / `rgb(11,88,81)` |
+| Plan table header label | `12px` | `16px` | 700 | white / `rgb(11,88,81)` |
+| Plan monthly price | `16px` | `22px` | 700 | `rgb(0,0,0)` |
+| Plan yearly price | `clamp(12px,3.5vw,18px)` | — | 700 | `rgb(0,0,0)` |
+| Testimonial name | `18px` | `18px` | 700 | `rgb(255, 207, 48)` |
+| Testimonial role | `14px` | `14px` | 700 | `#434955` |
+| Testimonial quote | `16px` | `16px` | 400 | `#434955` |
 
 ---
 
@@ -225,21 +247,21 @@ These values are used consistently across every page. Never deviate without a Fr
 
 **Hook:** `useT(dict)` from `@/context/LanguageContext`
 **Languages:** `en` (default) · `ms` (Bahasa Malaysia)
-**Fallback:** if key missing in `ms`, falls back to `en`, then to the raw key string
+**Toggle:** in Navbar — switches `lang` in `LanguageProvider`
+**Fallback:** missing `ms` key → falls back to `en` → raw key string
 
-### How to add translations for a new page
-1. Create `src/content/translations/<page>.ts` exporting a `TranslationDict`
-2. Import and use `useT(pageTranslations)` in each section component
-3. Mark the component `"use client"` — `useT` is client-side
+### Rules for testimonial quotes
+Testimonial quotes are authentic user quotes — keep them in their original language exactly as submitted. Provide a natural translation for the other locale.
+- BM quotes (En Hadi, En Najah, En Rayyan, Pn Halizah, SheryInna) → translated to EN in `en:` block
+- EN quote (Ms Leela) → translated to BM in `ms:` block
+- Never use identical text in both locales for testimonials
 
 ### Translation files built
-| File | Page | Keys |
+| File | Page | Status |
 |---|---|---|
-| `src/content/translations/home.ts` | Home | tagline, hero, testimonials, featureCards, asFeaturedIn, competition |
-| `src/content/translations/parents.ts` | Parents | hero, features, pricing |
-
-### No students translation file yet
-When building the students page, create `src/content/translations/students.ts` following the same pattern.
+| `src/content/translations/home.ts` | Home | ✓ EN + BM |
+| `src/content/translations/parents.ts` | Parents | ✓ EN + BM (hero, features, pricing, testimonials) |
+| `src/content/translations/students.ts` | Students | **NOT BUILT** |
 
 ---
 
@@ -247,65 +269,124 @@ When building the students page, create `src/content/translations/students.ts` f
 
 ### Home `/`
 **File:** `src/app/(marketing)/page.tsx`
-**Sections:**
-1. `HeroSection` — headline (3 lines, `#00cc85`), trust badges, student visual
+**Sections (in order):**
+1. `HeroSection` — yellow H1 (3 lines), trust badges, student visual
 2. `TaglineSection` — single paragraph tagline
 3. `TestimonialsSection` — student quotes + stat counter heading
 4. `FeatureCardsSection` — 2 cards (testimonials CTA, PBot CTA)
-5. `AsFeaturedInSection` — media logo ticker
+5. `AsFeaturedInSection` — media logo ticker (auto-scrolling)
 6. `CompetitionSection` — academic competition CTA
-
-### Parents `/parents`
-**File:** `src/app/(marketing)/parents/page.tsx`
-**Sections:**
-1. `HeroSection` — yellow H1, gray H3, CTA button with animated arrow badge
-2. `FeaturesSection` — 3 feature cards (activity tracking, goals, performance)
-3. `FindOutMoreSection` — Plan Table 2026 family pricing
-
-### Students `/students`
-**Status: NOT BUILT** — No page file, no content file, no translation file exists yet.
 
 ---
 
-## Plan Table 2026 — FindOutMoreSection Reference
+### Parents `/parents`
+**File:** `src/app/(marketing)/parents/page.tsx`
+**Sections (in order):**
+1. `HeroSection` — yellow H1, gray H3, canonical Pandai CTA button
+2. `FeaturesSection` — 3 feature cards (activity tracking, goals, performance)
+3. `FindOutMoreSection` — Plan Table 2026 family pricing (mobile responsive)
+4. `TestimonialSection` — interactive 6-person testimonial carousel
 
-This is the most complex component. Key design rules:
+---
 
-### Tab colour — FIXED (not toggling)
-- **Monthly tab:** always `rgb(204, 255, 204)` bg · `rgb(11, 88, 81)` text — regardless of active state
-- **Yearly tab:** always `rgb(0, 204, 133)` bg · `#ffffff` text — regardless of active state
-- Active state shown by **chevron direction only**: ↓ (active) · ↑ (inactive)
+### Students `/students`
+**Status: NOT BUILT** — no page file, no content file, no translation file.
 
-### Header row
-- Background follows active tab: `rgb(0,204,133)` when yearly, `rgb(204,255,204)` when monthly
-- Text follows: white when yearly, `rgb(11,88,81)` when monthly
-- Column divider: `rgba(255,255,255,0.5)` when yearly, `1.5px solid rgb(11,88,81)` when monthly
-- "Auto Debit" badge: yellow `rgb(255,208,0)` bg, dark green text — appears in yearly header only
+---
+
+## Plan Table 2026 — FindOutMoreSection
+
+### Tab colour — ALWAYS FIXED (never toggles)
+- **Monthly tab:** always `rgb(204, 255, 204)` bg · `rgb(11, 88, 81)` text
+- **Yearly tab:** always `rgb(0, 204, 133)` bg · `#ffffff` text
+- Active state shown by **chevron direction only**: ↓ (down = active) · ↑ (up = inactive)
+
+### Header row (follows active tab)
+- Yearly active: `rgb(0,204,133)` bg · white text · `rgba(255,255,255,0.5)` divider · "Auto Debit" yellow badge
+- Monthly active: `rgb(204,255,204)` bg · `rgb(11,88,81)` text · `1.5px solid rgb(11,88,81)` divider · no badge
 
 ### Data rows
-- White bg `rgb(255,255,255)`
-- Yellow row separator: `1.5px solid rgb(255,208,0)` (not on last row)
-- Left col: child icons (50×46px), centred with `justify-center`
-- Arrow: own flex item between cols, colour `rgb(255,185,0)`, chevron right SVG
-- Right col: price text 22px bold black, centred with `justify-center`
-- **Price format:** just the price — `RM 96` / `RM 960` etc. No "X% OFF" in the row
+- White bg, yellow separator `1.5px solid rgb(255,208,0)` between rows (not after last row)
+- Left col: child icon images only — NO text labels
+- Arrow: own flex item (not inside left col), `rgb(255,185,0)`, chevron right SVG, `width: 20px`
+- Right col: price value centred
+- **Monthly price format:** `RM 96` (plain price only)
+- **Yearly price format:** `17% OFF = RM 960` (discount + price — `{row.yearlyDiscount} = {row.yearlyPrice}`)
 
-### Table body container
-- `borderRadius: "20px"` (ALL corners — full radius so last row clips correctly)
-- `overflow: "hidden"` — required for corner clipping
+### Table body
+- `borderRadius: "15px 15px 20px 20px"` mobile / `"20px"` desktop with `overflow: hidden`
+- Required for bottom corners to clip correctly on last row
 
-### Pricing data (`src/content/parents.ts`)
-| Row | Icons | Monthly | Yearly |
+### Mobile responsiveness (min 310px)
+- Illustration panel: `hidden lg:flex` (hidden on mobile)
+- Tab labels: `text-[13px] sm:text-[17px]`
+- Header labels: `text-[12px] sm:text-[16px]`, `maxWidth: "90px"`
+- Icons: `w-8 h-[30px] sm:w-[50px] sm:h-[46px]`
+- Yearly price: `fontSize: "clamp(12px, 3.5vw, 18px)"`
+
+### Pricing data (`src/content/parents.ts` → `pricing.rows`)
+| Row | Monthly | Yearly discount | Yearly price |
 |---|---|---|---|
-| 1 child | 1 icon | RM 96 | RM 960 |
-| 2 children | 2 icons | RM 88 | RM 880 |
-| 3+ children | 4 icons | RM 80 | RM 800 |
+| 1 child (1 icon) | RM 96 | 17% OFF | RM 960 |
+| 2 children (2 icons) | RM 88 | 23% OFF | RM 880 |
+| 3+ children (4 icons) | RM 80 | 30% OFF | RM 800 |
+
+---
+
+## Testimonial Section — TestimonialSection
+
+**File:** `src/components/sections/parents/TestimonialSection.tsx`
+**Data:** `src/content/parents.ts` → `testimonials.items`
+**Translations:** `src/content/translations/parents.ts` → `testimonials.quote.*`
+
+### Layout (two-column)
+```
+[  Testimonial Card   ] [ 3×2 Avatar Grid ]
+[  max-w: 393px       ] [ max-w: 472px    ]
+```
+- Container: `flex flex-col lg:flex-row items-stretch justify-center gap-5`
+- Left card: `w-full max-w-[393px]`
+- Right grid wrapper: `w-full max-w-[472px] flex items-center justify-center`
+- Right grid: `grid grid-cols-3 gap-4 w-full`
+- On mobile: stacks vertically (card on top, grid below as flex-wrap row)
+
+### Testimonial card (left)
+- Outer: `border: 1px solid rgb(252, 213, 83)`, `borderRadius: 20px`
+- Header bg: `rgb(251, 240, 202)`, padding `24px 30px`
+- Main avatar: 90×90px circle, `border: 1.5px solid rgb(252, 213, 83)`, bg `rgb(140, 235, 139)`
+- Name: `18px` bold, `rgb(255, 207, 48)` — uses `AnimatePresence` fade on switch
+- Role: `14px` bold, `#434955`
+- Body bg: white, padding `24px 30px`
+- Quote: `16px`, `#434955` — uses `AnimatePresence` fade + y slide on switch
+- Stars: SVG star path, `fill: rgb(255, 208, 0)`
+
+### Avatar selector (right 3×2 grid)
+- Size: `86px × 103px` for all avatars
+- Shape: `borderRadius: "9999px"` (oval/pill)
+- **Selected state:** thick yellow ring — `border: "20px solid rgb(255, 207, 48)"`
+- **Unselected state:** thin yellow ring — `border: "3px solid rgb(255, 207, 48)"`
+- **Press animation:** `motion.button` with `whileTap={{ scale: 0.93 }}` + border thickens to 20px on `onPointerDown` → snaps back on `onPointerUp`/`onPointerLeave`
+- Pressing an unselected avatar previews the selected (thick) ring before release
+
+### Testimonial data (`src/content/parents.ts` → `testimonials.items`)
+Order matters — index 0 is default active on load.
+
+| # | ID | Name | Avatar UUID |
+|---|---|---|---|
+| 0 | `en-hadi` | En Hadi | `f76569bc-75df-479a-26f7-276f8d445900` |
+| 1 | `en-najah` | En Najah | `6ebacf11-ee24-4c6e-b4ca-782912805200` |
+| 2 | `en-rayyan` | En Rayyan | `814ae333-102f-4d0d-7de6-23c33a3a8000` |
+| 3 | `pn-halizah` | Pn Halizah | `c071ab73-833b-49f0-b8e8-351532d74e00` |
+| 4 | `ms-leela` | Ms Leela | `29b14994-7b3d-48f2-8de8-5700a3bb1b00` |
+| 5 | `sheryinna` | SheryInna | `712da819-e3dc-4784-3f4f-8523878f6800` |
+
+All image URLs use `/256px` variant. The `id` field must match the translation key `testimonials.quote.<id>`.
 
 ---
 
 ## Animations
 
-All scroll animations use `whileInView` with `once: true`:
+All scroll-triggered animations:
 ```tsx
 <motion.div
   variants={fadeInUp}
@@ -316,80 +397,58 @@ All scroll animations use `whileInView` with `once: true`:
 ```
 
 **Available variants** (`src/lib/animations.ts`):
-- `fadeInUp` — opacity 0→1, y 24→0
-- `fadeIn` — opacity only
-- `staggerContainer` — wraps staggered children (0.1s stagger)
-- `slideInLeft` / `slideInRight` — x offset
+- `fadeInUp` — opacity 0→1, y 24→0, duration 0.5s
+- `fadeIn` — opacity only, 0.4s
+- `staggerContainer` — wraps staggered children, 0.1s stagger + 0.1s delay
+- `slideInLeft` / `slideInRight` — x offset ±32px
 - `scaleIn` — scale 0.92→1
 
-Always wrap page entry animations in `staggerContainer` → children use `fadeInUp`.
+**Interactive transitions:**
+- Testimonial name/quote switching: `AnimatePresence mode="wait"` with fade + y-slide, 0.2–0.25s
+- Avatar border on press: CSS `transition: "border 0.15s ease"` (not Framer Motion — faster response)
+- Button hover: CSS `transition: "padding 0.2s ease"` via `useState`
 
 ---
 
-## Lessons Learned (Rights & Wrongs)
-
-### ✅ DO
-- **Always read the selected Framer node before building.** Run `selection_get` first to confirm the exact node, then `nodes_getNode` for its ID.
-- **Scrape the live site HTML when MCP data is ambiguous.** Save the HTML to a temp file and grep specific Framer scope classes (e.g., `framer-hPgFe`) to extract exact CSS values.
-- **Use `useState` for hover animations** — Framer Motion's `whileHover` conflicts with inline `style` objects. Use `onMouseEnter`/`onMouseLeave` + state.
-- **Fixed-color tabs** — Pandai tabs use FIXED background colours per tab position, not active/inactive toggling. Active state is communicated by chevron direction only.
-- **Arrow as own flex item** — place the row separator arrow as its own `<div>` between left and right columns, not inside either column. This ensures it stays truly centred.
-- **Full `borderRadius` on table containers** — use `borderRadius: "20px"` (not just top corners) combined with `overflow: "hidden"` so the last row's bottom corners clip correctly.
-- **`justify-center` on all table columns** — both header and data row cells need `justify-center` for content to be centred within their column section.
-- **Add `yearlyDiscount` to content data** — even if not shown in the row, keep it in the data object (`src/content/parents.ts`) for potential future use.
-- **Run `npx tsc --noEmit` after every edit.** Never report a task done without a clean TypeScript check.
-- **Use Bash tool** (not PowerShell) for all shell operations on this machine.
-
-### ❌ DON'T
-- **Don't build the wrong Framer component.** Always confirm the node via `selection_get` before coding. The wrong section was built once (green feature cards instead of the pricing table) — cost significant rework.
-- **Don't use unsupported MCP methods.** Only `selection_get`, `nodes_getNode`, `nodes_getChildren`, `nodes_getParent` work. `nodes_getById`, `get_node_children`, `get_node_properties` will error.
-- **Don't toggle tab background colours.** Monthly is always light green, Yearly is always dark green — toggling them is wrong.
-- **Don't show "X% OFF = RM YYY" format in data rows.** The Framer design shows only the price value (e.g., "RM 960"). Keep discount data in the content file but don't display it in the row.
-- **Don't put per-child suffixes** ("per child / month") in the table rows — Framer design has no such suffix.
-- **Don't put text labels in icon-only rows** — the icon column shows ONLY child avatar images, no "One Child" / "Two Children" text.
-- **Don't use check circle icons in tabs** — Framer uses chevron arrows (↓/↑), not check circles.
-- **Don't nest the separator arrow inside the left column** — it loses its centred position between columns.
-- **Don't use only top border-radius on the table body** — the last row's bottom corners stay square. Always use full `borderRadius` + `overflow: hidden`.
-- **Don't hardcode the wrong monthly prices.** Original content had RM 12.90 / 11.90 / 10.90 — these were wrong. Correct values from Framer are RM 96 / 88 / 80.
-- **Don't ask "should I run this?"** — CLAUDE.md rule: run all non-destructive commands automatically.
-- **Don't ask "want me to commit?"** — Alya manages her own commits.
-
----
-
-## File Structure Quick Reference
+## File Structure
 
 ```
 src/
   app/
     (marketing)/
-      layout.tsx              ← Navbar + Footer wrapper
-      page.tsx                ← Home page
-      parents/page.tsx        ← Parents page
-      [students — missing]
+      layout.tsx                    ← Navbar + Footer wrapper
+      page.tsx                      ← Home page
+      parents/
+        page.tsx                    ← Parents page
+      [students/ — NOT BUILT]
   components/
     layout/
-      Navbar.tsx              ← Fixed pill navbar, EN/BM toggle, animated hamburger
+      Navbar.tsx                    ← Fixed pill, EN/BM toggle, animated hamburger
       Footer.tsx
     sections/
-      home/                   ← HeroSection, TaglineSection, TestimonialsSection,
-      │                          FeatureCardsSection, AsFeaturedInSection, CompetitionSection
-      parents/                ← HeroSection, FeaturesSection, FindOutMoreSection
-      [students — missing]
+      home/                         ← HeroSection, TaglineSection, TestimonialsSection,
+      │                                FeatureCardsSection, AsFeaturedInSection, CompetitionSection
+      parents/
+        HeroSection.tsx             ← Yellow H1, gray H3, CTA button
+        FeaturesSection.tsx         ← 3 feature cards
+        FindOutMoreSection.tsx      ← Plan Table 2026, monthly/yearly tabs, mobile responsive
+        TestimonialSection.tsx      ← Interactive 6-person carousel, 3×2 avatar grid
+      [students/ — NOT BUILT]
   content/
-    home.ts                   ← Home images/data
-    parents.ts                ← Parents images/data (hero, features, pricing rows)
-    nav.ts                    ← Navbar links and CTA hrefs
+    home.ts                         ← Home images/data
+    parents.ts                      ← Parents images/data (hero, features, pricing, testimonials)
+    nav.ts                          ← Navbar links and CTA hrefs
     translations/
-      home.ts                 ← EN + BM strings for home
-      parents.ts              ← EN + BM strings for parents
-      [students — missing]
+      home.ts                       ← EN + BM strings for home
+      parents.ts                    ← EN + BM strings for parents (incl. all 6 testimonial quotes)
+      [students.ts — NOT BUILT]
   context/
-    LanguageContext.tsx        ← Lang state (en/ms), LanguageProvider, useT hook
+    LanguageContext.tsx             ← lang state (en/ms), LanguageProvider, useT hook
   lib/
-    animations.ts             ← Framer Motion variants
-    utils.ts                  ← cn() class merge helper
+    animations.ts                   ← Framer Motion variants
+    utils.ts                        ← cn() class merge helper
   styles/
-    tokens.css                ← DS 1.5 CSS custom properties
+    tokens.css                      ← DS 1.5 CSS custom properties
 ```
 
 ---
@@ -398,11 +457,44 @@ src/
 
 - **Shape:** pill container, fixed top, `z-50`
 - **Border:** `1px solid #00cc85`
-- **Nav links:** hover reveals coloured pill bg (per-link colour set in `src/content/nav.ts`)
-- **Language toggle:** implemented in Navbar — switches `lang` in `LanguageProvider`
-- **Mobile:** animated hamburger (Framer Motion bars), drawer slides down with `AnimatePresence`
+- **Nav links:** Students, Teachers, Parents, Blog
+- **Language toggle:** EN / BM — implemented in Navbar, updates `LanguageProvider`
+- **Mobile:** animated hamburger (Framer Motion), `AnimatePresence` drawer
 - **Logo:** `/public/images/logo-normal.svg`
 
 ---
 
-_Alya — update this file after each session with major new sections, design decisions, or corrected values._
+## Lessons Learned — DO This
+
+- **Always `selection_get` before building any Framer component.** Confirm the exact node first.
+- **Scrape the live site as fallback** when MCP is offline — pipe through Node.js (`grep` doesn't work well on large HTML).
+- **Use `useState` for hover animations** — `whileHover` on Framer Motion conflicts with inline `style` objects. Use `onMouseEnter`/`onMouseLeave` + state instead.
+- **Fixed-colour tabs** — Pandai tabs use FIXED background per tab position regardless of active state. Active = chevron direction only.
+- **Arrow as own flex item** — the row separator arrow must be a sibling `<div>`, not nested inside the left column. Nesting breaks centering.
+- **Full `borderRadius` + `overflow: hidden` on table containers** — `borderRadius: "20px"` on all corners, not just top. Without `overflow: hidden` the last row's bottom corners stay square.
+- **`justify-center` on both table columns** — both header and data row cells must be `flex justify-center`.
+- **Yearly price format:** `{row.yearlyDiscount} = {row.yearlyPrice}` (e.g. "17% OFF = RM 960") — NOT plain price only, NOT "per child" suffix.
+- **Testimonial IDs must match translation keys** — `id: 'pn-halizah'` maps to `testimonials.quote.pn-halizah`. Mismatches show empty quotes.
+- **Quotes in original language** — keep authentic user quotes exactly as submitted. Translate for the other locale separately.
+- **Run `npx tsc --noEmit` after every edit.** Never report done without clean TypeScript.
+- **Use Bash tool** for all shell operations — never PowerShell tool.
+- **Check for duplicate IDs** when renaming testimonial entries — two entries with the same `id` will show the same quote for both avatars.
+
+## Lessons Learned — DON'T Do This
+
+- **Don't build without confirming the Framer node.** Built the wrong section once (green feature cards instead of pricing table) — required full rework.
+- **Don't use unsupported MCP method names.** Only the 4 listed methods work. Others return "Method not found".
+- **Don't toggle tab background colours.** Monthly always light green, Yearly always dark green — toggling is wrong.
+- **Don't show plain price only in yearly column.** Format is `17% OFF = RM 960`, not just `RM 960`.
+- **Don't add "per child / month" suffix to table rows.** Framer design has no such text.
+- **Don't put text labels in the icon column** ("One Child", "Two Children") — icon column shows avatar images only.
+- **Don't use check circles in tabs** — chevron arrows (↓/↑) only.
+- **Don't use only top border-radius on the table body** — bottom corners stay sharp. Always full radius + overflow hidden.
+- **Don't forget the closing quote** when manually editing `.ts` content files — a missing `'` is a silent syntax error that breaks the build.
+- **Don't rename only the `name` field without also updating the `id`** — they must stay in sync because `id` is the translation key lookup.
+- **Don't ask "want me to commit?" or "should I run this?"** — Alya manages commits herself; run non-destructive commands automatically.
+- **Don't use PowerShell tool** — always use Bash tool on this Windows machine.
+
+---
+
+_Alya — update this file after each session. Last major updates this session: TestimonialSection (interactive 6-person carousel), FindOutMoreSection mobile responsiveness, testimonial data + translations cleanup._

@@ -3,8 +3,11 @@
 import { motion } from 'framer-motion'
 import { fadeInUp } from '@/lib/animations'
 import { competitionSection } from '@/content/home'
+import { useT } from '@/context/LanguageContext'
+import { homeTranslations } from '@/content/translations/home'
 
 export default function CompetitionSection() {
+  const t = useT(homeTranslations)
   return (
     <section className="w-full px-4 sm:px-6 lg:px-8 py-8">
       <div className="max-w-5xl mx-auto">
@@ -16,15 +19,14 @@ export default function CompetitionSection() {
           style={{
             backgroundColor: '#ffffff',
             overflow: 'hidden',
-            // Matches Framer: padding 50px 50px 0px 50px
             paddingTop: '50px',
-            paddingLeft: '50px',
-            paddingRight: '50px',
+            paddingLeft: 'clamp(16px, 5vw, 50px)',
+            paddingRight: 'clamp(16px, 5vw, 50px)',
             paddingBottom: '0px',
           }}
         >
-          {/* Image + text overlay area — height driven by image, no clipping */}
-          <div style={{ position: 'relative' }}>
+          {/* Image + text overlay area — paddingTop reserves space for heading above the image */}
+          <div style={{ position: 'relative', paddingTop: 'clamp(72px, 9vw, 110px)' }}>
 
             {/* Background image — in-flow so container grows to full image height */}
             <img
@@ -37,27 +39,27 @@ export default function CompetitionSection() {
               }}
             />
 
-            {/* Heading row — absolutely overlaid at top of image, z:1 (matches Framer y:0) */}
-            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 1, textAlign: 'center' }}>
-              {/* "Score Better" — 35px × 1.4em = 49px, #00cc85 green matching hero section */}
+            {/* Heading row — absolutely overlaid at top of image, z:1 */}
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 1, textAlign: 'center', padding: '0 12px' }}>
               <p style={{
-                fontSize: '35px',
+                fontSize: 'clamp(20px, 3.5vw, 35px)',
                 fontWeight: 700,
                 lineHeight: '1.4em',
                 color: '#00cc85',
                 margin: 0,
+                wordBreak: 'break-word',
               }}>
-                {competitionSection.heading}
+                {t('competition.heading')}
               </p>
-              {/* "with Competition Practices" — 16px × 1.3em = 21px, Pandai Grey */}
               <p style={{
-                fontSize: '16px',
+                fontSize: 'clamp(13px, 2vw, 16px)',
                 fontWeight: 400,
                 lineHeight: '1.3em',
                 color: 'rgb(67, 73, 85)',
                 margin: 0,
+                wordBreak: 'break-word',
               }}>
-                {competitionSection.subheading}
+                {t('competition.subheading')}
               </p>
             </div>
 
@@ -66,12 +68,12 @@ export default function CompetitionSection() {
           {/* Description — between image and CTA button */}
           <div style={{ padding: '15px', textAlign: 'center' }}>
             <p style={{
-              fontSize: '16px',
-              lineHeight: '1.3em',
+              fontSize: 'clamp(13px, 2vw, 16px)',
+              lineHeight: '1.4em',
               color: 'rgb(67, 73, 85)',
               margin: 0,
             }}>
-              {competitionSection.description}
+              {t('competition.description')}
             </p>
           </div>
 
@@ -105,7 +107,7 @@ export default function CompetitionSection() {
                 gap: '10px',
               }}
             >
-              {competitionSection.cta.label}
+              {t('competition.cta')}
               {/* Arrow circle — matches FeatureCard button style */}
               <span style={{
                 display: 'flex',

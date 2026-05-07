@@ -40,10 +40,15 @@ src/
 │   └── sections/home/
 │       ├── HeroSection.tsx          # Hero — headline, trust badges, student image
 │       ├── TaglineSection.tsx        # Tagline card — two-tone bg, bookmark ribbon
-│       └── TestimonialsSection.tsx   # Testimonials — live count heading, 2×2 cards, rating pills
+│       ├── TestimonialsSection.tsx   # Testimonials — live count heading, 2×2 cards, rating pills
+│       ├── FeatureCardsSection.tsx   # 2-col feature cards grid (light + dark themes)
+│       ├── AsFeaturedInSection.tsx   # Infinite marquee ticker of 14 media logos
+│       └── CompetitionSection.tsx    # Competition image card with CTA button
 │
 ├── content/                         # ✏️ ALL editable copy lives here — never edit components directly
-│   ├── home.ts                      # Hero, tagline, testimonials, stats, features, FAQ, app download
+│   ├── home.ts                      # Hero, tagline, testimonials, stats, features, FAQ, app download, asFeaturedIn, competitionSection
+│   ├── translations/
+│   │   └── home.ts                  # EN + BM strings for every homepage section — add keys here for all new sections
 │   ├── nav.ts                       # Navbar links + CTA + full footer content
 │   ├── students.ts                  # (placeholder)
 │   ├── teachers.ts                  # (placeholder)
@@ -194,6 +199,30 @@ All circles: `zIndex: 0` (behind image and content).
 - Card 1: `https://my.pandai.org/about/testimonial`
 - Card 2: `https://blog.pandai.org/meet-ask-pbot-your-ultimate-study-buddy-in-pandai/`
 
+### ✅ AsFeaturedInSection (`src/components/sections/home/AsFeaturedInSection.tsx`)
+- White card with `1px solid #00cc85` border, `border-radius: 25px`
+- Heading: "As Featured In" — 35px, `#00cc85`, centered, 49px tall row
+- Ticker: 134px tall, infinite CSS marquee (`pandai-marquee-track` / `pandai-marquee-item` classes in `globals.css`)
+- 14 logos doubled (28 items) for seamless loop — `animation: pandai-marquee 28s linear infinite`
+- Each logo: `height: 44px; width: auto; maxWidth: 160px; objectFit: contain` — natural aspect ratio (do NOT force a fixed width — logos have different aspect ratios)
+- Each item: `min-width: 100px; padding: 0 16px` so narrow logos don't bunch together
+- Left + right fade edges: 60px `linear-gradient` overlays at `zIndex: 2`
+- Content: `src/content/home.ts` → `asFeaturedIn.logos[]`
+- Translation key: `asFeaturedIn.heading`
+
+### ✅ CompetitionSection (`src/components/sections/home/CompetitionSection.tsx`)
+- White card, horizontal padding `clamp(16px, 5vw, 50px)` (responsive — avoids squeezing image on mobile)
+- Background image in-flow (`display: block; width: 100%; height: auto`) — no clipping
+- Image wrapper: `position: relative; paddingTop: clamp(72px, 9vw, 110px)` — reserves space above the image for the heading text
+- Heading stack `position: absolute; top: 0` sits in that padded space: "Score Better" (`clamp(20px, 3.5vw, 35px)`, `#00cc85`, bold) + subheading (`clamp(13px, 2vw, 16px)`, Pandai Grey `rgb(67,73,85)`)
+- Heading container has `padding: 0 12px` + `wordBreak: break-word` to prevent overflow on BM translations
+- Description paragraph between image and button: `padding: 15px`, centered, `clamp(13px, 2vw, 16px)`
+- CTA button: `height: 62px`, `border-radius: 9999px`, `#00cc85` bg, `1px solid #0b5851` border, arrow circle (`#ccffcc` bg, `#0b5851` chevron)
+- Image URL: `https://imagedelivery.net/zy4C5mYDeC8QYHozzOk2nQ/4863ad76-7afd-49d8-0fca-342ac3890400/1024px`
+- CTA href: `https://my.pandai.org/competitions`
+- Content: `src/content/home.ts` → `competitionSection`
+- Translation keys: `competition.heading`, `competition.subheading`, `competition.description`, `competition.cta`
+
 ---
 
 ## Sections Remaining (Homepage)
@@ -215,8 +244,11 @@ Build order — each section follows the same pattern: component in `src/compone
 ### Adding a new section
 1. Create `src/components/sections/home/NewSection.tsx` — `'use client'` if using hooks/motion
 2. Add all copy/images to `src/content/home.ts` as a named export
-3. Export from `src/components/sections/home/index.ts`
-4. Import and add to `src/app/(marketing)/page.tsx`
+3. Add translation keys for **every user-visible string** in `src/content/translations/home.ts` — both `en` and `ms` blocks. Use `useT(homeTranslations)` in the component instead of referencing `home.ts` strings directly.
+4. Export from `src/components/sections/home/index.ts`
+5. Import and add to `src/app/(marketing)/page.tsx`
+
+> **Translation rule:** Every string visible to the user (headings, body copy, button labels) must have a key in both `en` and `ms` inside `homeTranslations`. No section is considered done until its translations are wired. Static data that never changes between languages (image URLs, hrefs, logo names) stays in `home.ts` and does not need a translation key.
 
 ### Section container standard
 Every section uses this wrapper for consistent alignment:

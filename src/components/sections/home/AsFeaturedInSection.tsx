@@ -3,11 +3,14 @@
 import { motion } from 'framer-motion'
 import { fadeInUp } from '@/lib/animations'
 import { asFeaturedIn } from '@/content/home'
+import { useT } from '@/context/LanguageContext'
+import { homeTranslations } from '@/content/translations/home'
 
 // Logos duplicated to create seamless infinite loop
 const loopLogos = [...asFeaturedIn.logos, ...asFeaturedIn.logos]
 
 export default function AsFeaturedInSection() {
+  const t = useT(homeTranslations)
   return (
     <section className="w-full px-4 sm:px-6 lg:px-8 py-8">
       <div className="max-w-5xl mx-auto">
@@ -38,7 +41,7 @@ export default function AsFeaturedInSection() {
             }}
           >
             <p style={{ fontSize: '35px', fontWeight: 600, lineHeight: '1.4em', color: '#00cc85', margin: 0, textAlign: 'center' }}>
-              {asFeaturedIn.heading}
+              {t('asFeaturedIn.heading')}
             </p>
           </div>
 
@@ -86,7 +89,7 @@ export default function AsFeaturedInSection() {
                   <img
                     src={logo.src}
                     alt={logo.name}
-                    style={{ height: '54px', width: '174px', objectFit: 'contain' }}
+                    style={{ height: '44px', width: 'auto', maxWidth: '160px', objectFit: 'contain' }}
                     loading="lazy"
                   />
                 </div>

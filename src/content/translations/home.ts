@@ -38,6 +38,16 @@ export const homeTranslations: TranslationDict = {
     "featureCard2.title":
       "Experience the future of learning with Ask PBot, your AI study buddy",
     "featureCard2.button": "Meet Ask PBot",
+
+    // ── AsFeaturedInSection ──
+    "asFeaturedIn.heading": "As Featured In",
+
+    // ── CompetitionSection ──
+    "competition.heading": "Score Better",
+    "competition.subheading": "with Competition Practices",
+    "competition.description":
+      "Gain access to various academic competition questions to improve your chances at scoring greater marks!",
+    "competition.cta": "Academic Competitions",
   },
 
   ms: {
@@ -77,5 +87,15 @@ export const homeTranslations: TranslationDict = {
     "featureCard2.title":
       "Alami masa depan pembelajaran bersama Ask PBot, rakan belajar AI anda",
     "featureCard2.button": "Cuba Ask PBot",
+
+    // ── AsFeaturedInSection ──
+    "asFeaturedIn.heading": "Tersiar Di",
+
+    // ── CompetitionSection ──
+    "competition.heading": "Markah Lebih Cemerlang",
+    "competition.subheading": "dengan Latihan Pertandingan",
+    "competition.description":
+      "Dapatkan akses kepada pelbagai soalan pertandingan akademik untuk meningkatkan peluang anda mendapat markah yang lebih baik!",
+    "competition.cta": "Pertandingan Akademik",
   },
 };

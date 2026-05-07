@@ -265,6 +265,25 @@ Hook: `src/lib/usePandaiCount.ts` — call it in any client component that needs
 
 ---
 
+## MCP Connections
+
+Run these at the start of every session to ensure tools are connected:
+
+```bash
+# Framer design-bridge relay (Streamable HTTP — must use --transport http)
+claude mcp add --transport http design-bridge "https://framer-mcp-relay.orange-lamp-studio.workers.dev/mcp?userId=f355240a47ad9d8da33c3ddb3909680b86618f667fb2d8216d855ce03161058d"
+```
+
+> If already registered and showing ✗ Failed, remove and re-add:
+> `claude mcp remove design-bridge && claude mcp add --transport http design-bridge "<url above>"`
+
+| Server | Transport | Purpose |
+|---|---|---|
+| design-bridge | HTTP (Streamable) | Framer relay — design reference |
+| claude.ai Figma | HTTPS | Figma DS 1.5 token inspection |
+
+---
+
 ## Deployment
 
 - **Cloudflare Pages** auto-deploys on push to `main`

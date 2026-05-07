@@ -3,6 +3,43 @@
 // Edit all text, images, and data here
 // ─────────────────────────────────────────────
 
+export const competitionSection = {
+  heading: 'Score Better',
+  subheading: 'with Competition Practices',
+  description: 'Gain access to various academic competition questions to improve your chances at scoring greater marks!',
+  cta: {
+    label: 'Academic Competitions',
+    href: 'https://my.pandai.org/competitions',
+  },
+  competitions: [
+    'Kangaroo Math',
+    'Kancil Science',
+    'Kijang Economics',
+    'Beaver Computational Thinking',
+  ],
+  levels: ['Primary', 'Secondary', 'Form 1–3', 'Form 4–5'],
+}
+
+export const asFeaturedIn = {
+  heading: 'As Featured In',
+  logos: [
+    { name: 'TechCrunch',       src: 'https://imagedelivery.net/zy4C5mYDeC8QYHozzOk2nQ/8ceeecac-54cd-42a9-65d5-2852ad17dd00/128px' },
+    { name: 'Berita Harian',    src: 'https://imagedelivery.net/zy4C5mYDeC8QYHozzOk2nQ/17013407-1cf9-479a-5753-247f43673c00/128px' },
+    { name: 'Tech in Asia',     src: 'https://imagedelivery.net/zy4C5mYDeC8QYHozzOk2nQ/a492fa2f-6e3b-43c6-7c33-471d6cc65d00/256px' },
+    { name: 'Vulcan Post',      src: 'https://imagedelivery.net/zy4C5mYDeC8QYHozzOk2nQ/7d60c5d1-2316-44ef-2504-7ca431d2f300/128px' },
+    { name: 'Digital News Asia',src: 'https://imagedelivery.net/zy4C5mYDeC8QYHozzOk2nQ/9bc5a53b-5bfd-45bb-7b0d-6218d2b52000/128px' },
+    { name: 'e27',              src: 'https://imagedelivery.net/zy4C5mYDeC8QYHozzOk2nQ/0ec92697-8c68-40fb-eecf-3cc8c51f9200/128px' },
+    { name: 'AmanZ',            src: 'https://imagedelivery.net/zy4C5mYDeC8QYHozzOk2nQ/c87240e9-7e00-4ce9-d8d8-1ed0a662c300/256px' },
+    { name: 'The Edge',         src: 'https://imagedelivery.net/zy4C5mYDeC8QYHozzOk2nQ/6fd859e7-9ed8-4e3d-ffaf-e3a3cf12c500/256px' },
+    { name: 'TV3',              src: 'https://imagedelivery.net/zy4C5mYDeC8QYHozzOk2nQ/dcabe206-2371-4251-5428-a2931fdb2c00/256px' },
+    { name: 'Astro Awani',      src: 'https://imagedelivery.net/zy4C5mYDeC8QYHozzOk2nQ/c7f6637e-897e-408a-2cb8-e1cec53c6600/256px' },
+    { name: 'Bernama',          src: 'https://imagedelivery.net/zy4C5mYDeC8QYHozzOk2nQ/7e371014-75b5-4873-b0ad-bc3bed697d00/256px' },
+    { name: 'RTM',              src: 'https://imagedelivery.net/zy4C5mYDeC8QYHozzOk2nQ/ef4d2b02-9a36-467f-a39e-71380aa5a800/128px' },
+    { name: 'Malaysiakini',     src: 'https://imagedelivery.net/zy4C5mYDeC8QYHozzOk2nQ/a4c2d0e0-5fe4-42c5-c0e9-eba768626900/128px' },
+    { name: 'BFM',              src: 'https://imagedelivery.net/zy4C5mYDeC8QYHozzOk2nQ/ffc9f9ce-1438-46e0-a80a-6c4527752e00/128px' },
+  ],
+}
+
 export const tagline = {
   text: "Pandai is Malaysia's online learning platform for students aged 7–17. It combines live tuition, quiz battles, quick notes, topical tests and exams, student leaderboards, detailed report cards, and academic-competition practice to help students learn effectively, track progress, and improve grades — all from home.",
 }

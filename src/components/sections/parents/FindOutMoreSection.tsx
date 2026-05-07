@@ -1,0 +1,313 @@
+"use client";
+
+import Image from "next/image";
+import { motion } from "framer-motion";
+import { useState } from "react";
+import { pricing } from "@/content/parents";
+import { fadeInUp, staggerContainer } from "@/lib/animations";
+import { useT } from "@/context/LanguageContext";
+import { parentsTranslations } from "@/content/translations/parents";
+
+type PlanTab = "monthly" | "yearly";
+
+function ChevronDown() {
+  return (
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" style={{ flexShrink: 0 }} role="presentation">
+      <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function ChevronUp() {
+  return (
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" style={{ flexShrink: 0 }} role="presentation">
+      <path d="M18 15l-6-6-6 6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function ChevronRight() {
+  return (
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" style={{ flexShrink: 0 }} role="presentation">
+      <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+export default function FindOutMoreSection() {
+  const t = useT(parentsTranslations);
+  const [activeTab, setActiveTab] = useState<PlanTab>("yearly");
+
+  return (
+    <section className="relative bg-white overflow-hidden">
+      <div className="max-w-[1200px] mx-auto px-[50px] w-full py-[50px]">
+        {/* Heading */}
+        <motion.h2
+          variants={fadeInUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-80px" }}
+          className="font-bold text-[36px] md:text-[42px] text-center mb-[28px]"
+          style={{ lineHeight: "1.1em" }}
+        >
+          <span style={{ color: "#FFD000" }}>{t("pricing.heading.save")}</span>
+          <span style={{ color: "#434955" }}>{t("pricing.heading.rest")}</span>
+        </motion.h2>
+
+        {/* Outer pricing container — yellow bg acts as frame/gap */}
+        <motion.div
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-80px" }}
+          className="flex flex-col overflow-hidden"
+          style={{
+            border: "1px solid rgb(255, 208, 0)",
+            backgroundColor: "rgb(255, 208, 0)",
+            borderRadius: "25px",
+            gap: "2px",
+          }}
+        >
+          {/* Description area */}
+          <motion.div
+            variants={fadeInUp}
+            className="px-[25px] py-[25px]"
+            style={{ backgroundColor: "rgb(255, 240, 173)" }}
+          >
+            <p
+              className="text-[17px] md:text-[19px] font-bold leading-relaxed text-center"
+              style={{ color: "#434955" }}
+            >
+              {t("pricing.desc")}
+            </p>
+          </motion.div>
+
+          {/* Content row: left illustration + right plan table */}
+          <div className="flex flex-col lg:flex-row" style={{ gap: "2px" }}>
+            {/* Left: illustration — no bottom padding, image sits flush */}
+            <motion.div
+              variants={fadeInUp}
+              className="flex items-end justify-center pt-[30px] px-[30px] flex-1"
+              style={{
+                backgroundColor: "rgb(255, 225, 89)",
+                minHeight: "300px",
+              }}
+            >
+              <Image
+                src={pricing.illustration}
+                alt="Family subscription illustration"
+                width={320}
+                height={280}
+                className="w-full max-w-[280px] md:max-w-[320px] object-contain"
+              />
+            </motion.div>
+
+            {/* Right: plan table */}
+            <motion.div
+              variants={fadeInUp}
+              className="flex flex-col flex-1"
+              style={{ padding: "40px" }}
+            >
+              <div className="flex flex-col">
+                {/* Tab bar */}
+                <div
+                  className="flex"
+                  style={{
+                    height: "43px",
+                    padding: "0 25px",
+                    gap: "33px",
+                  }}
+                >
+                  {/* Monthly tab — always light green */}
+                  <button
+                    onClick={() => setActiveTab("monthly")}
+                    className="flex flex-1 items-center justify-center transition-colors duration-200"
+                    style={{
+                      gap: "8px",
+                      padding: "0 20px",
+                      backgroundColor: "rgb(204, 255, 204)",
+                      borderTopLeftRadius: "20px",
+                      borderTopRightRadius: "20px",
+                      color: "rgb(11, 88, 81)",
+                    }}
+                  >
+                    <span className="font-semibold text-[17px] whitespace-nowrap">
+                      {t("pricing.tab.monthly")}
+                    </span>
+                    {activeTab === "monthly" ? <ChevronDown /> : <ChevronUp />}
+                  </button>
+
+                  {/* Yearly tab — always dark green */}
+                  <button
+                    onClick={() => setActiveTab("yearly")}
+                    className="flex flex-1 items-center justify-center transition-colors duration-200"
+                    style={{
+                      gap: "8px",
+                      padding: "0 20px",
+                      backgroundColor: "rgb(0, 204, 133)",
+                      borderTopLeftRadius: "20px",
+                      borderTopRightRadius: "20px",
+                      color: "#ffffff",
+                    }}
+                  >
+                    <span className="font-semibold text-[17px] whitespace-nowrap">
+                      {t("pricing.tab.yearly")}
+                    </span>
+                    {activeTab === "yearly" ? <ChevronDown /> : <ChevronUp />}
+                  </button>
+                </div>
+
+                {/* Table body */}
+                <div
+                  style={{
+                    backgroundColor: "rgb(255, 255, 255)",
+                    borderRadius: "20px",
+                    overflow: "hidden",
+                  }}
+                >
+                  {/* Header row — bg and text follow active tab colour */}
+                  <div
+                    className="flex transition-colors duration-200"
+                    style={{
+                      backgroundColor:
+                        activeTab === "yearly"
+                          ? "rgb(0, 204, 133)"
+                          : "rgb(204, 255, 204)",
+                      padding: "20px",
+                    }}
+                  >
+                    <div
+                      className="flex-1 flex items-center justify-center"
+                      style={{
+                        borderRight:
+                          activeTab === "yearly"
+                            ? "1.5px solid rgba(255,255,255,0.5)"
+                            : "1.5px solid rgb(11, 88, 81)",
+                        padding: "16px 12px",
+                      }}
+                    >
+                      <span
+                        className="text-[18px] font-bold text-center"
+                        style={{
+                          color:
+                            activeTab === "yearly"
+                              ? "#ffffff"
+                              : "rgb(11, 88, 81)",
+                          maxWidth: "120px",
+                          lineHeight: "1.3",
+                        }}
+                      >
+                        {t("pricing.table.children")}
+                      </span>
+                    </div>
+                    <div className="flex-1 flex items-center justify-center gap-[8px]" style={{ padding: "16px 12px" }}>
+                      <span
+                        className="text-[18px] font-bold text-center"
+                        style={{
+                          color:
+                            activeTab === "yearly"
+                              ? "#ffffff"
+                              : "rgb(11, 88, 81)",
+                          maxWidth: "120px",
+                          lineHeight: "1.3",
+                        }}
+                      >
+                        {activeTab === "monthly"
+                          ? t("pricing.table.monthly")
+                          : t("pricing.table.yearly")}
+                      </span>
+                      {/* Auto Debit badge — only on yearly tab */}
+                      {activeTab === "yearly" && (
+                        <span
+                          className="inline-flex items-center justify-center text-center font-bold leading-tight"
+                          style={{
+                            backgroundColor: "rgb(255, 208, 0)",
+                            color: "rgb(11, 88, 81)",
+                            borderRadius: "6px",
+                            fontSize: "9px",
+                            padding: "3px 5px",
+                            whiteSpace: "nowrap",
+                            lineHeight: "1.2",
+                          }}
+                        >
+                          Auto<br />Debit
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Data rows */}
+                  {pricing.rows.map((row, idx) => (
+                    <div
+                      key={row.id}
+                      className="flex items-center"
+                      style={{
+                        backgroundColor: "rgb(255, 255, 255)",
+                        borderBottom:
+                          idx < pricing.rows.length - 1
+                            ? "1.5px solid rgb(255, 208, 0)"
+                            : "none",
+                      }}
+                    >
+                      {/* Left column: child icons */}
+                      <div
+                        className="flex items-center justify-center"
+                        style={{
+                          padding: "14px 20px",
+                          gap: "5px",
+                          flex: "1 0 0",
+                          minWidth: "220px",
+                        }}
+                      >
+                        {row.icons.map((icon, i) => (
+                          <Image
+                            key={i}
+                            src={icon}
+                            alt=""
+                            width={50}
+                            height={46}
+                            className="object-contain flex-none"
+                            style={{ width: "50px", height: "46px" }}
+                          />
+                        ))}
+                      </div>
+
+                      {/* Arrow — own flex item so it sits centred between columns */}
+                      <div
+                        className="flex items-center justify-center"
+                        style={{
+                          width: "26px",
+                          flexShrink: 0,
+                          color: "rgb(255, 185, 0)",
+                        }}
+                      >
+                        <ChevronRight />
+                      </div>
+
+                      {/* Right column: price */}
+                      <div
+                        className="flex items-center justify-center"
+                        style={{
+                          padding: "14px 20px",
+                          flex: "1 0 0",
+                          minWidth: "150px",
+                        }}
+                      >
+                        <span
+                          className="text-[22px] font-bold"
+                          style={{ color: "rgb(0, 0, 0)" }}
+                        >
+                          {activeTab === "monthly" ? row.monthlyPrice : row.yearlyPrice}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}

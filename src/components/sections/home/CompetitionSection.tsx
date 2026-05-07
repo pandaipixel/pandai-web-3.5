@@ -90,16 +90,12 @@ export default function CompetitionSection() {
               href={competitionSection.cta.href}
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
+              className="group inline-flex items-center justify-center bg-[#00cc85] hover:bg-white transition-colors duration-200"
               style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center',
                 height: '62px',
                 paddingLeft: '32px',
                 paddingRight: '32px',
                 borderRadius: '9999px',
-                backgroundColor: '#00cc85',
-                color: '#ffffff',
                 fontSize: '16px',
                 fontWeight: 600,
                 textDecoration: 'none',
@@ -107,8 +103,10 @@ export default function CompetitionSection() {
                 gap: '10px',
               }}
             >
-              {t('competition.cta')}
-              {/* Arrow circle — matches FeatureCard button style */}
+              <span className="text-white group-hover:text-[#00cc85] transition-colors duration-200">
+                {t('competition.cta')}
+              </span>
+              {/* Arrow circle */}
               <span style={{
                 display: 'flex',
                 alignItems: 'center',

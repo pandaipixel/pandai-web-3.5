@@ -25,7 +25,7 @@ export const asFeaturedIn = {
   logos: [
     { name: 'TechCrunch',       src: 'https://imagedelivery.net/zy4C5mYDeC8QYHozzOk2nQ/8ceeecac-54cd-42a9-65d5-2852ad17dd00/128px' },
     { name: 'Berita Harian',    src: 'https://imagedelivery.net/zy4C5mYDeC8QYHozzOk2nQ/17013407-1cf9-479a-5753-247f43673c00/128px' },
-    { name: 'Tech in Asia',     src: 'https://imagedelivery.net/zy4C5mYDeC8QYHozzOk2nQ/a492fa2f-6e3b-43c6-7c33-471d6cc65d00/256px' },
+    { name: 'Tech in Asia',     src: 'https://imagedelivery.net/zy4C5mYDeC8QYHozzOk2nQ/a492fa2f-6e3b-43c6-7c33-471d6cc65d00/256px', height: 28 },
     { name: 'Vulcan Post',      src: 'https://imagedelivery.net/zy4C5mYDeC8QYHozzOk2nQ/7d60c5d1-2316-44ef-2504-7ca431d2f300/128px' },
     { name: 'Digital News Asia',src: 'https://imagedelivery.net/zy4C5mYDeC8QYHozzOk2nQ/9bc5a53b-5bfd-45bb-7b0d-6218d2b52000/128px' },
     { name: 'e27',              src: 'https://imagedelivery.net/zy4C5mYDeC8QYHozzOk2nQ/0ec92697-8c68-40fb-eecf-3cc8c51f9200/128px' },
@@ -203,6 +203,56 @@ export const featureCards = [
     title: 'Experience the future of learning with Ask PBot, your AI study buddy',
     buttonLabel: 'Meet Ask PBot',
     buttonHref: 'https://blog.pandai.org/meet-ask-pbot-your-ultimate-study-buddy-in-pandai/',
+  },
+]
+
+// ─────────────────────────────────────────────
+// Student Features Section
+// Edit: image URL, imageAlt, title key (from translations), button label key, button href
+// ─────────────────────────────────────────────
+
+export const studentFeatureCards = [
+  {
+    image: 'https://imagedelivery.net/zy4C5mYDeC8QYHozzOk2nQ/d1d32d29-3538-403b-93b2-04a95753c000/256px',
+    imageAlt: 'Online Tuition',
+    titleKey: 'studentFeatures.card1.title' as const,
+    buttonKey: 'studentFeatures.card1.button' as const,
+    buttonHref: 'https://my.pandai.org/live-tuition',
+  },
+  {
+    image: 'https://imagedelivery.net/zy4C5mYDeC8QYHozzOk2nQ/db6c1c6c-7bde-4040-f3db-b584cf2a1a00/1024px',
+    imageAlt: 'Quiz Battle',
+    titleKey: 'studentFeatures.card2.title' as const,
+    buttonKey: 'studentFeatures.card2.button' as const,
+    buttonHref: 'https://my.pandai.org/quiz-battle',
+  },
+  {
+    image: 'https://imagedelivery.net/zy4C5mYDeC8QYHozzOk2nQ/e19d015d-fb67-40bf-a02e-c764347f9b00/1024px',
+    imageAlt: 'Quick Notes',
+    titleKey: 'studentFeatures.card3.title' as const,
+    buttonKey: 'studentFeatures.card3.button' as const,
+    buttonHref: 'https://my.pandai.org/quick-notes',
+  },
+  {
+    image: 'https://imagedelivery.net/zy4C5mYDeC8QYHozzOk2nQ/ad736fd4-366b-4555-ee48-4309305dad00/1024px',
+    imageAlt: 'Topical Test & Exams',
+    titleKey: 'studentFeatures.card4.title' as const,
+    buttonKey: 'studentFeatures.card4.button' as const,
+    buttonHref: 'https://my.pandai.org/topical-test',
+  },
+  {
+    image: 'https://imagedelivery.net/zy4C5mYDeC8QYHozzOk2nQ/b8c30685-1e5b-429e-7bd5-ff54aa0c0600/1024px',
+    imageAlt: 'Student Leaderboard',
+    titleKey: 'studentFeatures.card5.title' as const,
+    buttonKey: 'studentFeatures.card5.button' as const,
+    buttonHref: 'https://my.pandai.org/leaderboard',
+  },
+  {
+    image: 'https://imagedelivery.net/zy4C5mYDeC8QYHozzOk2nQ/7243c30b-e745-4a26-2cd9-1126d23b3400/1024px',
+    imageAlt: 'Report Card',
+    titleKey: 'studentFeatures.card6.title' as const,
+    buttonKey: 'studentFeatures.card6.button' as const,
+    buttonHref: 'https://my.pandai.org/report-card',
   },
 ]
 

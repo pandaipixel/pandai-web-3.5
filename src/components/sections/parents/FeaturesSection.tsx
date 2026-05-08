@@ -23,10 +23,8 @@ function FeatureCard({
   return (
     <motion.div
       variants={fadeInUp}
-      className="relative w-full sm:flex-1 flex flex-col overflow-hidden"
+      className="relative w-full sm:w-[calc(50%-10px)] lg:flex-1 flex flex-col overflow-hidden"
       style={{
-        minWidth: "0",
-        maxWidth: "100%",
         backgroundColor: "#ffffff",
         border: "1.5px solid #FFD000",
         borderRadius: "25px",

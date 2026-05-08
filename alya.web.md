@@ -1,5 +1,5 @@
 # alya.web.md — Pandai Web 3.5 Session Reference
-> Maintained by: Alya (ulwan@pandai.org) · Last updated: 2026-05-08
+> Maintained by: Alya (ulwan@pandai.org) · Last updated: 2026-05-08 (rev 2)
 > Read this file at the start of every new Claude session for instant context.
 
 ---
@@ -369,11 +369,19 @@ button2: { href: 'https://my.pandai.org/about/contact' }
 
 ---
 
-## FeaturesSection — Mobile Layout
+## FeaturesSection — Responsive Layout
 
 - **Section illustration:** `order-first lg:order-last` — above heading on mobile/tablet, right on desktop
-- **Cards:** `flex flex-col sm:flex-row sm:flex-wrap` / card width `w-full sm:flex-1`
+- **Cards container:** `flex flex-col sm:flex-row sm:flex-wrap items-stretch justify-center`
+- **Card width per breakpoint:**
+  - Mobile: `w-full` — 1 per row, stacked
+  - Tablet (`sm`): `sm:w-[calc(50%-10px)]` — 2 per row; with 3 cards, first 2 fill top row, 3rd centers below (via `justify-center` on container)
+  - Desktop (`lg`): `lg:flex-1` — all 3 in one row, equal width
 - **Outer padding:** `px-4 sm:px-[50px] py-4 sm:py-[30px]`
+- **Card container padding:** `px-4 py-4 sm:px-[30px] sm:py-[30px]`
+- **Gap:** `gap-[16px] sm:gap-[20px]`
+
+> Rule: The `calc(50%-10px)` accounts for the `20px` gap — half of gap subtracted from 50% so two cards exactly fill the row. If gap changes, update the calc accordingly.
 
 ---
 
@@ -458,6 +466,7 @@ src/
 - **Use `useState` for all button hover/pressed states** — `whileHover` conflicts with inline `style`.
 - **Separate mobile and desktop layout into completely separate DOM blocks** when content order differs. Use `hidden sm:flex` and `flex sm:hidden`. Never try to re-order inside a shared flex-row.
 - **Use `order-first lg:order-last`** when an element must appear first on mobile but last on desktop within a responsive flex container.
+- **For 2-column tablet card grids with odd items:** use `sm:w-[calc(50%-10px)]` on cards + `justify-center` on the container. The last card auto-centers on its own row. Don't use CSS Grid for this — flex-wrap + justify-center is simpler and handles centering automatically.
 - **Confirm color scheme before changing.** If a screenshot looks different, verify against the code first — don't rewrite colors based on assumption.
 - **Ask for URLs directly** — `ComponentInstanceNode` hrefs are not accessible via MCP.
 - **Fixed-colour tabs** — Pandai plan tabs are always the same color regardless of active state.
@@ -482,4 +491,4 @@ src/
 
 ---
 
-_Last major updates this session (2026-05-08): CTASection complete (arch + animated Sign Up + mobile layout fix + Talk To Our Team linked to my.pandai.org/about/contact), FeaturesSection mobile responsiveness (full-width stacked cards, illustration above heading), Students page confirmed partially built with EN+BM translations, Framer MCP ComponentInstanceNode prop limitation documented, canonical PandaiButton pressed state fully documented._
+_Last major updates this session (2026-05-08): CTASection complete (arch + animated Sign Up + mobile layout fix + Talk To Our Team linked to my.pandai.org/about/contact), FeaturesSection full responsive layout (mobile 1-col stacked, tablet 2-col with centered last card via calc(50%-10px), desktop 3-col flex-1), section illustration above heading on mobile/tablet, Students page confirmed partially built with EN+BM translations, Framer MCP ComponentInstanceNode prop limitation documented, canonical PandaiButton pressed state fully documented._

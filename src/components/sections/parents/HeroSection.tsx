@@ -12,6 +12,7 @@ import { parentsTranslations } from "@/content/translations/parents";
 export default function ParentsHeroSection() {
   const t = useT(parentsTranslations);
   const [btnHovered, setBtnHovered] = useState(false);
+  const [btnPressed, setBtnPressed] = useState(false);
   return (
     <section className="relative bg-white overflow-hidden pt-24">
       <div className="max-w-[1200px] mx-auto px-[50px] w-full py-[50px]">
@@ -55,23 +56,25 @@ export default function ParentsHeroSection() {
                 target="_blank"
                 rel="noopener noreferrer"
                 onMouseEnter={() => setBtnHovered(true)}
-                onMouseLeave={() => setBtnHovered(false)}
+                onMouseLeave={() => { setBtnHovered(false); setBtnPressed(false); }}
+                onMouseDown={() => setBtnPressed(true)}
+                onMouseUp={() => setBtnPressed(false)}
                 className="inline-flex items-center h-[57px] cursor-pointer"
                 style={{
-                  backgroundColor: "#00CC85",
+                  backgroundColor: btnPressed ? "rgb(11, 88, 81)" : btnHovered ? "rgb(140, 235, 139)" : "rgb(0, 204, 133)",
                   border: "1px solid #0B5851",
                   borderRadius: "30px",
                   padding: btnHovered ? "7px" : "10px",
                   gap: "10px",
                   textDecoration: "none",
-                  transition: "padding 0.2s ease",
+                  transition: "padding 0.2s ease, background-color 0.15s ease",
                 }}
               >
                 {/* Button label */}
                 <span
                   className="flex-1 px-2 text-center whitespace-pre"
                   style={{
-                    color: "#ffffff",
+                    color: btnPressed ? "rgb(204, 255, 204)" : btnHovered ? "rgb(11, 88, 81)" : "#ffffff",
                     fontFamily: "Poppins, sans-serif",
                     fontSize: "20px",
                     fontWeight: 600,
@@ -85,10 +88,10 @@ export default function ParentsHeroSection() {
                 <span
                   className="flex items-center justify-center flex-none rounded-full"
                   style={{
-                    backgroundColor: "#CCFFCC",
+                    backgroundColor: btnPressed ? "rgb(140, 235, 139)" : "rgb(204, 255, 204)",
                     width: btnHovered ? "42px" : "38px",
                     height: btnHovered ? "42px" : "38px",
-                    transition: "width 0.2s ease, height 0.2s ease",
+                    transition: "width 0.2s ease, height 0.2s ease, background-color 0.15s ease",
                   }}
                 >
                   <svg
@@ -100,7 +103,7 @@ export default function ParentsHeroSection() {
                       d="M 0 0 L 3.5 3.25 L 0 6.5"
                       fill="transparent"
                       stroke="#0B5851"
-                      strokeWidth="1.5"
+                      strokeWidth="2"
                       strokeLinecap="round"
                       strokeLinejoin="round"
                       transform="translate(10.75 8.75)"

@@ -23,10 +23,10 @@ function FeatureCard({
   return (
     <motion.div
       variants={fadeInUp}
-      className="relative flex-1 flex flex-col overflow-hidden"
+      className="relative w-full sm:flex-1 flex flex-col overflow-hidden"
       style={{
-        minWidth: "260px",
-        maxWidth: "380px",
+        minWidth: "0",
+        maxWidth: "100%",
         backgroundColor: "#ffffff",
         border: "1.5px solid #FFD000",
         borderRadius: "25px",
@@ -113,21 +113,38 @@ export default function ParentsFeaturesSection() {
 
   return (
     <section className="relative bg-white overflow-hidden">
-      <div className="max-w-[1200px] mx-auto px-[50px] w-full py-[30px]">
-        {/* Outer section border — 1.5px solid #FFD000, white bg, 25px radius, matching framer-pkfa0v */}
+      <div className="max-w-[1200px] mx-auto px-4 sm:px-[50px] w-full py-4 sm:py-[30px]">
         <div
           className="flex flex-col gap-[20px] w-full overflow-hidden"
           style={{
             border: "1.5px solid #FFD000",
             borderRadius: "25px",
             backgroundColor: "#ffffff",
-            padding: "20px",
+            padding: "16px",
           }}
         >
 
-          {/* Section header — title/subtitle left, illustration right */}
-          <div className="flex flex-col lg:flex-row items-center gap-[50px] overflow-hidden">
-            {/* Left: title + subtitle */}
+          {/* Section header — illustration above heading on mobile/tablet, side-by-side on desktop */}
+          <div className="flex flex-col lg:flex-row items-center gap-[30px] lg:gap-[50px] overflow-hidden">
+
+            {/* Illustration — above heading on mobile/tablet, right side on desktop */}
+            <motion.div
+              variants={scaleIn}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-80px" }}
+              className="flex flex-1 items-center justify-center overflow-hidden order-first lg:order-last"
+            >
+              <Image
+                src={features.sectionImage}
+                alt="Pandai for Parents illustration"
+                width={420}
+                height={320}
+                className="w-full max-w-[240px] sm:max-w-[300px] md:max-w-[420px] object-contain"
+              />
+            </motion.div>
+
+            {/* Title + subtitle */}
             <motion.div
               variants={staggerContainer}
               initial="hidden"
@@ -137,36 +154,20 @@ export default function ParentsFeaturesSection() {
             >
               <motion.h2
                 variants={fadeInUp}
-                className="font-bold text-[36px] md:text-[42px]"
-                style={{ color: "#FFD000", lineHeight: "1.1em", transform: "translateY(-3px)" }}
+                className="font-bold text-[28px] sm:text-[36px] md:text-[42px]"
+                style={{ color: "#FFD000", lineHeight: "1.1em" }}
               >
                 {t("features.title")}
               </motion.h2>
               <motion.p
                 variants={fadeInUp}
-                className="text-[16px] md:text-[18px] font-bold"
-                style={{ color: "#434955", lineHeight: "1.5em", transform: "translateY(-6px)" }}
+                className="text-[15px] sm:text-[16px] md:text-[18px] font-bold"
+                style={{ color: "#434955", lineHeight: "1.5em" }}
               >
                 {t("features.subtitle")}
               </motion.p>
             </motion.div>
 
-            {/* Right: illustration */}
-            <motion.div
-              variants={scaleIn}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-80px" }}
-              className="flex-1 flex items-center justify-center overflow-hidden"
-            >
-              <Image
-                src={features.sectionImage}
-                alt="Pandai for Parents illustration"
-                width={420}
-                height={320}
-                className="w-full max-w-[300px] md:max-w-[420px] object-contain"
-              />
-            </motion.div>
           </div>
 
           {/* Cards container */}
@@ -175,11 +176,11 @@ export default function ParentsFeaturesSection() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-80px" }}
-            className="flex flex-row flex-wrap items-stretch justify-center gap-[20px] px-[30px] py-[30px]"
+            className="flex flex-col sm:flex-row sm:flex-wrap items-stretch justify-center gap-[16px] sm:gap-[20px] px-4 py-4 sm:px-[30px] sm:py-[30px]"
             style={{
               backgroundColor: "rgb(251, 240, 202)",
               border: "1px solid #FFD000",
-              borderRadius: "25px",
+              borderRadius: "20px",
             }}
           >
             {features.cards.map((card) => (

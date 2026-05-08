@@ -70,7 +70,15 @@ export const testimonials = {
       stars: 5,
     },
   ],
-  cta: { href: '/about/testimonial' },
+  cta: { href: 'https://my.pandai.org/about/testimonial' },
+}
+
+export const cta = {
+  characterImage: 'https://imagedelivery.net/zy4C5mYDeC8QYHozzOk2nQ/401b9f87-ff0b-4805-b97a-78f7754f3b00/256px',
+  illustrationImage: 'https://imagedelivery.net/zy4C5mYDeC8QYHozzOk2nQ/651fcd2b-349d-44bf-ffe1-ddaf1a493c00/1024px',
+  statNumber: '1,007,327',
+  button: { href: 'https://app.pandai.org/app/signup?account=parent' },
+  button2: { href: 'https://my.pandai.org/about/contact' },
 }
 
 export const pricing = {

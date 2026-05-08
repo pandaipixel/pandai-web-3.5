@@ -127,7 +127,14 @@ export default function FindOutMoreSection() {
                     <span className="font-semibold text-[13px] sm:text-[17px] whitespace-nowrap">
                       {t("pricing.tab.monthly")}
                     </span>
-                    {activeTab === "monthly" ? <ChevronDown /> : <ChevronUp />}
+                    {activeTab === "monthly" ? <ChevronDown /> : (
+                      <motion.div
+                        animate={{ scale: [1, 1.35, 1] }}
+                        transition={{ repeat: Infinity, duration: 1, ease: "easeInOut" }}
+                      >
+                        <ChevronUp />
+                      </motion.div>
+                    )}
                   </button>
 
                   {/* Yearly tab — always dark green */}
@@ -142,7 +149,14 @@ export default function FindOutMoreSection() {
                     <span className="font-semibold text-[13px] sm:text-[17px] whitespace-nowrap">
                       {t("pricing.tab.yearly")}
                     </span>
-                    {activeTab === "yearly" ? <ChevronDown /> : <ChevronUp />}
+                    {activeTab === "yearly" ? <ChevronDown /> : (
+                      <motion.div
+                        animate={{ scale: [1, 1.35, 1] }}
+                        transition={{ repeat: Infinity, duration: 1, ease: "easeInOut" }}
+                      >
+                        <ChevronUp />
+                      </motion.div>
+                    )}
                   </button>
                 </div>
 
@@ -162,7 +176,7 @@ export default function FindOutMoreSection() {
                         activeTab === "yearly"
                           ? "rgb(0, 204, 133)"
                           : "rgb(204, 255, 204)",
-                      padding: "20px",
+                      padding: "15px",
                     }}
                   >
                     <div
@@ -187,14 +201,14 @@ export default function FindOutMoreSection() {
                       </span>
                     </div>
                     <div
-                      className="flex-1 flex items-center justify-center gap-[6px]"
+                      className="flex-1 flex items-center"
                       style={{ padding: "8px 8px" }}
                     >
+                      {/* Text — flex-1 so it fills space and centers its content */}
                       <span
-                        className="text-[12px] sm:text-[16px] font-bold text-center"
+                        className="flex-1 text-[12px] sm:text-[16px] font-bold text-center"
                         style={{
                           color: activeTab === "yearly" ? "#ffffff" : "rgb(11, 88, 81)",
-                          maxWidth: "90px",
                           lineHeight: "1.3",
                         }}
                       >
@@ -202,18 +216,20 @@ export default function FindOutMoreSection() {
                           ? t("pricing.table.monthly")
                           : t("pricing.table.yearly")}
                       </span>
-                      {/* Auto Debit badge */}
+                      {/* Auto Debit badge — flex-none at right, never overlaps */}
                       {activeTab === "yearly" && (
                         <span
-                          className="inline-flex items-center justify-center text-center font-bold leading-tight flex-none"
+                          className="flex-none inline-flex items-center justify-center text-center"
                           style={{
-                            backgroundColor: "rgb(255, 208, 0)",
+                            backgroundColor: "rgb(255, 242, 0)",
                             color: "rgb(11, 88, 81)",
-                            borderRadius: "6px",
-                            fontSize: "8px",
-                            padding: "2px 4px",
-                            whiteSpace: "nowrap",
+                            borderRadius: "8px",
+                            fontSize: "9px",
+                            padding: "3px 5px",
                             lineHeight: "1.2",
+                            fontFamily: "Poppins, sans-serif",
+                            fontWeight: 600,
+                            whiteSpace: "nowrap",
                           }}
                         >
                           Auto<br />Debit

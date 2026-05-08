@@ -42,6 +42,14 @@ export const parentsTranslations: TranslationDict = {
     'pricing.children.more': '3 or More Children',
     'pricing.perChild.monthly': 'per child / month',
     'pricing.perChild.yearly': 'per child / year',
+
+    'cta.heading': 'Join Pandai Now',
+    'cta.subheading': "Don't get left behind.",
+    'cta.stat.number': '878,501',
+    'cta.stat.prefix': 'More than',
+    'cta.stat.suffix': 'students are learning something new with Pandai every day.',
+    'cta.button': 'Sign Up',
+    'cta.button2': 'Talk To Our Team',
   },
 
   ms: {
@@ -85,5 +93,13 @@ export const parentsTranslations: TranslationDict = {
     'pricing.children.more': '3 atau Lebih Anak',
     'pricing.perChild.monthly': 'setiap anak / bulan',
     'pricing.perChild.yearly': 'setiap anak / tahun',
+
+    'cta.heading': 'Sertai Pandai Sekarang',
+    'cta.subheading': 'Jangan ketinggalan.',
+    'cta.stat.number': '878,501',
+    'cta.stat.prefix': 'Lebih daripada',
+    'cta.stat.suffix': 'pelajar sedang belajar sesuatu yang baru dengan Pandai setiap hari.',
+    'cta.button': 'Daftar',
+    'cta.button2': 'Hubungi Pasukan Kami',
   },
 }

@@ -23,8 +23,10 @@ function StarIcon() {
 export default function TestimonialSection() {
   const t = useT(parentsTranslations);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [pressedIndex, setPressedIndex] = useState<number | null>(null);
   const [btnHovered, setBtnHovered] = useState(false);
+  const [btnPressed, setBtnPressed] = useState(false);
 
   const activeItem = testimonials.items[activeIndex];
 
@@ -57,7 +59,7 @@ export default function TestimonialSection() {
           >
             {/* Left: Testimonial card */}
             <div
-              className="w-full max-w-[393px] overflow-hidden"
+              className="w-full lg:max-w-[393px] overflow-hidden"
               style={{
                 border: "1px solid rgb(252, 213, 83)",
                 borderRadius: "20px",
@@ -153,43 +155,83 @@ export default function TestimonialSection() {
             </div>
 
             {/* Right: 3×2 avatar grid selector — stretches to card height, grid centered */}
-            <div className="w-full max-w-[472px] flex items-center justify-center">
+            <div className="w-full lg:max-w-[472px] flex items-center justify-center">
             <div
-              className="grid grid-cols-3 gap-4 w-full"
+              className="grid grid-cols-3 md:grid-cols-6 lg:grid-cols-3 gap-4 w-full"
             >
               {testimonials.items.map((item, i) => {
                 const isActive = i === activeIndex;
                 return (
                   <div key={item.id} className="flex items-center justify-center">
-                    <motion.button
-                      onClick={() => setActiveIndex(i)}
-                      onPointerDown={() => setPressedIndex(i)}
-                      onPointerUp={() => setPressedIndex(null)}
-                      onPointerLeave={() => setPressedIndex(null)}
-                      aria-label={item.name}
-                      whileTap={{ scale: 0.93 }}
-                      transition={{ duration: 0.15, ease: "easeOut" }}
-                      className="flex-none overflow-hidden cursor-pointer focus:outline-none"
-                      style={{
-                        width: "86px",
-                        height: "103px",
-                        borderRadius: "9999px",
-                        border: isActive || pressedIndex === i
-                          ? "20px solid rgb(255, 207, 48)"
-                          : "3px solid rgb(255, 207, 48)",
-                        backgroundColor: "rgb(255, 255, 255)",
-                        padding: 0,
-                        transition: "border 0.15s ease",
-                      }}
-                    >
-                      <Image
-                        src={item.avatar}
-                        alt={item.name}
-                        width={86}
-                        height={103}
-                        className="w-full h-full object-cover"
-                      />
-                    </motion.button>
+                    <div className="relative" style={{ width: "86px" }}>
+                      <motion.button
+                        onClick={() => setActiveIndex(i)}
+                        onMouseEnter={() => setHoveredIndex(i)}
+                        onMouseLeave={() => { setHoveredIndex(null); setPressedIndex(null); }}
+                        onPointerDown={() => setPressedIndex(i)}
+                        onPointerUp={() => setPressedIndex(null)}
+                        onPointerLeave={() => setPressedIndex(null)}
+                        aria-label={item.name}
+                        whileTap={{ scale: 0.93 }}
+                        transition={{ duration: 0.15, ease: "easeOut" }}
+                        className="flex-none overflow-hidden cursor-pointer focus:outline-none"
+                        style={{
+                          width: "86px",
+                          height: "103px",
+                          borderRadius: "9999px",
+                          border: pressedIndex === i
+                            ? "17px solid rgb(255, 207, 48)"
+                            : isActive
+                              ? "15px solid rgb(255, 207, 48)"
+                              : hoveredIndex === i
+                                ? "12px solid rgb(255, 207, 48)"
+                                : "2px solid rgb(255, 207, 48)",
+                          backgroundColor: "rgb(255, 255, 255)",
+                          padding: 0,
+                          transition: "border 0.15s ease",
+                        }}
+                      >
+                        <Image
+                          src={item.avatar}
+                          alt={item.name}
+                          width={86}
+                          height={103}
+                          className="w-full h-full object-cover"
+                        />
+                      </motion.button>
+
+                      {/* Pin tack badge — active avatar only */}
+                      <AnimatePresence>
+                        {isActive && (
+                          <motion.div
+                            initial={{ scale: 0, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0, opacity: 0 }}
+                            transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                            className="absolute left-1/2 -translate-x-1/2 flex items-center justify-center pointer-events-none z-10"
+                            style={{
+                              bottom: 0,
+                              width: "35px",
+                              height: "35px",
+                              borderRadius: "100px",
+                              backgroundColor: "rgb(255, 207, 48)",
+                              padding: "5px",
+                            }}
+                          >
+                            <svg
+                              viewBox="0 0 16 16"
+                              width="18"
+                              height="18"
+                              fill="white"
+                              role="presentation"
+                              aria-hidden="true"
+                            >
+                              <path d="M9.828.722a.5.5 0 0 1 .354.146l4.95 4.95a.5.5 0 0 1 0 .707c-.48.48-1.072.588-1.503.588-.177 0-.335-.018-.46-.039l-3.134 3.134a5.927 5.927 0 0 1 .16 1.013c.046.702-.032 1.687-.72 2.375a.5.5 0 0 1-.707 0l-2.829-2.828-3.182 3.182c-.195.195-1.219.902-1.414.707-.195-.195.512-1.22.707-1.414l3.182-3.182-2.828-2.829a.5.5 0 0 1 0-.707c.688-.688 1.673-.767 2.375-.72a5.922 5.922 0 0 1 1.013.16l3.134-3.133a2.772 2.772 0 0 1-.04-.461c0-.43.108-1.022.589-1.503a.5.5 0 0 1 .353-.146z" />
+                            </svg>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
                   </div>
                 );
               })}
@@ -201,23 +243,27 @@ export default function TestimonialSection() {
           <motion.div variants={fadeInUp}>
             <Link
               href={testimonials.cta.href}
+              target="_blank"
+              rel="noopener noreferrer"
               onMouseEnter={() => setBtnHovered(true)}
-              onMouseLeave={() => setBtnHovered(false)}
+              onMouseLeave={() => { setBtnHovered(false); setBtnPressed(false); }}
+              onMouseDown={() => setBtnPressed(true)}
+              onMouseUp={() => setBtnPressed(false)}
               className="inline-flex items-center h-[57px] cursor-pointer"
               style={{
-                backgroundColor: "#00CC85",
+                backgroundColor: btnPressed ? "rgb(11, 88, 81)" : btnHovered ? "rgb(140, 235, 139)" : "rgb(0, 204, 133)",
                 border: "1px solid #0B5851",
                 borderRadius: "30px",
                 padding: btnHovered ? "7px" : "10px",
                 gap: "10px",
                 textDecoration: "none",
-                transition: "padding 0.2s ease",
+                transition: "padding 0.2s ease, background-color 0.15s ease",
               }}
             >
               <span
                 className="flex-1 px-2 text-center"
                 style={{
-                  color: "#ffffff",
+                  color: btnPressed ? "rgb(204, 255, 204)" : btnHovered ? "rgb(11, 88, 81)" : "#ffffff",
                   fontFamily: "Poppins, sans-serif",
                   fontSize: "16px",
                   fontWeight: 600,
@@ -229,10 +275,10 @@ export default function TestimonialSection() {
               <span
                 className="flex items-center justify-center flex-none rounded-full"
                 style={{
-                  backgroundColor: "#CCFFCC",
+                  backgroundColor: btnPressed ? "rgb(140, 235, 139)" : "rgb(204, 255, 204)",
                   width: btnHovered ? "42px" : "38px",
                   height: btnHovered ? "42px" : "38px",
-                  transition: "width 0.2s ease, height 0.2s ease",
+                  transition: "width 0.2s ease, height 0.2s ease, background-color 0.15s ease",
                 }}
               >
                 <svg
@@ -244,7 +290,7 @@ export default function TestimonialSection() {
                     d="M 0 0 L 3.5 3.25 L 0 6.5"
                     fill="transparent"
                     stroke="#0B5851"
-                    strokeWidth="1.5"
+                    strokeWidth="2"
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     transform="translate(10.75 8.75)"
